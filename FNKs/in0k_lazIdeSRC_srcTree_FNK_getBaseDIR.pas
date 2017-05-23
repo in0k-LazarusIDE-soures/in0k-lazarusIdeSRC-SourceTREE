@@ -6,16 +6,14 @@ unit in0k_lazIdeSRC_srcTree_FNK_getBaseDIR;
 interface
 
 uses
-    in0k_lazIdeSRC_srcTree_item_CORE,
-    in0k_lazIdeSRC_srcTree_item_Globals,
-
-    in0k_lazIdeSRC_srcTree_FNK_fndBaseDIR,
-    LazFileUtils,
-
-  Classes, SysUtils;
+  in0k_lazIdeSRC_srcTree_item_CORE,
+  in0k_lazIdeSRC_srcTree_item_Globals,
+  //---
+  in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
+  in0k_lazIdeSRC_srcTree_FNK_fndBaseDIR;
 
 type //< создание ЭКЗеМпЛЯРа "Базовой директории"
-  {todo: добавить экземпляр nested}
+  {todo: добавить вызов nested}
   //nSrcTree_getBaseDIR_crtBaseDIR=function(const BaseDIR_PATH:string):tSrcTree_BASE is nested;
   mSrcTree_getBaseDIR_crtBaseDIR=function(const BaseDIR_PATH:string):tSrcTree_BASE of object;
   fSrcTree_getBaseDIR_crtBaseDIR=function(const BaseDIR_PATH:string):tSrcTree_BASE;
@@ -33,7 +31,7 @@ implementation
 // при кастомизации тут момжно выбирать классы
 function _getBaseDIR__crt_BaseDIR_(const BaseDIR_PATH:string):tSrcTree_BASE;
 begin
-    result:=tSrcTree_BASE.Create(ChompPathDelim(BaseDIR_PATH));
+    result:=tSrcTree_BASE.Create(srcTree_fsFnk_ChompPathDelim(BaseDIR_PATH));
 end;
 
 //function SrcTree_getBaseDIR(const item:tSrcTree_ROOT; const crtFnc:nSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
