@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_fndMainFILE;
+unit in0k_lazIdeSRC_srcTree_FNK_mainFILE_FND;
 
 {$mode objfpc}{$H+}
 
@@ -8,7 +8,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_CORE,
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_fndBaseDIR;
+  in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 
 function SrcTree_fndMainFILE(const item:tSrcTree_ROOT):tSrcTree_MAIN;
 

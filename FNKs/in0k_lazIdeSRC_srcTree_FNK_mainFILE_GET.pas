@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_getMainFILE;
+unit in0k_lazIdeSRC_srcTree_FNK_mainFILE_GET;
 
 {$mode objfpc}{$H+}
 
@@ -8,8 +8,8 @@ uses
   in0k_lazIdeSRC_srcTree_item_CORE,
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_getBaseDIR,
-  in0k_lazIdeSRC_srcTree_FNK_fndMainFILE;
+  in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET,
+  in0k_lazIdeSRC_srcTree_FNK_mainFILE_FND;
 
 type // создание ЭКЗеМпЛЯРа "Базовой директории"
   fSrcTree_getMainFILE_crtMainFILE=function(const MainFILE_Name:string):tSrcTree_MAIN;

@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_addNodeFILE;
+unit in0k_lazIdeSRC_srcTree_FNK_nodeFILE_ADD;
 
 {$mode objfpc}{$H+}
 
@@ -11,11 +11,9 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFile,
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
-  //Classes,
-  //SysUtils,
   in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
-  in0k_lazIdeSRC_srcTree_FNK_fndNodeFILE,
-  in0k_lazIdeSRC_srcTree_FNK_getRelPATH;
+  in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_relPATH_GET;
 
 type // создание ЭКЗеМпЛЯРа "ФАЙЛ"
   fSrcTree_addNodeFILE_crtNodeFILE=function(const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;

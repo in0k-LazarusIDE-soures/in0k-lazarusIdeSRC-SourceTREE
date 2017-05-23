@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_addSrchPATH;
+unit in0k_lazIdeSRC_srcTree_FNK_srchPATH_ADD;
 
 {$mode objfpc}{$H+}
 
@@ -16,7 +16,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
   in0k_lazIdeSRC_srcTree_item_Globals,
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_getRelPATH,
+  in0k_lazIdeSRC_srcTree_FNK_relPATH_GET,
   in0k_lazIdeSRC_srcTree_coreFromIDEProcs;
 
 function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crtRelPATH_callBACK):tSrcTree_fsFLDR;

@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_setMainFILE;
+unit in0k_lazIdeSRC_srcTree_FNK_mainFILE_SET;
 
 {$mode objfpc}{$H+}
 
@@ -8,8 +8,8 @@ uses
   in0k_lazIdeSRC_srcTree_item_CORE,
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_getBaseDIR,
-  in0k_lazIdeSRC_srcTree_FNK_getMainFILE;
+  in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET,
+  in0k_lazIdeSRC_srcTree_FNK_mainFILE_GET;
 
 function SrcTree_setMainFILE(const item:tSrcTree_ROOT; const MainFileNAME:string; const crtFnc:mSrcTree_getMainFILE_crtMainFILE; const crtBaseDIR:mSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_MAIN;
 

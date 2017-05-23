@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_getBaseDIR;
+unit in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET;
 
 {$mode objfpc}{$H+}
 {.$modeswitch nestedprocvars}
@@ -10,7 +10,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
   in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
-  in0k_lazIdeSRC_srcTree_FNK_fndBaseDIR;
+  in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 
 type //< создание ЭКЗеМпЛЯРа "Базовой директории"
   {todo: добавить вызов nested}

@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_fndRelPATH;
+unit in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
 
 {$mode objfpc}{$H+}
 
@@ -10,7 +10,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_coreFileSystem,
   //---
   in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
-  in0k_lazIdeSRC_srcTree_FNK_fndBaseDIR;
+  in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 
 function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
 function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;

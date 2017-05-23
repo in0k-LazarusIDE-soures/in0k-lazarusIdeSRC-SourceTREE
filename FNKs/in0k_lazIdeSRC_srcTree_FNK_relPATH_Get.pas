@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_getRelPATH;
+unit in0k_lazIdeSRC_srcTree_FNK_relPATH_GET;
 
 {$mode objfpc}{$H+}
 
@@ -11,7 +11,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
   in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
-  in0k_lazIdeSRC_srcTree_FNK_fndRelPATH;
+  in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
 
 type
 
