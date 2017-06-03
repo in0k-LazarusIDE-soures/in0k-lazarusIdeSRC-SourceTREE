@@ -5,7 +5,7 @@ unit in0k_lazIdeSRC_srcTree_item_fsFolder;
 interface
 
 uses
-  in0k_lazIdeSRC_srcTree_item_coreFileSystem;
+  in0k_lazIdeSRC_srcTree_CORE_itemFileSystem;
 
 type
 

@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_coreFromIDEProcs;
+unit in0k_lazIdeSRC_srcTree_CORE_fromIDEProcs_FNK;
 
 {$mode objfpc}{$H+}
 
@@ -11,7 +11,7 @@ uses
   //Classes,
   //SysUtils,
   //LazFileUtils,
-  in0k_lazIdeSRC_srcTree_coreFileSystemFNK;
+  in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK;
 
 
 const cSearchPaths_delimeter=';';

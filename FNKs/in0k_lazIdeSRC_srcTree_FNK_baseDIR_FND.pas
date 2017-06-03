@@ -5,7 +5,7 @@ unit in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 interface
 
 uses
-  in0k_lazIdeSRC_srcTree_item_CORE,
+  in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_item_Globals;
 
 function SrcTree_fndBaseDIR(const item:tSrcTree_ROOT):tSrcTree_BASE;

@@ -5,7 +5,7 @@ unit in0k_lazIdeSRC_srcTree_FNK_mainFILE_FND;
 interface
 
 uses
-  in0k_lazIdeSRC_srcTree_item_CORE,
+  in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
   in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;

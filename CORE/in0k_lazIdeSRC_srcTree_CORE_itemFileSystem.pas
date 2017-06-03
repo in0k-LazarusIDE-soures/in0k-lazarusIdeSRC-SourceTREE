@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_item_coreFileSystem;
+unit in0k_lazIdeSRC_srcTree_CORE_itemFileSystem;
 
 {$mode objfpc}{$H+}
 
@@ -9,8 +9,8 @@ interface
 //< "системе имен и папок" `in0k_LazExt_..`.
 
 uses {$ifDef in0k_lazIdeSRC_srcTree___DEBUG}in0k_lazIdeSRC_DEBUG,{$endIf}
-     in0k_lazIdeSRC_srcTree_item_CORE,
-     in0k_lazIdeSRC_srcTree_coreFileSystemFNK;
+     in0k_lazIdeSRC_srcTree_CORE_item,
+     in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK;
 
 type
 

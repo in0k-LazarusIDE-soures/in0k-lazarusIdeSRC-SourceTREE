@@ -17,7 +17,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
   in0k_lazIdeSRC_srcTree_FNK_relPATH_GET,
-  in0k_lazIdeSRC_srcTree_coreFromIDEProcs;
+  in0k_lazIdeSRC_srcTree_CORE_fromIDEProcs_FNK;
 
 function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crtRelPATH_callBACK):tSrcTree_fsFLDR;
 procedure srcTree_builder_add_SearchPATH_DirLIST(const ROOT:tSrcTree_ROOT; const DirLIST:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crtRelPATH_callBACK);

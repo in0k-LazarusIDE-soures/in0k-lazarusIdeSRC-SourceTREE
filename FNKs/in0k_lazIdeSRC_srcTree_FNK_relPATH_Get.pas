@@ -5,12 +5,12 @@ unit in0k_lazIdeSRC_srcTree_FNK_relPATH_GET;
 interface
 
 uses
-  in0k_lazIdeSRC_srcTree_item_CORE,
+  in0k_lazIdeSRC_srcTree_CORE_item,
+  in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
   in0k_lazIdeSRC_srcTree_item_Globals,
-  in0k_lazIdeSRC_srcTree_item_coreFileSystem,
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
-  in0k_lazIdeSRC_srcTree_coreFileSystemFNK,
+  in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
 
 type

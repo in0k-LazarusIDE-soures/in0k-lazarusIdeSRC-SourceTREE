@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_item_CORE;
+unit in0k_lazIdeSRC_srcTree_CORE_item;
 
 {$mode objfpc}{$H+}
 
