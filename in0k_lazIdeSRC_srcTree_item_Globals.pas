@@ -10,15 +10,15 @@ uses
 
 type
 
-  tSrcTree_ROOT= tSrcTree_item;
-  tSrcTree_BASE=_tSrcTree_item_fsBaseDIR_;
-  tSrcTree_MAIN=_tSrcTree_item_fsNodeFILE_;
+  tSrcTree_ROOT=class(tSrcTree_item);
+  tSrcTree_BASE=class(_tSrcTree_item_fsBaseDIR_);
+  tSrcTree_MAIN=class(_tSrcTree_item_fsNodeFILE_);
 
-  tSrcTree_Root4Package=tSrcTree_ROOT;
-  tSrcTree_Main4Package=tSrcTree_MAIN;
+  tSrcTree_Root4Package=class(tSrcTree_ROOT);
+  tSrcTree_Main4Package=class(tSrcTree_MAIN);
 
-  tSrcTree_Root4Project=tSrcTree_ROOT;
-  tSrcTree_Main4Project=tSrcTree_MAIN;
+  tSrcTree_Root4Project=class(tSrcTree_ROOT);
+  tSrcTree_Main4Project=class(tSrcTree_MAIN);
 
 implementation
 
