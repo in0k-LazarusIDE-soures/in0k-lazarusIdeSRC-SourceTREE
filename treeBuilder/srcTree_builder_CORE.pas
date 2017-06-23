@@ -46,9 +46,7 @@ type
   protected
     function Add_FILE(const mOBJ:pointer; const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE; virtual;
     function Set_ITMs(const mOBJ:pointer; const ROOT:tSrcTree_ROOT):string;        virtual;
-
   protected
-
     function Crt_fsNodeFLDR(const folderName:string):tSrcTree_fsFLDR;
   public
     function MAKE_SourceTREE(const MainOBJ:pointer):tSrcTree_ROOT;

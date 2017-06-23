@@ -141,6 +141,7 @@ begin
     for i:=0 to TIDEPackage(mOBJ).FileCount-1 do begin
         with TIDEPackage(mOBJ).Files[i] do begin
             S:=TIDEPackage(mOBJ).Files[i].GetShortFilename(false);
+            {todo: function TPackageEditorForm.OnTreeViewGetImageIndex(Str: String; Data: TObject; var AIsEnabled: Boolean): Integer; }
             Add_FILE(mOBJ,ROOT, S,TIDEPackage(mOBJ).Files[i].FileType);
             {
                 fldr:=tSrcTree_fsFLDR(SrcTreeROOT_fnd_relPATH(result,ExtractFileDir(S)));

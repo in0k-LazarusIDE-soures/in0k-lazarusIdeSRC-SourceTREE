@@ -25,6 +25,8 @@ function srcTree_fsFnk_ChangeFileExt(const aFileName,aExtension:string): string;
 
 function srcTree_fsFnk_CompareFilenames(const Filename1, Filename2: string): integer; inline;
 
+function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string; inline;// empty string returns current directory
+
 
 implementation
 
@@ -83,6 +85,11 @@ end;
 function srcTree_fsFnk_ChangeFileExt(const aFileName,aExtension:string):string;
 begin
     result:=ChangeFileExt(aFileName,aExtension);
+end;
+
+function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string;
+begin
+    result:=CleanAndExpandFilename(Filename);
 end;
 
 end.
