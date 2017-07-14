@@ -8,24 +8,28 @@ uses
   in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
   in0k_lazIdeSRC_srcTree_item_Globals,
+  in0k_lazIdeSRC_srcTree_item_fsFolder,
+
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 
-function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
-function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndRelPATH(const item: tSrcTree_ROOT;             const folder:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndRelPATH(const item:_tSrcTree_item_fsNodeFLDR_; const folder:string):_tSrcTree_item_fsNodeFLDR_; overload;
+
+function SrcTree_fndRelPATH(const item: tSrcTree_ROOT;             const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndRelPATH(const item:_tSrcTree_item_fsNodeFLDR_; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_; overload;
 
 implementation
 
-function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndRelPATH(const item:_tSrcTree_item_fsNodeFLDR_; const folder:string):_tSrcTree_item_fsNodeFLDR_;
 var lstDir:_tSrcTree_item_fsNodeFLDR_;
     mdlDir:string;
 begin
     result:=SrcTree_fndRelPATH(item,folder,lstDir,mdlDir);
 end;
 
-
-function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndRelPATH(const item:_tSrcTree_item_fsNodeFLDR_; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
 var fldr:string;
     tmp :tSrcTree_item;
 begin
@@ -107,6 +111,26 @@ begin
     {$ifOpt D+}Assert( Assigned(result) or ((not Assigned(result)) and Assigned(lstDir)),'Wrong result');{$endIf}
     {$ifdef _debug_}DEBUG('SrcTreeROOT_fnd_relPATH','out'+'"'+mdlDir+'"');{$endIf}
 end;
+
+//------------------------------------------------------------------------------
+
+function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
+var base:tSrcTree_BASE;
+begin
+    base:=SrcTree_fndBaseDIR(item);
+    {$ifOpt D+}Assert(Assigned(base),'BaseDIR NOT found');{$endIf}
+    result:=SrcTree_fndRelPATH(base,folder);
+end;
+
+function SrcTree_fndRelPATH(const item:tSrcTree_ROOT; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
+var base:tSrcTree_BASE;
+begin
+    base:=SrcTree_fndBaseDIR(item);
+    {$ifOpt D+}Assert(Assigned(base),'BaseDIR NOT found');{$endIf}
+    result:=SrcTree_fndRelPATH(base,folder, lstDir,mdlDir);
+end;
+
+
 
 end.
 

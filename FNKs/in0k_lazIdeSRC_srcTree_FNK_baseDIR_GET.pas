@@ -34,14 +34,14 @@ begin
     result:=tSrcTree_BASE.Create(srcTree_fsFnk_ChompPathDelim(BaseDIR_PATH));
 end;
 
-//function SrcTree_getBaseDIR(const item:tSrcTree_ROOT; const crtFnc:nSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
-//{$i in0k_srcTree_getBaseDIR.inc}
-
 function SrcTree_getBaseDIR(const item:tSrcTree_ROOT; const crtFnc:fSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
 {$i in0k_lazIdeSRC_srcTree_FNK_getBaseDIR.inc}
 
 function SrcTree_getBaseDIR(const item:tSrcTree_ROOT; const crtFnc:mSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
 {$i in0k_lazIdeSRC_srcTree_FNK_getBaseDIR.inc}
+
+//function SrcTree_getBaseDIR(const item:tSrcTree_ROOT; const crtFnc:nSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
+//{$i in0k_srcTree_getBaseDIR.inc}
 
 function SrcTree_getBaseDIR(const item:tSrcTree_ROOT):tSrcTree_BASE;
 begin

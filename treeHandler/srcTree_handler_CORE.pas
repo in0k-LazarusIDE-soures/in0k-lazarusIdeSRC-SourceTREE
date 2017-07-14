@@ -38,8 +38,8 @@ type
     //function _get_toolHigher_:tSrcTree_itmHandler;
     //function _get_rootHigher_:tCopyRAST_ROOT;
   private // текущая работа
-   _eDATA_:pointer;             // некие данные по обработке
    _eITEM_:tSrcTree_item;       // ТЕКУЩИЙ узел для обработки
+   _eDATA_:pointer;             // некие данные по обработке
   protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
@@ -55,9 +55,9 @@ type
     //function  Is_Possible:boolean; virtual;
     //function  doOperation:boolean; virtual;
   public // ВЫПОЛНЕНИЕ
-    property  prcssdITEM:tSrcTree_item read _eITEM_; // обрабатываемый узел
-    property  prcssdDATA:pointer       read _eDATA_; // данные по обработке
-    function  Processing:boolean;   virtual;         // ВЫПОЛНИТЬ обработку
+    property  prcssdITEM:tSrcTree_item read _eITEM_;               // обрабатываемый узел
+    property  prcssdDATA:pointer       read _eDATA_ write _eDATA_; // данные по обработке
+    function  Processing:boolean;   virtual;                       // ВЫПОЛНИТЬ обработку
   public
     constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
   end;
@@ -171,10 +171,16 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// запустить выполнение для ОПРЕДЕЛЕННОГО узла
+function tSrcTree_itmHandler.EXECUTE_4NODE(const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer; eItem:tSrcTree_item):boolean;
+begin
+    result:=_OWNER_._EXECUTE_4NODE_(self,tHandler,eData,eItem);
+end;
+
 // запустить выполнение для ТЕКУЩЕГО узла
 function tSrcTree_itmHandler.EXECUTE_4NODE(const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer):boolean;
 begin
-    result:=_OWNER_._EXECUTE_4NODE_(self,tHandler,eData,_eITEM_);
+    result:=EXECUTE_4NODE(tHandler,eData,_eITEM_);
 end;
 
 // запустить выполнение для ВСЕГО дерева
