@@ -18,7 +18,7 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_absPATH_FND,
+  in0k_lazIdeSRC_srcTree_FNK_PATH_abs_FND,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
   //---
   srcTree_handler_CORE,
@@ -92,7 +92,7 @@ procedure tSrcTree_itmHandler4Build__f8a_usesFile_itemStep._Processing_Unit_(con
 var fldr:_tSrcTree_item_fsNodeFLDR_;
     fTmp: tSrcTree_fsFILE;
 begin
-    fldr:= SrcTree_fndAbsPATH(_root_, srcTree_fsFnk_ExtractFileDir(fileName));
+    fldr:= SrcTree_fndPathABS(_root_,srcTree_fsFnk_ExtractFileDir(fileName));
     if Assigned(fldr) then begin
         fTmp:=SrcTree_fndNodeFILE(fldr,fileName);
         if not Assigned(fTmp) then begin

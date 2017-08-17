@@ -12,7 +12,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFile,
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_rel_FND;
 
 
 function SrcTree_fndNodeFILE(const item: tSrcTree_ROOT;             const fileName:string):tSrcTree_fsFILE;
@@ -45,7 +45,7 @@ end;
 function SrcTree_fndNodeFILE(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
 begin
     // ищем папку
-    result:=tSrcTree_fsFILE(tSrcTree_item(SrcTree_fndRelPATH(item,srcTree_fsFnk_ExtractFileDir(fileName))));
+    result:=tSrcTree_fsFILE(tSrcTree_item(SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(fileName))));
     // ищем сам файл внутри него
     if Assigned(result) then begin
         result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(tSrcTree_item(result)), srcTree_fsFnk_ExtractFileName(fileName));

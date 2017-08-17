@@ -3,12 +3,12 @@ var lstDir:_tSrcTree_item_fsNodeFLDR_;
     mdlDir: string;
 begin
     //--- прямой поиск, а вдруг оно уже есть
-    result:=tSrcTree_fsFLDR(SrcTree_fndRelPATH(item,folder,lstDir,mdlDir));
+    result:=tSrcTree_fsFLDR(SrcTree_fndPathREL(item,folder,lstDir,mdlDir));
     //--- создаем промежуточный, если необходимо
     while (not Assigned(result))and(mdlDir<>'')and(srcTree_fsFnk_CompareFilenames(mdlDir,srcTree_fsFnk_ChompPathDelim(folder))<>0) do begin
         SrcTree_getRelPATH(item,mdlDir,crtFnc);
         {$ifdef _debug_}DEBUG('SrcTree_getRelPATH','add mdlDir',mdlDir);{$endIf}
-        result:=tSrcTree_fsFLDR(SrcTree_fndRelPATH(item,folder,lstDir,mdlDir));
+        result:=tSrcTree_fsFLDR(SrcTree_fndPathREL(item,folder,lstDir,mdlDir));
     end;
     //--- создаем САМУ папку, если это досих пор необходимо
     if NOT Assigned(result) then begin

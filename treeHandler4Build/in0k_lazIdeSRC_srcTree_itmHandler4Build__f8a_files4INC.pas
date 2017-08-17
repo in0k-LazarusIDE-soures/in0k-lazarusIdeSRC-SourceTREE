@@ -18,9 +18,9 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_absPATH_FND,
+  in0k_lazIdeSRC_srcTree_FNK_PATH_abs_FND,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_absFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_FILE_abs_FND,
   //---
   srcTree_handler_CORE,
   srcTree_handler_CORE_makeLIST,
@@ -38,8 +38,6 @@ type
   public
     function Processing:boolean; override;
   end;
-
-
 
 
 implementation
@@ -62,7 +60,7 @@ _tF8A_files4INC_processFile_=class(tSrcTree_itmHandler_fsFile2CodeBUF)
 procedure _tF8A_files4INC_processFile_._Processing_Unit_(const fileName:string);
 var fTmp: tSrcTree_fsFILE;
 begin
-    fTmp:=SrcTree_fndAbsFILE(_root_,fileName);
+    fTmp:=SrcTree_fndFileABS(_root_,fileName);
     if not Assigned(fTmp) then begin
             writeLOG('YESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYES - '+srcTree_fsFnk_ExtractFileName(fileName)+'-'+fileName);
     end

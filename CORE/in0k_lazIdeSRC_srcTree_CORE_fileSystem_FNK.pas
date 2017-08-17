@@ -17,6 +17,7 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inlin
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
 function srcTree_fsFnk_FilenameIsAbsolute (const TheFilename:string):boolean; inline;
+function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; inline;
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean; inline;
 
 function srcTree_fsFnk_TrimFilename(const AFilename:string):string; inline;
@@ -62,9 +63,14 @@ begin
 end;
 
 
-function srcTree_fsFnk_FilenameIsAbsolute (const TheFilename:string):boolean;
+function srcTree_fsFnk_FilenameIsAbsolute(const TheFilename:string):boolean;
 begin
     result:=FilenameIsAbsolute(TheFilename);
+end;
+
+function srcTree_fsFnk_FilenameIsRelative(const TheFilename:string):boolean;
+begin
+    result:=not FilenameIsAbsolute(TheFilename);
 end;
 
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean;

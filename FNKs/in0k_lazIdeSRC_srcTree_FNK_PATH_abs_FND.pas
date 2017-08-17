@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_absPATH_FND;
+unit in0k_lazIdeSRC_srcTree_FNK_PATH_abs_FND;
 
 {$mode objfpc}{$H+}
 
@@ -11,15 +11,16 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_rel_FND;
 
-function SrcTree_fndAbsPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
 
 implementation
 
-function SrcTree_fndAbsPATH(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const folder:string):_tSrcTree_item_fsNodeFLDR_;
 var tmp:tSrcTree_item;
 begin
+    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsAbsolute(folder),'not ASB PATH'); {$endIf}
     result:=nil;
     //---
     tmp:=item.ItemCHLD;
@@ -33,7 +34,7 @@ begin
     end;
     //---
     if Assigned(tmp) then begin
-        result:=SrcTree_fndRelPATH(_tSrcTree_item_fsNodeFLDR_(tmp), srcTree_fsFnk_CreateRelativePath(folder,_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH));
+        result:=SrcTree_fndPathREL(_tSrcTree_item_fsNodeFLDR_(tmp), srcTree_fsFnk_CreateRelativePath(folder,_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH));
     end;
 end;
 

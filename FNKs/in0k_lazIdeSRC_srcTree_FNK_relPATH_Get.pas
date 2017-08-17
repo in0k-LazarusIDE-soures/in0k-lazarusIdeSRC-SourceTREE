@@ -11,7 +11,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_relPATH_FND;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_rel_FND;
 
 type
 
