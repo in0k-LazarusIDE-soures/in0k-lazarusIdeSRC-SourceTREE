@@ -25,7 +25,8 @@ begin
     tmp:=item.ItemCHLD;
     while Assigned(tmp) do begin
         if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
-            if srcTree_fsFnk_FileIsInPath(folder,_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH)
+            if (srcTree_fsFnk_CompareFilenames(folder,_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH)=0)
+            or (srcTree_fsFnk_FileIsInPath(folder,_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH))
             then BREAK;
         end;
         tmp:=tmp.ItemNEXT;
