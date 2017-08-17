@@ -20,6 +20,7 @@ uses
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
   in0k_lazIdeSRC_srcTree_FNK_absPATH_FND,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_absFILE_FND,
   //---
   srcTree_handler_CORE,
   srcTree_handler_CORE_makeLIST,
@@ -48,99 +49,83 @@ _tF8A_files4INC_processFile_=class(tSrcTree_itmHandler_fsFile2CodeBUF)
  private
   _root_:tSrcTree_ROOT;
  protected
-   function  _findNextIncludeDirective(var CodeBuffer:TCodeBuffer; var StartX,StartY:integer):boolean;
+   function  _find_incDirective_(const CodeBuffer:TCodeBuffer; const fromPos:integer; out findPos,nextFromPos:integer):boolean;
+   function  _find_incFileName_ (const CodeBuffer:TCodeBuffer; const findPos:integer; out foundFilename:string):boolean;
  protected
    procedure _Processing_Unit_ (const fileName:string);
-   procedure _Processing_Units_(const List:TStrings);
  public
    function  Processing:boolean; override; // ВЫПОЛНИТЬ обработку
  end;
 
+//------------------------------------------------------------------------------
+
 procedure _tF8A_files4INC_processFile_._Processing_Unit_(const fileName:string);
-var fldr:_tSrcTree_item_fsNodeFLDR_;
-    fTmp: tSrcTree_fsFILE;
+var fTmp: tSrcTree_fsFILE;
 begin
-    {fldr:= SrcTree_fndAbsPATH(_root_, srcTree_fsFnk_ExtractFileDir(fileName));
-    if Assigned(fldr) then begin
-        fTmp:=SrcTree_fndNodeFILE(fldr,fileName);
-        if not Assigned(fTmp) then begin
-            writeLOG('YES - '+srcTree_fsFnk_ExtractFileName(fileName)+'-'+fileName);
-        end
-        else begin
-            writeLOG('NOT need - '+fileName);
-        end;
+    fTmp:=SrcTree_fndAbsFILE(_root_,fileName);
+    if not Assigned(fTmp) then begin
+            writeLOG('YESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYESYES - '+srcTree_fsFnk_ExtractFileName(fileName)+'-'+fileName);
     end
     else begin
-        writeLOG('no in SearhPATH - '+fileName);
-    end; }
-    writeLOG('AAAAAAAAAA - '+fileName);
+        writeLOG('NOT need - '+fileName);
+    end
 end;
 
-procedure _tF8A_files4INC_processFile_._Processing_Units_(const List:TStrings);
-var i:integer;
+//------------------------------------------------------------------------------
+
+function _tF8A_files4INC_processFile_._find_IncDirective_(const CodeBuffer:TCodeBuffer; const fromPos:integer; out findPos,nextFromPos:integer):boolean;
+var newPos     :integer;
+    fEPos,cSPos:integer;
 begin
-    if Assigned(List) then begin
-        for i:=0 to List.Count-1 do begin
-           _Processing_Unit_(List[i]);
-        end;
-    end;
+    newPos:=FindNextIncludeDirective(CodeBuffer.Source, fromPos, false, findPos,fEPos,cSPos,nextFromPos);
+    result:=newPos<CodeBuffer.SourceLength;
+    nextFromPos:=nextFromPos+1;
+    {$ifOpt D+}
+    if result
+    then writeLOG('_find_IncDirective_ - '+inttostr(fromPos)+'->'+inttostr(newPos)+' Filename['+inttostr(findPos)+':'+inttostr(fEPos)+']'+' Comment['+inttostr(cSPos)+':'+inttostr(nextFromPos)+']')
+    else writeLOG('_find_IncDirective_ - '+inttostr(fromPos)+'->xxx NotFound');
+    {$endIf}
 end;
 
-
-function  _tF8A_files4INC_processFile_._findNextIncludeDirective(var CodeBuffer:TCodeBuffer; var StartX,StartY:integer):boolean;
-var lstX,lstY:integer;
-    tstX,tstY:integer;
-    new_Buffer:TCodeBuffer;
-    NTL:integer;
+function _tF8A_files4INC_processFile_. _find_incFileName_ (const CodeBuffer:TCodeBuffer; const findPos:integer; out foundFilename:string):boolean;
+var StartX,StartY:integer;
+    Found:TFindFileAtCursorFlag;
 begin
-    result:=FALSE;
-    //---
-    lstX:=StartX;
-    lstY:=StartY;
-    while CodeToolBoss.FindIncludeDirective(CodeBuffer,lstX,lstY, new_Buffer,tstX,tstY, NTL) do begin
-        if (StartX<>tstX)or(StartY<>tstY) then begin
-            result:=TRUE;
-            StartX:=tstX;
-            StartY:=tstY;
-        end
-        else inc(lstX);
-    end;
+    CodeBuffer.AbsoluteToLineCol(findPos,StartY,StartX);
+    result:=CodeToolBoss.FindFileAtCursor(CodeBuffer, StartX,StartY , Found,FoundFilename);
+    result:=result and (Found=ffatIncludeFile);
+    {$ifOpt D+}
+    if result
+    then writeLOG('_find_incFileName_ - '+inttostr(findPos)+'->['+inttostr(StartY)+':'+inttostr(StartX)+']'+' '+'"'+FoundFilename+'"')
+    else writeLOG('_find_incFileName_ - '+inttostr(findPos)+'->['+inttostr(StartY)+':'+inttostr(StartX)+']'+' '+'NotFound');
+    {$endIf}
 end;
 
+//------------------------------------------------------------------------------
 
 function _tF8A_files4INC_processFile_.Processing:boolean;
-var new_Buffer:TCodeBuffer;
-    CodeBuffer:TCodeBuffer;
-var FilenameStartPos, FileNameEndPos,
-    CommentStart, CommentEnd: integer;
-    ACleanPos: integer;
-    s:string;
-    StartX, StartY: integer;
-    NewTopLine:integer;
-    //---
-    Found: TFindFileAtCursorFlag;
+var CodeBuffer:TCodeBuffer;
+var CleanPos,nextFindPos:integer;
     FoundFilename: string;
-
-    CodeContexts: TCodeContextInfo;
-
 begin
     {$ifOpt D+}Assert(Assigned(prcssdITEM), self.ClassName+'.Processing : prcssdITEM=NIL');{$endIf}
     {$ifOpt D+}Assert(tObject(prcssdITEM) is tSrcTree_fsFILE, self.ClassName+'.Processing : tObject(prcssdITEM) is NOT tSrcTree_fsFILE');{$endIf}
     CodeBuffer:=_SrcTree_fsFILE__2__codeBUF_(tSrcTree_fsFILE(prcssdITEM));
     //---
     if (Assigned(CodeBuffer)) then begin
-        StartX:=1;
-        StartY:=1;
-
-
-        // через зад надо наверно делать (((
-
-//        while _findNextIncludeDirective(CodeBuffer,StartX,StartY) do begin
-            _findNextIncludeDirective(CodeBuffer,StartX,StartY);
-            //CodeToolBoss.FindFileAtCursor(CodeBuffer, StartX,StartY , Found,FoundFilename);//   Allowed: TFindFileAtCursorFlags = DefaultFindFileAtCursorAllowed;
-            writeLOG('AAAAAAAAAA - '+' '+inttostr(StartX)+'-'+inttostr(StartY)+'-'{inttostr(NewTopLine)+' '+FoundFilename});
-//        end;
-    end
+       _root_:=SrcTree_fndRootFILE(prcssdITEM);
+        //
+        CleanPos:=0;
+        while (CleanPos<CodeBuffer.SourceLength) do begin
+            if _find_IncDirective_(CodeBuffer,CleanPos,CleanPos,nextFindPos) then begin
+                if _find_incFileName_(CodeBuffer,CleanPos,FoundFilename) then begin
+                    _Processing_Unit_(FoundFilename);
+				end;
+			end
+            else BREAK;
+            CleanPos:=nextFindPos;
+		end;
+	end
     else begin
         writeLOG('CodeBuffer is NUL:'+'"'+tSrcTree_fsFILE(prcssdITEM).src_abs_PATH+'"');
     end;
