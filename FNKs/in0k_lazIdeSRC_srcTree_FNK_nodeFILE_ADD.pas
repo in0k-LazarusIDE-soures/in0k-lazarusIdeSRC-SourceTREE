@@ -13,7 +13,7 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_relPATH_GET;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_rel_GET;
 
 type // создание ЭКЗеМпЛЯРа "ФАЙЛ"
   fSrcTree_addNodeFILE_crtNodeFILE=function(const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;

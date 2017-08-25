@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_relPATH_GET;
+unit in0k_lazIdeSRC_srcTree_FNK_PATH_rel_GET;
 
 {$mode objfpc}{$H+}
 
