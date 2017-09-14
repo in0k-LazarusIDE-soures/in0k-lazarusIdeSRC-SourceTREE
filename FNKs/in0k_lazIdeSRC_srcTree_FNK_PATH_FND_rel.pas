@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_PATH_rel_FND;
+unit in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
 
 {$mode objfpc}{$H+}
 
@@ -29,6 +29,11 @@ begin
     result:=SrcTree_fndPathREL(item,folder,lstDir,mdlDir);
 end;
 
+// поиск ОТНОСИТЕЛЬНОГО пути
+// @prm item   "корневая" папка, относительно которой ищем
+// @prm folder "относительный путь", который исчем
+// @prm lstDir "последняя" посещенная папка
+// @prm mdlDir "оставшяйся путь" относительно lstDir
 function SrcTree_fndPathREL(const item:_tSrcTree_item_fsNodeFLDR_; const folder:string; out lstDir:_tSrcTree_item_fsNodeFLDR_; out mdlDir:string):_tSrcTree_item_fsNodeFLDR_;
 var fldr:string;
     tmp :tSrcTree_item;
@@ -42,14 +47,14 @@ begin
     //---
     fldr:=srcTree_fsFnk_ChompPathDelim(folder); //< ???
     if (fldr='') then begin
-        result:=SrcTree_fndBaseDIR(item);
+        result:=item; // берем как КОРЕНЬ
         {$ifOpt D+}Assert(Assigned(result),'BaseDIR NOT found');{$endIf}
     end
     else begin
         // исчем РОДИТЕЛЬСКИЙ путь
         fldr:=srcTree_fsFnk_ExtractFileDir(fldr); //< это родительская директория    //if NOT ( (fld='')or(0=CompareFilenames(fld,prnt.DirPATH)) )
         if (fldr='') or ( srcTree_fsFnk_CompareFilenames(folder,fldr)=0 ) then begin
-            result:=SrcTree_fndBaseDIR(item);
+            result:=item; // берем как КОРЕНЬ
             {$ifOpt D+}Assert(Assigned(result),'BaseDIR NOT found');{$endIf}
         end
         else result:=SrcTree_fndPathREL(item,fldr,lstDir,mdlDir); //< исчем ГЛУБЖЕ, ближе к корню

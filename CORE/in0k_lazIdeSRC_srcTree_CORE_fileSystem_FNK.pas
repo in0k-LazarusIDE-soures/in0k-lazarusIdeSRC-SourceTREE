@@ -29,6 +29,8 @@ function srcTree_fsFnk_CompareFilenames(const Filename1, Filename2: string): int
 function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string; inline;// empty string returns current directory
 
 
+function srcTree_fsFnk_endPathDelim(const Path: string):boolean; inline;
+
 implementation
 
 function srcTree_fsFnk_ChompPathDelim(const Path:string):string;
@@ -96,6 +98,13 @@ end;
 function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string;
 begin
     result:=CleanAndExpandFilename(Filename);
+end;
+
+
+
+function srcTree_fsFnk_endPathDelim(const Path: string):boolean; inline;
+begin
+    result:=Path<>srcTree_fsFnk_ChompPathDelim(Path);
 end;
 
 end.
