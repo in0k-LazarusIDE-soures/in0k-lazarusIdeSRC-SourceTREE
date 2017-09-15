@@ -19,43 +19,10 @@ function SrcTree_fndPath(const item:tSrcTree_ROOT; const path:string):_tSrcTree_
 implementation
 
 function SrcTree_fndPath(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
-<<<<<<< master
-var tmp:tSrcTree_item;
-    tmpAbsPATH:string;
-begin
-    if srcTree_fsFnk_FilenameIsAbsolute(path) then begin
-        result:=nil;
-        //---
-        tmp:=item.ItemCHLD;
-        while Assigned(tmp) do begin
-            if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
-                tmpAbsPATH:=_tSrcTree_item_fsNodeFLDR_(tmp).src_abs_PATH;
-                if (srcTree_fsFnk_CompareFilenames(path,tmpAbsPATH)=0)
-                then begin //< нашли ПОЛНОЕ совпадение
-                    result:=_tSrcTree_item_fsNodeFLDR_(tmp);
-                    BREAK;
-                end
-               else
-                if srcTree_fsFnk_FileIsInPath(path,tmpAbsPATH)
-                then begin //< tmp для нас РОДИТЕЛЬСКАЯ, поищем ВНУТРИ неё
-                    result:=SrcTree_fndPathREL(_tSrcTree_item_fsNodeFLDR_(tmp), DirectorySeparator+srcTree_fsFnk_CreateRelativePath(path,tmpAbsPATH));
-                    if Assigned(result) then begin
-                        BREAK; //< таки НАШЛИ
-                    end;
-                end;
-            end;
-            tmp:=tmp.ItemNEXT;
-        end;
-    end
-    else begin //< ищем ОТНОСИТЕЛЬНО базовой директории
-        result:=SrcTree_fndPathREL(item,path);
-    end;
-=======
 begin
     if srcTree_fsFnk_FilenameIsAbsolute(path)
     then result:=SrcTree_fndPathABS(item,path)
     else result:=SrcTree_fndPathREL(item,path);
->>>>>>> local
 end;
 
 end.
