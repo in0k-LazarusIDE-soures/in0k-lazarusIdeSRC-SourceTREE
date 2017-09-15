@@ -78,7 +78,7 @@ begin
         tmp.FREE;
         //--->
         tmp:=ItemCHLD;
-	end;
+    end;
     // чистим СЕБЯ
    _item_Text_:=''; //< наследие мифов
    _prnt_    :=nil;

@@ -19,6 +19,7 @@ function SrcTree_fndPath(const item:tSrcTree_ROOT; const path:string):_tSrcTree_
 implementation
 
 function SrcTree_fndPath(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
+<<<<<<< master
 var tmp:tSrcTree_item;
     tmpAbsPATH:string;
 begin
@@ -49,6 +50,12 @@ begin
     else begin //< ищем ОТНОСИТЕЛЬНО базовой директории
         result:=SrcTree_fndPathREL(item,path);
     end;
+=======
+begin
+    if srcTree_fsFnk_FilenameIsAbsolute(path)
+    then result:=SrcTree_fndPathABS(item,path)
+    else result:=SrcTree_fndPathREL(item,path);
+>>>>>>> local
 end;
 
 end.

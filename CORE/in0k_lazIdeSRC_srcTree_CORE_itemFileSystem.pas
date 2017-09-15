@@ -57,7 +57,11 @@ type
     function _src_getObjName_:string; override;
   end;
 
- _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_);
+ _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_)
+   protected
+    function _src_getDirName_abs_:string; override;
+   end;
+
 
 implementation
 {%region --- возня с ДЕБАГОМ -------------------------------------- /fold}
@@ -140,7 +144,7 @@ begin
     result:='';
     //--- ищем родителя типа _tStcTree_item_fsNode_
     tmp:=ItemPRNT;
-    while Assigned(tmp) and not(tmp is _tStcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
+    while Assigned(tmp) AND not(tmp is _tStcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
     //---
     if Assigned(tmp) then begin // ага ... есть таки у кого спросить
         if ItemPRNT is _tSrcTree_item_fsBaseDIR_ then result:=_tSrcTree_item_fsBaseDIR_(ItemPRNT).src_abs_PATH
@@ -203,6 +207,13 @@ end;
 function _tSrcTree_item_fsNodeFILE_._src_getObjName_:string;
 begin
     result:=srcTree_fsFnk_ExtractFileName(_item_Text_);
+end;
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[_tSrcTree_item_fsBaseDIR_]
+
+function _tSrcTree_item_fsBaseDIR_._src_getDirName_abs_:string;
+begin
+    result:=_item_Text_;
 end;
 
 end.

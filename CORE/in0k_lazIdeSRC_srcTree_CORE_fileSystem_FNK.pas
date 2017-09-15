@@ -17,7 +17,7 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inlin
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
 function srcTree_fsFnk_FilenameIsAbsolute (const TheFilename:string):boolean; inline;
-function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; inline;
+function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; //inline;
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean; inline;
 
 function srcTree_fsFnk_TrimFilename(const AFilename:string):string; inline;
@@ -29,7 +29,11 @@ function srcTree_fsFnk_CompareFilenames(const Filename1, Filename2: string): int
 function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string; inline;// empty string returns current directory
 
 
-function srcTree_fsFnk_endPathDelim(const Path: string):boolean; inline;
+function srcTree_fsFnk_endsWithDirectorySeparator(const Path: string):boolean; inline;
+
+
+function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean; //inline;
+
 
 implementation
 
@@ -73,6 +77,9 @@ end;
 function srcTree_fsFnk_FilenameIsRelative(const TheFilename:string):boolean;
 begin
     result:=not FilenameIsAbsolute(TheFilename);
+    {$ifOpt D+}{$IFDEF Windows}
+        Assert(NOT srcTree_fsFnk_startsWithDirectorySeparator(TheFilename),'`TheFilename` starts With `DirectorySeparator`.');
+    {$endIf}{$endIf}
 end;
 
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean;
@@ -101,10 +108,22 @@ begin
 end;
 
 
+// и далее по коду
+//------------------------------------------------------------------------------
+// работа со строками реализована как в Lazarus`овских файлах
+// как это соотносится с веяниями на тип `string` и всякими `UTF` я НЕ знаю.
+// возможно придеся переделать!
 
-function srcTree_fsFnk_endPathDelim(const Path: string):boolean; inline;
+// проверить: ПУТЬ заканчивается символом разделителя `DirectorySeparator`.
+function srcTree_fsFnk_endsWithDirectorySeparator(const Path: string):boolean;
 begin
-    result:=Path<>srcTree_fsFnk_ChompPathDelim(Path);
+    result:=(Length(Path)>1) and (Path[Length(Path)] in AllowDirectorySeparators);
+end;
+
+// проверить: ПУТЬ начинается символом разделителя `DirectorySeparator`.
+function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean;
+begin // подсмотрено в LazFileUtils.ExpandFileNameUtf8
+    result:=(Length(Path)>1) and (Path[1] in AllowDirectorySeparators);
 end;
 
 end.
