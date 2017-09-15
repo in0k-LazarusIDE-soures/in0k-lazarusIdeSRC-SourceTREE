@@ -12,7 +12,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFile,
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_PATH_rel_FND;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
 
 
 function SrcTree_fndNodeFILE(const item: tSrcTree_ROOT;             const fileName:string):tSrcTree_fsFILE;

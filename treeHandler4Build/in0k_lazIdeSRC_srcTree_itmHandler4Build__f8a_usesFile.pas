@@ -18,7 +18,7 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_PATH_abs_FND,
+  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
   //---
   srcTree_handler_CORE,

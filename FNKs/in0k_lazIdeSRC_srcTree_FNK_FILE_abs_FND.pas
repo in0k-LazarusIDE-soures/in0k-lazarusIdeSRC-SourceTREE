@@ -12,7 +12,7 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_PATH_abs_FND;
+  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs;
 
 function SrcTree_fndFileABS(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
 
