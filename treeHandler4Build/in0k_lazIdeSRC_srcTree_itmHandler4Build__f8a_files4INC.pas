@@ -87,16 +87,16 @@ end;
 
 function _tF8A_files4INC_processFile_. _find_incFileName_ (const CodeBuffer:TCodeBuffer; const findPos:integer; out foundFilename:string):boolean;
 var StartX,StartY:integer;
-    Found:TFindFileAtCursorFlag;
+  //  Found:TFindFileAtCursorFlag;
 begin
-    CodeBuffer.AbsoluteToLineCol(findPos,StartY,StartX);
+   (* CodeBuffer.AbsoluteToLineCol(findPos,StartY,StartX);
     result:=CodeToolBoss.FindFileAtCursor(CodeBuffer, StartX,StartY , Found,FoundFilename);
     result:=result and (Found=ffatIncludeFile);
     {$ifOpt D+}
     if result
     then writeLOG('_find_incFileName_ - '+inttostr(findPos)+'->['+inttostr(StartY)+':'+inttostr(StartX)+']'+' '+'"'+FoundFilename+'"')
     else writeLOG('_find_incFileName_ - '+inttostr(findPos)+'->['+inttostr(StartY)+':'+inttostr(StartX)+']'+' '+'NotFound');
-    {$endIf}
+    {$endIf} *)
 end;
 
 //------------------------------------------------------------------------------

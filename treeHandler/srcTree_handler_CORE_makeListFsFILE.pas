@@ -43,8 +43,10 @@ begin
     {$ifOpt D+}Assert(Assigned(prcssdDATA), self.ClassName+'.srcItem_USED'+' : #1');{$endIf}
     result:=false;
     if srcItem is tSrcTree_fsFILE then begin
-        if tSrcTree_fsFILE(srcItem).fileKIND in
-           pSrcTree_itmHandler_makeListFsFILE_prcDATA(prcssdDATA)^.FileTypes
+        if (pSrcTree_itmHandler_makeListFsFILE_prcDATA(prcssdDATA)^.FileTypes=[])
+           OR
+           (tSrcTree_fsFILE(srcItem).fileKIND in
+            pSrcTree_itmHandler_makeListFsFILE_prcDATA(prcssdDATA)^.FileTypes)
         then begin
             result:=TRUE;
         end;

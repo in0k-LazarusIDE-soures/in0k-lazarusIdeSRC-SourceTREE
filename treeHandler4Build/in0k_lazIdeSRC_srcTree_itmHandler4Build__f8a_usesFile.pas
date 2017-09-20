@@ -45,7 +45,7 @@ type
     procedure _Processing_Unit_ (const fileName:string);
     procedure _Processing_Units_(const List:TStrings);
   public
-    function  Processing:boolean; override; // ВЫПОЛНИТЬ обработку
+    function Processing:boolean; override;
   end;
 
 

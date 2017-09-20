@@ -213,7 +213,7 @@ end;
 
 function _tSrcTree_item_fsBaseDIR_._src_getDirName_abs_:string;
 begin
-    result:=_item_Text_;
+    result:='';//_item_Text_;
 end;
 
 end.

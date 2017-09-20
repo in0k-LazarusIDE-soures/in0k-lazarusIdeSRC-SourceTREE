@@ -59,7 +59,7 @@ type
     property  prcssdDATA:pointer       read _eDATA_ write _eDATA_; // данные по обработке
     function  Processing:boolean;   virtual;                       // ВЫПОЛНИТЬ обработку
   public
-    constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
+    constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler); virtual;
   end;
 
         //   processing

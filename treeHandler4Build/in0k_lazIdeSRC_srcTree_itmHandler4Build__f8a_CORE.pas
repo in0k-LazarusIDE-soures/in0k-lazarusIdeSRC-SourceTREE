@@ -38,16 +38,19 @@ type
   // ОБЩИЙ обработчик
  tSrcTree_itmHandler4Build__f8a_CORE=class(tSrcTree_itmHandler)
   protected
-   _fList_:tList; // список файлов которые ЕЩЁ надо обработать
-   _fItms_:tList; // список ОБРАБОТЧИКоВ
-   _pDATA_:pSrcTree_itmHandler4Build__f8a_Item_prcDATA;
+   _ITEMs_:tList; // список файлов которые ЕЩЁ надо обработать
+   _HNDLs_:tList; // список ОБРАБОТЧИКоВ
+   _rDATA_:rSrcTree_itmHandler4Build__f8a_Item_prcDATA;
   protected
     function _prc__make_InitFileList_:boolean;
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
   public
-    function Processing:boolean; override;
+    function  Processing:boolean; override;                       // ВЫПОЛНИТЬ обработку
   public
-    constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
+    constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler); override;
+    destructor DESTROY; override;
+  public
+    procedure Handler_ADD(const Handler:tSrcTree_itmHandler_TYPE);
   end;
 
 implementation
@@ -79,8 +82,24 @@ end;
 constructor tSrcTree_itmHandler4Build__f8a_CORE.Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
 begin
     inherited Create(Owner,Parent);
-   _fItms_:=TList.Create;
+   _HNDLs_:=TList.Create;
+   _ITEMs_:=TList.Create;
+   _rDATA_.FileNames:=TStringList.Create;
+end;
 
+destructor tSrcTree_itmHandler4Build__f8a_CORE.DESTROY;
+begin
+    inherited;
+   _rDATA_.FileNames.FREE;
+   _ITEMs_.FREE;
+   _HNDLs_.FREE;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_itmHandler4Build__f8a_CORE.Handler_ADD(const Handler:tSrcTree_itmHandler_TYPE);
+begin
+   _HNDLs_.Add(Handler);
 end;
 
 //------------------------------------------------------------------------------
@@ -89,9 +108,9 @@ end;
 function tSrcTree_itmHandler4Build__f8a_CORE._prc__make_InitFileList_:boolean;
 var tmpPrcDATA:rSrcTree_itmHandler_makeListFsFILE_prcDATA;
 begin
-   _fList_:=TList.Create;
+    result:=false;
     //---
-    tmpPrcDATA.File_LIST:=_fList_;
+    tmpPrcDATA.File_LIST:=_ITEMs_;
     tmpPrcDATA.FileTypes:= []; //< типа ВСЕ файлы с исходниками
     //--- ЗАПУСК
     result:=EXECUTE_4TREE(tSrcTree_itmHandler_makeListFsFILE, @tmpPrcDATA);
@@ -102,12 +121,13 @@ var i:integer;
     j:integer;
 begin
     result:=TRUE;
+    writeLOG(srcItem.src_abs_PATH);
     //---
-    for i:=0 to _fItms_.Count-1 do begin
-       _pDATA_^.FileNames.Clear;
-        if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_fItms_.Items[i]), _pDATA_, srcItem) then begin
+    for i:=0 to _HNDLs_.Count-1 do begin
+       _rDATA_.FileNames.Clear;
+        if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_HNDLs_.Items[i]), @_rDATA_, srcItem) then begin
             // он что-то там по обрабатывал
-            for j:=0 to _pDATA_^.FileNames.Count-1 do begin
+            for j:=0 to _rDATA_.FileNames.Count-1 do begin
                {todo: проверка что его НЕТ в ДЕРЕВЕ}
                // если его НЕТ в ДЕРЕВЕ => его нет и в списке
                {todo: ДОБАВЛЕНИЕ в список}
@@ -121,18 +141,15 @@ end;
 function tSrcTree_itmHandler4Build__f8a_CORE.Processing:boolean;
 var srcItem:tSrcTree_fsFILE;
 begin
-    //result:=true;
     result:=_prc__make_InitFileList_;
-   _pDATA_^.FileNames:=TStringList.Create;
-    while result and (_fList_.Count>0) do begin
+    while result and (_ITEMs_.Count>0) do begin
         // изымаем первый узел
-        srcItem:=tSrcTree_fsFILE(_fList_.Items[0]);
-       _fList_.Delete(0);
+        srcItem:=tSrcTree_fsFILE(_ITEMs_.Items[0]);
+       _ITEMs_.Delete(0);
         if (srcItem is tSrcTree_fsFILE) then begin //< это файл, и его МОЖНО открыть
             result:=_prc__execute_4FileItem_(srcItem); //< ОБРАБАТЫВАЕМ
         end;
     end;
-   _pDATA_^.FileNames.FREE;
 end;
 
 end.
