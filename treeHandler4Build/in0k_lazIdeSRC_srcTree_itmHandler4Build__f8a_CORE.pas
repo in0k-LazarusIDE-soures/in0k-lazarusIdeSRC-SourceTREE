@@ -46,6 +46,8 @@ type
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
   public
     function Processing:boolean; override;
+  public
+    constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
   end;
 
 implementation
@@ -73,6 +75,15 @@ begin
 end;
 
 //==============================================================================
+
+constructor tSrcTree_itmHandler4Build__f8a_CORE.Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler);
+begin
+    inherited Create(Owner,Parent);
+   _fItms_:=TList.Create;
+
+end;
+
+//------------------------------------------------------------------------------
 
 // составление ПЕРВИЧНОГО списка файлов .. (ВСЕ файлы)
 function tSrcTree_itmHandler4Build__f8a_CORE._prc__make_InitFileList_:boolean;
