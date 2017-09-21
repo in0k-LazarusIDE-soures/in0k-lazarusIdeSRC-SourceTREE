@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_FILE_abs_FND;
+unit in0k_lazIdeSRC_srcTree_FNK_FILE_FND_abs;
 
 {$mode objfpc}{$H+}
 

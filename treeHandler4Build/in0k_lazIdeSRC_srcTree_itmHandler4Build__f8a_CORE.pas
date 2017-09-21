@@ -44,6 +44,7 @@ type
   protected
     function _prc__make_InitFileList_:boolean;
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
+    function _prc__execute_4FileName_(const srcName:string):boolean; virtual;
   public
     function  Processing:boolean; override;                       // ВЫПОЛНИТЬ обработку
   public
@@ -121,19 +122,26 @@ var i:integer;
     j:integer;
 begin
     result:=TRUE;
-    writeLOG(srcItem.src_abs_PATH);
     //---
+    writeLOG('aaaaaaaaaaaaa '+srcItem.src_abs_PATH);
     for i:=0 to _HNDLs_.Count-1 do begin
        _rDATA_.FileNames.Clear;
         if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_HNDLs_.Items[i]), @_rDATA_, srcItem) then begin
             // он что-то там по обрабатывал
             for j:=0 to _rDATA_.FileNames.Count-1 do begin
+               //writeLOG(_rDATA_.FileNames.Strings[j]);
+              _prc__execute_4FileName_(_rDATA_.FileNames.Strings[j]);
                {todo: проверка что его НЕТ в ДЕРЕВЕ}
                // если его НЕТ в ДЕРЕВЕ => его нет и в списке
                {todo: ДОБАВЛЕНИЕ в список}
             end;
         end;
     end;
+end;
+
+function tSrcTree_itmHandler4Build__f8a_CORE._prc__execute_4FileName_(const srcName:string):boolean;
+begin
+    result:=false;
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
