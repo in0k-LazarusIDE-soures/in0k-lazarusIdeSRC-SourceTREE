@@ -23,8 +23,8 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
    in0k_lazIdeSRC_srcTree_CORE_item,
    //srcTree_item_baseDIR,
    in0k_lazIdeSRC_srcTree_item_Globals,
-
-
+   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
+   in0k_lazIdeSRC_srcTree_CORE_filePkgType_FNK,
    srcTree_builder_CORE,
    //srcTree_item_coreFileSystem,
    in0k_lazIdeSRC_srcTree_item_fsFolder,
@@ -136,13 +136,21 @@ end;
 
 function tSrcTree_Builder_4Package.Set_ITMs(const mOBJ:pointer; const ROOT:tSrcTree_ROOT):string;
 var i:integer;
-    s:string;
+   fn:string;
+   ft:TPkgFileType;
 begin
     for i:=0 to TIDEPackage(mOBJ).FileCount-1 do begin
         with TIDEPackage(mOBJ).Files[i] do begin
-            S:=TIDEPackage(mOBJ).Files[i].GetShortFilename(false);
+            fn:=TIDEPackage(mOBJ).Files[i].GetShortFilename(false);
+            ft:=srcTree_ftPkg_FileNameToPkgFileType(fn);
+            Add_FILE(mOBJ,ROOT, fn,ft);
             {todo: function TPackageEditorForm.OnTreeViewGetImageIndex(Str: String; Data: TObject; var AIsEnabled: Boolean): Integer; }
-            Add_FILE(mOBJ,ROOT, S,TIDEPackage(mOBJ).Files[i].FileType);
+            {$ifDef _DEBUG_}
+                if ft<>TIDEPackage(mOBJ).Files[i].FileType then begin
+                    DEBUG('Set_ITMs','WRONG fileTypeINC [my].'+srcTree_ftPkg_PkgFileTypeToString(ft)+' vs '+srcTree_ftPkg_PkgFileTypeToString(TIDEPackage(mOBJ).Files[i].FileType)+ ' for'+'"'+fn+'"');
+                end;
+            {$endIf}
+
             {
                 fldr:=tSrcTree_fsFLDR(SrcTreeROOT_fnd_relPATH(result,ExtractFileDir(S)));
                 DEBUG('addFile',Filename);
