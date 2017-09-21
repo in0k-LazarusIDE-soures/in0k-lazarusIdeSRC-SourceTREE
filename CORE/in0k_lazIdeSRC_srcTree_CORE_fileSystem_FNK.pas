@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils,
-  LazFileUtils;
+  FileUtil,LazFileUtils;
 
 
 function srcTree_fsFnk_ChompPathDelim(const Path: string):string; inline;
@@ -17,7 +17,11 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inlin
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
 function srcTree_fsFnk_FilenameIsAbsolute (const TheFilename:string):boolean; inline;
-function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; //inline;
+function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; inline;
+function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean; inline;
+
+function srcTree_fsFnk_FileIsText(const AFilename: string): boolean; inline;
+
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean; inline;
 
 function srcTree_fsFnk_TrimFilename(const AFilename:string):string; inline;
@@ -25,6 +29,9 @@ function srcTree_fsFnk_TrimFilename(const AFilename:string):string; inline;
 function srcTree_fsFnk_ChangeFileExt(const aFileName,aExtension:string): string;
 
 function srcTree_fsFnk_CompareFilenames(const Filename1, Filename2: string): integer; inline;
+function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string; const CaseSensitive: boolean): integer; overload; inline;
+function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string): integer; overload; inline;
+
 
 function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string; inline;// empty string returns current directory
 
@@ -33,6 +40,9 @@ function srcTree_fsFnk_endsWithDirectorySeparator(const Path: string):boolean; i
 
 
 function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean; //inline;
+
+
+
 
 
 implementation
@@ -82,6 +92,16 @@ begin
     {$endIf}{$endIf}
 end;
 
+function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean;
+begin
+    result:=FilenameIsPascalUnit(TheFilename);
+end;
+
+function srcTree_fsFnk_FileIsText(const AFilename: string): boolean;
+begin
+    result:=FileIsText(AFilename);
+end;
+
 function srcTree_fsFnk_FileIsInPath(const Filename,Path:string):boolean;
 begin
     result:=FileIsInPath(Filename,Path);
@@ -90,6 +110,16 @@ end;
 function srcTree_fsFnk_CompareFilenames(const Filename1,Filename2:string):integer;
 begin
     result:=CompareFilenames(Filename1,Filename2);
+end;
+
+function srcTree_fsFnk_CompareFileExt(const Filename, Ext: string; const CaseSensitive: boolean): integer;
+begin
+    result:=CompareFileExt(Filename, Ext, CaseSensitive);
+end;
+
+function srcTree_fsFnk_CompareFileExt(const Filename, Ext: string): integer;
+begin
+    result:=CompareFileExt(Filename, Ext);
 end;
 
 function srcTree_fsFnk_TrimFilename(const AFilename:string):string;
