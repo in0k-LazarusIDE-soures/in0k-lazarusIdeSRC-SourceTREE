@@ -33,19 +33,20 @@ begin
 end;
 
 function tSrcTree_itmHandler4Build__f8a_Item_4USEs._prc_4CodeBUF_(const CodeBuffer:TCodeBuffer; const Names:tStrings):boolean;
-var MainUsesSection,ImplementationUsesSection:TStrings;
+var MainUsesSection,ImplmntnSection:TStrings;
 begin
-    try
-        if CodeToolBoss.FindUsedUnitFiles(CodeBuffer, MainUsesSection,ImplementationUsesSection) then begin
-            Names.AddStrings(MainUsesSection);
-            Names.AddStrings(ImplementationUsesSection);
-        end;
-
-    except
-      writeLOG('ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR');
+    // надо .. НАДО ... ОБЯЗАТЕЛЬНО НАДО ... !!!
+    // инициализировать переменные перед использованием
+    MainUsesSection:=nil;
+    ImplmntnSection:=nil;
+    //
+    if CodeToolBoss.FindUsedUnitFiles(CodeBuffer, MainUsesSection,ImplmntnSection) then begin
+        if Assigned(MainUsesSection) then Names.AddStrings(MainUsesSection);
+        if Assigned(ImplmntnSection) then Names.AddStrings(ImplmntnSection);
     end;
-    MainUsesSection          .FREE;
-    ImplementationUsesSection.FREE;
+    //
+    MainUsesSection.FREE;
+    ImplmntnSection.FREE;
 end;
 
 end.

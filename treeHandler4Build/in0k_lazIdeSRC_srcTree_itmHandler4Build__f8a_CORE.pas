@@ -10,7 +10,13 @@ uses
   CodeCache,
 
   in0k_lazIdeSRC_srcTree_CORE_item,
+  //in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
   in0k_lazIdeSRC_srcTree_item_fsFile,
+
+  in0k_lazIdeSRC_srcTree_FNK_FILE_FND,
+  //in0k_lazIdeSRC_srcTree_FNK_PATH_FND,
+  in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
+
 
   srcTree_handler_CORE,
   srcTree_handler_CORE_makeLIST,
@@ -44,7 +50,8 @@ type
   protected
     function _prc__make_InitFileList_:boolean;
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
-    function _prc__execute_4FileName_(const srcName:string):boolean; virtual;
+    //function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
+    function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
   public
     function  Processing:boolean; override;                       // ВЫПОЛНИТЬ обработку
   public
@@ -120,26 +127,32 @@ end;
 function tSrcTree_itmHandler4Build__f8a_CORE._prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
 var i:integer;
     j:integer;
+  itm:tSrcTree_fsFILE;
 begin
     result:=TRUE;
     //---
-    writeLOG('aaaaaaaaaaaaa '+srcItem.src_abs_PATH);
     for i:=0 to _HNDLs_.Count-1 do begin
        _rDATA_.FileNames.Clear;
         if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_HNDLs_.Items[i]), @_rDATA_, srcItem) then begin
             // он что-то там по обрабатывал
             for j:=0 to _rDATA_.FileNames.Count-1 do begin
-               //writeLOG(_rDATA_.FileNames.Strings[j]);
-              _prc__execute_4FileName_(_rDATA_.FileNames.Strings[j]);
-               {todo: проверка что его НЕТ в ДЕРЕВЕ}
-               // если его НЕТ в ДЕРЕВЕ => его нет и в списке
-               {todo: ДОБАВЛЕНИЕ в список}
+                {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
+                itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), _rDATA_.FileNames.Strings[j]);
+                if not Assigned(itm) then begin //< такого у нас еще НЕТ
+                    // если его НЕТ в ДЕРЕВЕ => его нет и в списке
+                    if _prc__fileName_Need_ADD_(_rDATA_.FileNames.Strings[j]) then begin
+                        // и его просят добавить
+                        {todo: ДОБАВЛЕНИЕ в ДереВО}
+                        {todo: ДОБАВЛЕНИЕ в список}
+                        writeLOG('need ADD "'+_rDATA_.FileNames.Strings[j]+'"');
+                    end;
+                end;
             end;
         end;
     end;
 end;
 
-function tSrcTree_itmHandler4Build__f8a_CORE._prc__execute_4FileName_(const srcName:string):boolean;
+function tSrcTree_itmHandler4Build__f8a_CORE._prc__fileName_Need_ADD_(const srcName:string):boolean;
 begin
     result:=false;
 end;
