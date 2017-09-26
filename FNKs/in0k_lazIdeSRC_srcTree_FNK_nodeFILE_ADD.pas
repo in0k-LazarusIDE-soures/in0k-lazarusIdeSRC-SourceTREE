@@ -12,7 +12,7 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel,
   in0k_lazIdeSRC_srcTree_FNK_PATH_rel_GET;
 
 type // создание ЭКЗеМпЛЯРа "ФАЙЛ"

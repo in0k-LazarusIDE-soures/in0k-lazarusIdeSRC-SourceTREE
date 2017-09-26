@@ -19,7 +19,7 @@ uses
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
   in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs,
-  in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel,
   in0k_lazIdeSRC_srcTree_FNK_FILE_FND_abs,
   //---
   srcTree_handler_CORE,
@@ -27,7 +27,7 @@ uses
   srcTree_handler_CORE_makeListFsFILE,
   srcTree_handler_CORE_fsFile2CodeBUF;
 
-type
+{type
 
  tSrcTree_itmHandler4Build__f8a_files4INC=class(tSrcTree_itmHandler)
   protected
@@ -37,11 +37,11 @@ type
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
   public
     function Processing:boolean; override;
-  end;
+  end;}
 
 
 implementation
-
+ (*
 type
 _tF8A_files4INC_processFile_=class(tSrcTree_itmHandler_fsFile2CodeBUF)
  private
@@ -167,6 +167,6 @@ begin
 end;
 
 
-
+   *)
 end.
 

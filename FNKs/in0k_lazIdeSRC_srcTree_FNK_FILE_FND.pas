@@ -12,7 +12,7 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_FILE_FND_abs,
-  in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND;
+  in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel;
 
 function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
 
@@ -24,7 +24,7 @@ begin
     {$ifOpt D+}Assert(Assigned(item)); {$endIf}
     if srcTree_fsFnk_FilenameIsAbsolute(fileName)
     then result:=SrcTree_fndFileABS(item,fileName)
-    else result:=SrcTree_fndNodeFILE(item,fileName);
+    else result:=SrcTree_fndFileREL(item,fileName);
 end;
 
 

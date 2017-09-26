@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND;
+unit in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel;
 
 {$mode objfpc}{$H+}
 
@@ -15,9 +15,9 @@ uses
   in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
 
 
-function SrcTree_fndNodeFILE(const item: tSrcTree_ROOT;             const fileName:string):tSrcTree_fsFILE;
-function SrcTree_fndNodeFILE(const item: tSrcTree_fsFLDR;           const fileName:string):tSrcTree_fsFILE;
-function SrcTree_fndNodeFILE(const item:_tSrcTree_item_fsNodeFLDR_; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item: tSrcTree_ROOT;             const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item: tSrcTree_fsFLDR;           const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const fileName:string):tSrcTree_fsFILE;
 
 implementation
 
@@ -37,13 +37,15 @@ end;
 
 //------------------------------------------------------------------------------
 
-function SrcTree_fndNodeFILE(const item:_tSrcTree_item_fsNodeFLDR_; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const fileName:string):tSrcTree_fsFILE;
 begin
+    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsRelative(fileName),'not REL PATH');{$endIf}
     result:=_fndNodeFILE_(item, srcTree_fsFnk_ExtractFileName(fileName));
 end;
 
-function SrcTree_fndNodeFILE(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
 begin
+    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsRelative(fileName),'not REL PATH');{$endIf}
     // ищем папку
     result:=tSrcTree_fsFILE(tSrcTree_item(SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(fileName))));
     // ищем сам файл внутри него
@@ -52,8 +54,9 @@ begin
     end;
 end;
 
-function SrcTree_fndNodeFILE(const item:tSrcTree_fsFLDR; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFileREL(const item:tSrcTree_fsFLDR; const fileName:string):tSrcTree_fsFILE;
 begin
+    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsRelative(fileName),'not REL PATH');{$endIf}
     result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(item), srcTree_fsFnk_ExtractFileName(fileName));
 end;
 

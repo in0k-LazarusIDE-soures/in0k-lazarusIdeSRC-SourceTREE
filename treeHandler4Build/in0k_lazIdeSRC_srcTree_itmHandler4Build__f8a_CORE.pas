@@ -7,12 +7,14 @@ interface
 uses
   Classes,
 
+  PackageIntf,
   CodeCache,
 
   in0k_lazIdeSRC_srcTree_CORE_item,
   //in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
   in0k_lazIdeSRC_srcTree_item_fsFile,
 
+  in0k_lazIdeSRC_srcTree_CORE_filePkgType_FNK,
   in0k_lazIdeSRC_srcTree_FNK_FILE_FND,
   //in0k_lazIdeSRC_srcTree_FNK_PATH_FND,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
@@ -128,23 +130,31 @@ function tSrcTree_itmHandler4Build__f8a_CORE._prc__execute_4FileItem_(const srcI
 var i:integer;
     j:integer;
   itm:tSrcTree_fsFILE;
+   fn:string;
+   ft:TPkgFileType;
+
 begin
     result:=TRUE;
     //---
-    for i:=0 to _HNDLs_.Count-1 do begin
+    for i:=0 to _HNDLs_.Count-1 do begin // цикл по обработчикам
        _rDATA_.FileNames.Clear;
         if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_HNDLs_.Items[i]), @_rDATA_, srcItem) then begin
             // он что-то там по обрабатывал
             for j:=0 to _rDATA_.FileNames.Count-1 do begin
                 {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
-                itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), _rDATA_.FileNames.Strings[j]);
+                fn :=_rDATA_.FileNames.Strings[j];
+                itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), fn);
                 if not Assigned(itm) then begin //< такого у нас еще НЕТ
                     // если его НЕТ в ДЕРЕВЕ => его нет и в списке
-                    if _prc__fileName_Need_ADD_(_rDATA_.FileNames.Strings[j]) then begin
+                    if _prc__fileName_Need_ADD_(fn) then begin
                         // и его просят добавить
                         {todo: ДОБАВЛЕНИЕ в ДереВО}
+                        ft :=srcTree_ftPkg_FileNameToPkgFileType(fn);
+                        itm:=Builder.Add_FILE(SrcTree_fndRootFILE(prcssdITEM), fn,ft);
                         {todo: ДОБАВЛЕНИЕ в список}
                         writeLOG('need ADD "'+_rDATA_.FileNames.Strings[j]+'"');
+                       _ITEMs_.Add(itm);
+
                     end;
                 end;
             end;

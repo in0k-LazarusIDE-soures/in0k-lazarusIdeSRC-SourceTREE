@@ -11,6 +11,7 @@ interface
 //< "системе имен и папок" `in0k_LazExt_..`.
 
 uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}in0k_lazIdeSRC_DEBUG,{$endIf}
+     srcTree_builder_CORE,
      in0k_lazIdeSRC_srcTree_CORE_item,
      in0k_lazIdeSRC_srcTree_CORE_Processing;
 
@@ -40,6 +41,10 @@ type
   private // текущая работа
    _eITEM_:tSrcTree_item;       // ТЕКУЩИЙ узел для обработки
    _eDATA_:pointer;             // некие данные по обработке
+
+  protected
+    function  Root   :tSrcTree_item;
+    function  Builder:tSrcTree_Builder_CORE;
   protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
@@ -88,6 +93,7 @@ type
      //procedure _doEvent_on_ERROR_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
    private
     _nodeRoot_:tSrcTree_item;
+    _builder_ :tSrcTree_Builder_CORE;
    private
      function  _EXECUTE_wasER_:boolean;
      function  _EXECUTE__NODE_(const Handler:tSrcTree_itmHandler; const eData:pointer; const eItem:tSrcTree_item):boolean;
@@ -103,7 +109,7 @@ type
      procedure _EXECUTE_; virtual;
    public
      constructor Create;
-     procedure  EXECUTE(const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
+     procedure  EXECUTE(const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 
 
@@ -148,6 +154,18 @@ begin
     tmp:=_eITEM_;
     while (Assigned(tmp))and(not (tmp is tCopyRAST_ROOT)) do tmp:=tmp.NodePRNT;
 end;}
+
+//------------------------------------------------------------------------------
+
+function tSrcTree_itmHandler.Builder:tSrcTree_Builder_CORE;
+begin
+    result:=tSrcTree_prcHandler(_OWNER_)._builder_;
+end;
+
+function tSrcTree_itmHandler.Root:tSrcTree_item;
+begin
+   result:=tSrcTree_prcHandler(_OWNER_)._nodeRoot_;
+end;
 
 //------------------------------------------------------------------------------
 
@@ -223,9 +241,11 @@ begin
 
 end;
 
-procedure tSrcTree_prcHandler.EXECUTE(const nodeRoot:tSrcTree_item);
+procedure tSrcTree_prcHandler.EXECUTE(const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);
 begin
    _nodeRoot_:=nodeRoot;
+   _builder_ :=Builder;
+    //----
     writeLOG_BEGIN;
     writeLOG('nodeRoot('+nodeRoot.ClassName+')');
     // _doLog_onMISSED_:=;

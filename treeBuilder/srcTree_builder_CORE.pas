@@ -51,7 +51,7 @@ type
   public
     function MAKE_SourceTREE(const MainOBJ:pointer):tSrcTree_ROOT;
   public
-    //constructor Create(const MainOBJ:pointer);
+    function Add_FILE(const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
   end;
 
 //type
@@ -238,7 +238,12 @@ begin
 end;
 
 
+//==============================================================================
 
+function tSrcTree_Builder_CORE.Add_FILE(const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
+begin
+    Add_FILE(nil, ROOT,fileName,fileKind);
+end;
 
 
 

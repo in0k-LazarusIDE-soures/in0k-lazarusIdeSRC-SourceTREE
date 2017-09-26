@@ -19,13 +19,13 @@ uses
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
   in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs,
-  in0k_lazIdeSRC_srcTree_FNK_nodeFILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel,
   //---
   srcTree_handler_CORE,
   srcTree_handler_CORE_makeLIST,
   srcTree_handler_CORE_makeListFsFILE,
   srcTree_handler_CORE_fsFile2CodeBUF;
-
+{
 type
 
  tSrcTree_itmHandler4Build__f8a_usesFile=class(tSrcTree_itmHandler)
@@ -36,9 +36,9 @@ type
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
   public
     function Processing:boolean; override;
-  end;
+  end; }
 
- tSrcTree_itmHandler4Build__f8a_usesFile_itemStep=class(tSrcTree_itmHandler_fsFile2CodeBUF)
+ {tSrcTree_itmHandler4Build__f8a_usesFile_itemStep=class(tSrcTree_itmHandler_fsFile2CodeBUF)
   private
    _root_:tSrcTree_ROOT;
   protected
@@ -46,13 +46,13 @@ type
     procedure _Processing_Units_(const List:TStrings);
   public
     function Processing:boolean; override;
-  end;
+  end;}
 
 
 
 
 implementation
-
+(*
 // составление ПЕРВИЧНОГО списка файлов ..
 function tSrcTree_itmHandler4Build__f8a_usesFile._prc__make_InitFileList_:boolean;
 var tmpPrcDATA:rSrcTree_itmHandler_makeListFsFILE_prcDATA;
@@ -94,7 +94,7 @@ var fldr:_tSrcTree_item_fsNodeFLDR_;
 begin
     fldr:= SrcTree_fndPathABS(_root_,srcTree_fsFnk_ExtractFileDir(fileName));
     if Assigned(fldr) then begin
-        fTmp:=SrcTree_fndNodeFILE(fldr,fileName);
+        fTmp:=SrcTree_fndFileREL(fldr,fileName);
         if not Assigned(fTmp) then begin
             writeLOG('YES - '+srcTree_fsFnk_ExtractFileName(fileName)+'-'+fileName);
         end
@@ -142,6 +142,6 @@ begin
     //---
     result:=true;
 end;
-
+*)
 end.
 
