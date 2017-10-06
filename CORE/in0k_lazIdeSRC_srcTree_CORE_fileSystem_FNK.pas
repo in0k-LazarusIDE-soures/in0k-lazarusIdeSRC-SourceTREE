@@ -9,7 +9,10 @@ uses
   FileUtil,LazFileUtils;
 
 
-function srcTree_fsFnk_ChompPathDelim(const Path: string):string; inline;
+function srcTree_fsFnk_AppendPathDelim(const Path: string):string; inline;
+function srcTree_fsFnk_ChompPathDelim (const Path: string):string; inline;
+function srcTree_fsFnk_ConcatPaths    (const PathA, PathB: string):string; inline;
+
 function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; UsePointDirectory:boolean=false; AlwaysRequireSharedBaseFolder:Boolean=True):string; inline;
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inline;
@@ -47,10 +50,23 @@ function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean; 
 
 implementation
 
+function srcTree_fsFnk_AppendPathDelim(const Path: string):string; inline;
+begin
+    result:=AppendPathDelim(Path);
+end;
+
 function srcTree_fsFnk_ChompPathDelim(const Path:string):string;
 begin
     result:=ChompPathDelim(Path);
 end;
+
+function srcTree_fsFnk_ConcatPaths(const PathA, PathB: string):string;
+begin
+    result:='';
+    if (PathA<>'')and(PathB<>'') then result:=AppendPathDelim(PathA);
+    result:=result+PathB;
+end;
+
 
 function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; UsePointDirectory:boolean=false; AlwaysRequireSharedBaseFolder:Boolean=True):string; inline;
 begin

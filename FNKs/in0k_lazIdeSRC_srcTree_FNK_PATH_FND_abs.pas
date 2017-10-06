@@ -29,9 +29,9 @@ begin // если `path=item+abc`, то ищем ОТНОСИТЕЛЬНЫЙ пу
     {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsAbsolute(path),'`path` NOT absolute'); {$endIf}
     {$ifOpt D+}Assert(not srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends with `DirectorySeparator`'); {$endIf}
     result:=nil;
-    tmpPTH:=item.src_abs_PATH;
+    tmpPTH:=item.fsPath;
     if srcTree_fsFnk_CompareFilenames(path,tmpPTH)=0 then begin
-        result:=item;
+        result:=item; // полное совпадение имен с
     end
    else
     if srcTree_fsFnk_FileIsInPath(path,tmpPTH) then begin

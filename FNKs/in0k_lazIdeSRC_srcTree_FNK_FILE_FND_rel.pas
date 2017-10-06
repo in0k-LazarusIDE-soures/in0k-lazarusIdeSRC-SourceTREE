@@ -26,7 +26,7 @@ begin
     result:=tSrcTree_fsFILE(tSrcTree_item(item).ItemCHLD);
     while Assigned(result) do begin
         if tSrcTree_item(result) is tSrcTree_fsFILE then begin //< мы же тока файлы исчем
-            if 0=srcTree_fsFnk_CompareFilenames(result.src_Name, OnlyFileName) then begin
+            if 0=srcTree_fsFnk_CompareFilenames(result.fsName, OnlyFileName) then begin
                 BREAK;
             end;
         end;

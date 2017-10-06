@@ -171,7 +171,7 @@ begin
     singlDir:=GetNextDirectoryInSearchPath(DirLIST,StartPos);
         while singlDir<>'' do begin
             tmpFLDR:=Add_PATH(mOBJ,ROOT,Path,singlDir);
-            {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH'+'('+tmpFLDR.ClassName+')'+':'+'"'+tmpFLDR.src_PATH+'"');{$endIf}
+            {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH'+'('+tmpFLDR.ClassName+')'+':'+'"'+tmpFLDR.fsPath+'"');{$endIf}
             //-->
             singlDir:=GetNextDirectoryInSearchPath(DirLIST,StartPos);
         end;
@@ -218,7 +218,7 @@ begin
 
     //--- пробиваем БАЗОВЫЙ путь
     Set_Base(MainOBJ,result);
-    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','set BaseDIR'+'('+SrcTree_fndBaseDIR(result).ClassName+')'+':'+'"'+SrcTree_fndBaseDIR(result).src_PATH+'"');{$endIf}
+    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','set BaseDIR'+'('+SrcTree_fndBaseDIR(result).ClassName+')'+':'+'"'+SrcTree_fndBaseDIR(result).fsPath+'"');{$endIf}
 
     //--- пробиваем ГЛАВНЫЙ файл
     Set_Main(MainOBJ,result);

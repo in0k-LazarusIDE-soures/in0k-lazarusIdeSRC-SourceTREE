@@ -34,7 +34,7 @@ type
     property ItemNEXT:tSrcTree_item read _next_;
     property ItemCHLD:tSrcTree_item read _chld_;
   public //< текстовки
-    property ItemTEXT:string read _get_itemText_;
+    property ItemTEXT:string read _get_itemText_; // что вложили при создании
     property ItemNAME:string read _get_ItemName_; // название
     property ItemHINT:string read _get_ItemHint_; // описание
   public
