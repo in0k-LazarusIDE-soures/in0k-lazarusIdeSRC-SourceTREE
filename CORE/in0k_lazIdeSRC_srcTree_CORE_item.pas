@@ -42,6 +42,9 @@ type
     destructor DESTROY; override;
   end;
 
+
+function  SrcTree_isParent_4_Item(const prnt,item:tSrcTree_item):boolean;
+
 //<-----------------------------------------------------------------------------
 procedure SrcTree_re_set_itemTEXT(const item:tSrcTree_item; const newItemTXT:string);
 procedure SrcTree_insert_itemAfte(const item:tSrcTree_item; const insertItem:tSrcTree_item);
@@ -148,6 +151,26 @@ begin
 end;
 
 //==============================================================================
+
+function  SrcTree_isParent_4_Item(const prnt,item:tSrcTree_item):boolean;
+var tmp:tSrcTree_item;
+begin
+    {$IfOpt D+}
+        Assert(Assigned(prnt));
+        Assert(Assigned(item));
+    {$endIf}
+    result:=false;
+    tmp:=item.ItemPRNT;
+    while Assigned(tmp) do begin
+        if tmp=prnt then begin
+            result:=true;
+            BREAK;
+        end;
+        tmp:=tmp.ItemPRNT;
+    end;
+end;
+
+//------------------------------------------------------------------------------
 
 procedure SrcTree_insert_itemAfte(const item:tSrcTree_item; const insertItem:tSrcTree_item);
 begin

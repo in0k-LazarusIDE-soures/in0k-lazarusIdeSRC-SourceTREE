@@ -25,7 +25,7 @@ begin
     result:=nil;
     fldr:=SrcTree_fndPathABS(item, srcTree_fsFnk_ExtractFileDir(fileName));
     if Assigned(fldr) then begin
-        result:=SrcTree_fndFileREL(fldr, srcTree_fsFnk_CreateRelativePath(fileName,fldr.src_abs_PATH));
+        result:=SrcTree_fndFileREL(fldr, srcTree_fsFnk_CreateRelativePath(fileName,fldr.fsPath));
     end
 end;
 

@@ -35,7 +35,7 @@ type
     function _fsName_get_:string; virtual;
     function _fsPath_get_:string; virtual;
   public
-    property   fsName:string read _fsName_get_;
+    property   fsName:string read _fsName_get_; //<
     property   fsPath:string read _fsPath_get_;
 
   public
@@ -64,11 +64,13 @@ type
   protected
     //function _src_getDirName_:string; override;
     //function _src_getObjName_:string; override;
+  public
+   // constructor Create(const Text:string); override;
   end;
 
  _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_)
    protected
-    //function _src_getDirName_abs_:string; override;
+     function _fsPath_get_:string; override;
    end;
 
 
@@ -105,6 +107,8 @@ begin
         if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
             result:=_tSrcTree_item_fsNodeFLDR_(tmp).fsPath; //< путь РОДИТелЯ
             result:= srcTree_fsFnk_ConcatPaths(result, _fsName_get_);
+            //---
+            BREAK;
         end;
         tmp:=tmp.ItemPRNT;
     end;
@@ -114,7 +118,7 @@ end;
 
 function _tStcTree_item_fsNode_._get_ItemName_:string;
 begin
-    result:=_fsName_get_;
+    result:=_item_Text_+' "'+_fsName_get_+'"';
 end;
 
 //------------------------------------------------------------------------------
@@ -248,6 +252,11 @@ begin
 end;*)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[_tSrcTree_item_fsBaseDIR_]
+
+function _tSrcTree_item_fsBaseDIR_._fsPath_get_:string;
+begin
+    result:=_item_Text_;
+end;
 
 (*function _tSrcTree_item_fsBaseDIR_._src_getDirName_abs_:string;
 begin

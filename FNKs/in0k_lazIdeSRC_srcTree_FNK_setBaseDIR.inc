@@ -2,6 +2,6 @@
 begin
     {$ifOpt D+}Assert(Assigned(item));{$endIf}
     result:=SrcTree_getBaseDIR(item,crtFnc);
-    SrcTree_re_set_itemTEXT(result,baseDir);
+    SrcTree_re_set_itemTEXT(result,srcTree_fsFnk_ChompPathDelim(baseDir));
 end;
 

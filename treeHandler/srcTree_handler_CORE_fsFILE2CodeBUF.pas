@@ -36,7 +36,7 @@ begin
     {$ifOpt D+}Assert(Assigned(srcItem), self.ClassName+'.Processing : srcItem=NIL');{$endIf}
     //--- из какого-то ХАУ ТУ с сайта
     // make sure the filename is trimmed and contains a full path
-    tmpFileName:=srcTree_fsFnk_CleanAndExpandFilename(srcItem.src_abs_PATH);
+    tmpFileName:=srcTree_fsFnk_CleanAndExpandFilename(srcItem.fsPath);
     // save changes in source editor to codetools
     LazarusIDE.SaveSourceEditorChangesToCodeCache(nil);
     // load the file
