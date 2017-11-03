@@ -225,11 +225,13 @@ begin
     {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','set MainFILE'+'('+SrcTree_fndMainFILE(result).ClassName+')'+':'+'"'+SrcTree_fndMainFILE(result).ItemNAME+'"');{$endIf}
 
     //--- пробиваем Пути ПОИСКА
+    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH ....');{$endIf}
     Set_PTHs(MainOBJ,result);
-    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH');{$endIf}
-
-    //---
+    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH end.');{$endIf}
+    //--- добавляем файлы указанные в проекте
+    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add File ITMs ....');{$endIf}
     Set_ITMs(MainOBJ,result);
+    {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add File ITMs end.');{$endIf}
 
 
     //--------------

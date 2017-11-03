@@ -45,6 +45,7 @@ begin
     MainSection:=nil;
     ImplSection:=nil;
     result:=CodeToolBoss.FindUsedUnitFiles(CodeBuffer, MainSection,ImplSection)
+    //result:=CodeToolBoss.FindUsedUnitNames(CodeBuffer, MainSection,ImplSection)
 end;
 
 //------------------------------------------------------------------------------

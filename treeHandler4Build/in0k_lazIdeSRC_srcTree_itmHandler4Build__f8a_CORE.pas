@@ -4,7 +4,19 @@ unit in0k_lazIdeSRC_srcTree_itmHandler4Build__f8a_CORE;
 
 interface
 
-uses
+{$i in0k_lazIdeSRC_SETTINGs.inc} //< настройки компанента-Расширения.
+//< Можно смело убирать, так как будеть работать только в моей специальной
+//< "системе имен и папок" `in0k_LazExt_..`.
+
+
+{$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
+    {$define _DEBUG_}
+{$endIf}
+
+uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
+        in0k_lazIdeSRC_DEBUG,
+        sysutils,
+     {$endIf}
   Classes,
 
   PackageIntf,
@@ -143,8 +155,16 @@ begin
             for j:=0 to _rDATA_.FileNames.Count-1 do begin
                 {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
                 fn :=_rDATA_.FileNames.Strings[j];
+                {$ifDef _DEBUG_}
+                    DEBUG('{'+self.ClassName+'}'+ 'find File "'+fn+'"');
+                {$endIf}
                 itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), fn);
-                if not Assigned(itm) then begin //< такого у нас еще НЕТ
+//                {$ifDef _DEBUG_}
+//                    DEBUG('{'+self.ClassName+'}'+ 'find File "'+fn+'"');
+//                {$endIf}
+
+
+                {if not Assigned(itm) then begin //< такого у нас еще НЕТ
                     // если его НЕТ в ДЕРЕВЕ => его нет и в списке
                     if _prc__fileName_Need_ADD_(fn) then begin
                         // и его просят добавить
@@ -156,7 +176,7 @@ begin
                        _ITEMs_.Add(itm);
 
                     end;
-                end;
+                end;}
             end;
         end;
     end;

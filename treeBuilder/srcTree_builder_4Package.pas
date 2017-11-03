@@ -138,17 +138,21 @@ function tSrcTree_Builder_4Package.Set_ITMs(const mOBJ:pointer; const ROOT:tSrcT
 var i:integer;
    fn:string;
    ft:TPkgFileType;
+    f:tSrcTree_fsFILE;
 begin
     for i:=0 to TIDEPackage(mOBJ).FileCount-1 do begin
         with TIDEPackage(mOBJ).Files[i] do begin
             fn:=TIDEPackage(mOBJ).Files[i].GetShortFilename(false);
             ft:=srcTree_ftPkg_FileNameToPkgFileType(fn);
-            Add_FILE(mOBJ,ROOT, fn,ft);
+            f :=Add_FILE(mOBJ,ROOT, fn,ft);
             {todo: function TPackageEditorForm.OnTreeViewGetImageIndex(Str: String; Data: TObject; var AIsEnabled: Boolean): Integer; }
             {$ifDef _DEBUG_}
                 if ft<>TIDEPackage(mOBJ).Files[i].FileType then begin
-                    DEBUG('Set_ITMs','WRONG fileTypeINC [my].'+srcTree_ftPkg_PkgFileTypeToString(ft)+' vs '+srcTree_ftPkg_PkgFileTypeToString(TIDEPackage(mOBJ).Files[i].FileType)+ ' for'+'"'+fn+'"');
+                    DEBUG('Set_ITMs','WRONG fileTypeINC [my].'+srcTree_ftPkg_PkgFileTypeToString(ft)+' vs '+srcTree_ftPkg_PkgFileTypeToString(TIDEPackage(mOBJ).Files[i].FileType)+ ' for '+'"'+fn+'"');
                 end;
+            {$endIf}
+            {$ifDef _DEBUG_}
+                DEBUG('Set_ITMs','add File'+'('+srcTree_ftPkg_PkgFileTypeToString(f.fileKIND)+':'+f.ClassName+')'+':'+'"'+f.fsPath+'"');
             {$endIf}
 
             {
