@@ -11,16 +11,20 @@ interface
 
 {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
     {$define _DEBUG_}
+    // ЛОКАЛЬНОЕ тестирование
+    {$define _localDBG__prc__execute_4FileItem_}
+    {.$define _localDBG__file_4Use_}
 {$endIf}
 
 uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
         in0k_lazIdeSRC_DEBUG,
         sysutils,
      {$endIf}
-  Classes,
-
-  PackageIntf,
-  CodeCache,
+  Classes,       CodeToolManager,
+       in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
+                                  DefineTemplates,
+  PackageIntf,       ProjectIntf,
+  CodeCache,   LazIDEIntf, // codetool,
 
   in0k_lazIdeSRC_srcTree_CORE_item,
   //in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
@@ -62,12 +66,14 @@ type
    _HNDLs_:tList; // список ОБРАБОТЧИКоВ
    _rDATA_:rSrcTree_itmHandler4Build__f8a_Item_prcDATA;
   protected
+    function _file_4Use_(const fileName:string):boolean;
+  protected
     function _prc__make_InitFileList_:boolean;
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
     //function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
     function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
   public
-    function  Processing:boolean; override;                       // ВЫПОЛНИТЬ обработку
+    function  Processing:boolean; override; // ВЫПОЛНИТЬ обработку
   public
     constructor Create(const Owner:tSrcTree_prcHandler; const Parent:tSrcTree_itmHandler); override;
     destructor DESTROY; override;
@@ -153,12 +159,15 @@ begin
         if EXECUTE_4NODE(tSrcTree_itmHandler_TYPE(_HNDLs_.Items[i]), @_rDATA_, srcItem) then begin
             // он что-то там по обрабатывал
             for j:=0 to _rDATA_.FileNames.Count-1 do begin
-                {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
                 fn :=_rDATA_.FileNames.Strings[j];
-                {$ifDef _DEBUG_}
-                    DEBUG('{'+self.ClassName+'}'+ 'find File "'+fn+'"');
-                {$endIf}
-                itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), fn);
+                if _file_4Use_(fn) then begin
+                    {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
+                    itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), fn);
+                    {$ifDef _localDBG__prc__execute_4FileItem_}
+                        if not Assigned(itm) then
+                        DEBUG('{'+self.ClassName+'}'+ ' NOT found File "'+fn+'"');
+                    {$endIf}
+                end;
 //                {$ifDef _DEBUG_}
 //                    DEBUG('{'+self.ClassName+'}'+ 'find File "'+fn+'"');
 //                {$endIf}
@@ -200,6 +209,59 @@ begin
         if (srcItem is tSrcTree_fsFILE) then begin //< это файл, и его МОЖНО открыть
             result:=_prc__execute_4FileItem_(srcItem); //< ОБРАБАТЫВАЕМ
         end;
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+function tSrcTree_itmHandler4Build__f8a_CORE._file_4Use_(const fileName:string):boolean;
+var
+  Owners: TFPList;
+  i: Integer;
+  o: TObject;
+  s:string;
+  FPCUnitSet:TFPCUnitSetCache;
+begin
+    result:=true;
+    //s:=$(FPCSrcDir)+PathDelim+'fpc';
+
+//    LazarusIDE.com;
+    FPCUnitSet:=CodeToolBoss.GetUnitSetForDirectory('');
+    if Assigned(FPCUnitSet) then begin
+        //FPCUnitSet.FPCSourceDirectory;
+        result:=not srcTree_fsFnk_FileIsInPath(fileName,FPCUnitSet.FPCSourceDirectory);
+    end;
+
+    if not result then EXIT;
+
+
+    Owners:=PackageEditingInterface.GetPossibleOwnersOfUnit(fileName,[]);
+    if not Assigned(Owners) then begin
+        // unit is not directly associated with a project/package
+        // maybe the unit was for some reason not added, but is reachable
+        // search in all unit paths of all projects/packages
+        // Beware: This can lead to false hits
+        Owners:=PackageEditingInterface.GetPossibleOwnersOfUnit(fileName,
+                       [piosfExcludeOwned,piosfIncludeSourceDirectories]);
+    end;
+    if not Assigned(Owners) then result:=TRUE
+    else begin
+        result:=false;
+        for i:=0 to Owners.Count-1 do begin
+            o:=TObject(Owners[i]);
+            {$ifDef _localDBG__file_4Use_}
+            if o is TIDEPackage then begin
+                DEBUG('{'+self.ClassName+'} '+ TIDEPackage(o).Name +' have "'+fileName+'"');
+            end else if o is TLazProject then begin
+                DEBUG('{'+self.ClassName+'} '+ TLazProject(o).ProjectInfoFile +' have "'+fileName+'"');
+            end;
+            {$endIf}
+            if Assigned(o) and (o=tObject(self.LazOBJ)) then begin
+                result:=true;
+                BREAK
+            end;
+        end;
+        Owners.Free;
     end;
 end;
 

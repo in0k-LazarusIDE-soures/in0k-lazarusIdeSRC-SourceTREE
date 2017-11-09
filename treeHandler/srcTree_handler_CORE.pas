@@ -45,6 +45,7 @@ type
   protected
     function  Root   :tSrcTree_item;
     function  Builder:tSrcTree_Builder_CORE;
+    function  LazOBJ :pointer;
   protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
@@ -94,6 +95,7 @@ type
    private
     _nodeRoot_:tSrcTree_item;
     _builder_ :tSrcTree_Builder_CORE;
+    _laz_OBJ_ :pointer;
    private
      function  _EXECUTE_wasER_:boolean;
      function  _EXECUTE__NODE_(const Handler:tSrcTree_itmHandler; const eData:pointer; const eItem:tSrcTree_item):boolean;
@@ -109,7 +111,7 @@ type
      procedure _EXECUTE_; virtual;
    public
      constructor Create;
-     procedure  EXECUTE(const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
+     procedure  EXECUTE(const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 
 
@@ -165,6 +167,11 @@ end;
 function tSrcTree_itmHandler.Root:tSrcTree_item;
 begin
    result:=tSrcTree_prcHandler(_OWNER_)._nodeRoot_;
+end;
+
+function tSrcTree_itmHandler.LazOBJ:pointer;
+begin
+   result:=tSrcTree_prcHandler(_OWNER_)._laz_OBJ_;
 end;
 
 //------------------------------------------------------------------------------
@@ -241,8 +248,9 @@ begin
 
 end;
 
-procedure tSrcTree_prcHandler.EXECUTE(const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);
+procedure tSrcTree_prcHandler.EXECUTE(const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);
 begin
+   _laz_OBJ_ :=LazOBJ;
    _nodeRoot_:=nodeRoot;
    _builder_ :=Builder;
     //----
