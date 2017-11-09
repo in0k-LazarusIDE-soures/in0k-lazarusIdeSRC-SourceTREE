@@ -25,7 +25,7 @@ function _fndNodeFILE_(const item:_tSrcTree_item_fsNodeFLDR_; const OnlyFileName
 begin
     result:=tSrcTree_fsFILE(tSrcTree_item(item).ItemCHLD);
     while Assigned(result) do begin
-        if tSrcTree_item(result) is tSrcTree_fsFILE then begin //< мы же тока файлы исчем
+        if tSrcTree_item(result) is _tSrcTree_item_fsNodeFILE_ then begin //< мы же тока файлы исчем
             if 0=srcTree_fsFnk_CompareFilenames(result.fsName, OnlyFileName) then begin
                 BREAK;
             end;
@@ -40,7 +40,12 @@ end;
 function SrcTree_fndFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const fileName:string):tSrcTree_fsFILE;
 begin
     {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsRelative(fileName),'not REL PATH');{$endIf}
-    result:=_fndNodeFILE_(item, srcTree_fsFnk_ExtractFileName(fileName));
+    // ищем папку
+    result:=tSrcTree_fsFILE(tSrcTree_item(SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(fileName))));
+    // ищем сам файл внутри него
+    if Assigned(result) then begin
+        result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(tSrcTree_item(result)), srcTree_fsFnk_ExtractFileName(fileName));
+    end;
 end;
 
 function SrcTree_fndFileREL(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
@@ -57,7 +62,7 @@ end;
 function SrcTree_fndFileREL(const item:tSrcTree_fsFLDR; const fileName:string):tSrcTree_fsFILE;
 begin
     {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsRelative(fileName),'not REL PATH');{$endIf}
-    result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(item), srcTree_fsFnk_ExtractFileName(fileName));
+    result:=SrcTree_fndFileREL(_tSrcTree_item_fsNodeFLDR_(item), srcTree_fsFnk_ExtractFileName(fileName));
 end;
 
 end.
