@@ -66,6 +66,8 @@ type
    _HNDLs_:tList; // список ОБРАБОТЧИКоВ
    _rDATA_:rSrcTree_itmHandler4Build__f8a_Item_prcDATA;
   protected
+    function _file_4Use_exclude4FpcSRC(const fileName:string):boolean;
+    function _file_4Use_exclude4LazPKG(const fileName:string):boolean;
     function _file_4Use_(const fileName:string):boolean;
   protected
     function _prc__make_InitFileList_:boolean;
@@ -167,25 +169,19 @@ begin
                         if not Assigned(itm) then
                         DEBUG('{'+self.ClassName+'}'+ ' NOT found File "'+fn+'"');
                     {$endIf}
+                    {if not Assigned(itm) then begin //< такого у нас еще НЕТ
+                        // если его НЕТ в ДЕРЕВЕ => его нет и в списке
+                        if true or _prc__fileName_Need_ADD_(fn) then begin
+                            // и его просят добавить
+                            {done: ДОБАВЛЕНИЕ в ДереВО}
+                            ft :=srcTree_ftPkg_FileNameToPkgFileType(fn);
+                            itm:=Builder.Add_FILE(SrcTree_fndRootFILE(prcssdITEM), fn,ft);
+                            {done: ДОБАВЛЕНИЕ в список}
+                            writeLOG('need ADD "'+_rDATA_.FileNames.Strings[j]+'"');
+                           _ITEMs_.Add(itm);
+                        end;
+                    end;}
                 end;
-//                {$ifDef _DEBUG_}
-//                    DEBUG('{'+self.ClassName+'}'+ 'find File "'+fn+'"');
-//                {$endIf}
-
-
-                {if not Assigned(itm) then begin //< такого у нас еще НЕТ
-                    // если его НЕТ в ДЕРЕВЕ => его нет и в списке
-                    if _prc__fileName_Need_ADD_(fn) then begin
-                        // и его просят добавить
-                        {todo: ДОБАВЛЕНИЕ в ДереВО}
-                        ft :=srcTree_ftPkg_FileNameToPkgFileType(fn);
-                        itm:=Builder.Add_FILE(SrcTree_fndRootFILE(prcssdITEM), fn,ft);
-                        {todo: ДОБАВЛЕНИЕ в список}
-                        writeLOG('need ADD "'+_rDATA_.FileNames.Strings[j]+'"');
-                       _ITEMs_.Add(itm);
-
-                    end;
-                end;}
             end;
         end;
     end;
@@ -214,27 +210,24 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tSrcTree_itmHandler4Build__f8a_CORE._file_4Use_(const fileName:string):boolean;
-var
-  Owners: TFPList;
-  i: Integer;
-  o: TObject;
-  s:string;
-  FPCUnitSet:TFPCUnitSetCache;
+// исключаем лежащие в исходниках FPC
+function tSrcTree_itmHandler4Build__f8a_CORE._file_4Use_exclude4FpcSRC(const fileName:string):boolean;
+var FPCUnitSet:TFPCUnitSetCache;
 begin
-    result:=true;
-    //s:=$(FPCSrcDir)+PathDelim+'fpc';
-
-//    LazarusIDE.com;
+    result:=FALSE;
+    //---
     FPCUnitSet:=CodeToolBoss.GetUnitSetForDirectory('');
     if Assigned(FPCUnitSet) then begin
-        //FPCUnitSet.FPCSourceDirectory;
-        result:=not srcTree_fsFnk_FileIsInPath(fileName,FPCUnitSet.FPCSourceDirectory);
+        result:=srcTree_fsFnk_FileIsInPath(fileName,FPCUnitSet.FPCSourceDirectory);
     end;
+end;
 
-    if not result then EXIT;
-
-
+// исключаем лежащие в пакетах, кроме нашего
+function tSrcTree_itmHandler4Build__f8a_CORE._file_4Use_exclude4LazPKG(const fileName:string):boolean;
+var Owners: TFPList;
+    i: Integer;
+    o: TObject;
+begin
     Owners:=PackageEditingInterface.GetPossibleOwnersOfUnit(fileName,[]);
     if not Assigned(Owners) then begin
         // unit is not directly associated with a project/package
@@ -244,9 +237,9 @@ begin
         Owners:=PackageEditingInterface.GetPossibleOwnersOfUnit(fileName,
                        [piosfExcludeOwned,piosfIncludeSourceDirectories]);
     end;
-    if not Assigned(Owners) then result:=TRUE
+    if not Assigned(Owners) then result:=FALSE
     else begin
-        result:=false;
+        result:=true;
         for i:=0 to Owners.Count-1 do begin
             o:=TObject(Owners[i]);
             {$ifDef _localDBG__file_4Use_}
@@ -257,12 +250,23 @@ begin
             end;
             {$endIf}
             if Assigned(o) and (o=tObject(self.LazOBJ)) then begin
-                result:=true;
+                result:=false;
                 BREAK
             end;
         end;
         Owners.Free;
     end;
+
+end;
+
+//------------------------------------------------------------------------------
+
+function tSrcTree_itmHandler4Build__f8a_CORE._file_4Use_(const fileName:string):boolean;
+begin
+    if _file_4Use_exclude4FpcSRC(fileName) then exit(false);
+    if _file_4Use_exclude4LazPKG(fileName) then exit(false);
+    //---
+    result:=true;
 end;
 
 end.

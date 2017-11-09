@@ -16,61 +16,29 @@ type
 
   // элемент ФАЛОВОЙ системы (файлы, папки)
  _tStcTree_item_fsNode_=class(tSrcTree_item)
-  private
-    //function __src_getDirName__:string;  inline;
-    //function __src_getDirName_abs_:string;  inline;
-    //function __src_getObjName__:string;  inline;
-    //function __src_getPath__   :string;  inline;
-    //function __src_getPath_abs_:string;  inline;
-    //function __src_isABSOLUTE__:boolean; inline;
-  protected
+   protected
     function _get_ItemName_:string; override;
-    //function  _src_getDirName_ :string;  virtual;
-    //function  _src_getDirName_abs_:string;  virtual;
-    //function  _src_getObjName_ :string;  virtual;
-  protected
-    //function  _get_ItemHint_:string;     override;
-
-  protected
+    function _get_ItemHint_:string; override;
+   protected
     function _fsName_get_:string; virtual;
     function _fsPath_get_:string; virtual;
-  public
-    property   fsName:string read _fsName_get_; //<
-    property   fsPath:string read _fsPath_get_;
-
-  public
-    //property   src_Absolute :boolean read __src_isABSOLUTE__;
-    //property   src_PATH     :string  read __src_getPath__;    // полный путь (src_Dir+'/'+src_Name)
-    //property   src_DirName  :string  read __src_getDirName__; // название директории в которой распологаемся (НЕ ДОЛЖЕН содержать завершающий '/')
-    //property   src_Name     :string  read __src_getObjName__; // наше СОБСТВЕННОЕ название
-  public
-    //property   src_abs_PATH   :string  read __src_getPath_abs_;    // полный путь (src_Dir+'/'+src_Name)
-    //property   src_abs_DirName:string  read __src_getDirName_abs_; // название директории в которой распологаемся (НЕ ДОЛЖЕН содержать завершающий '/')
-  public
+   public
+    property  fsName:string read _fsName_get_;
+    property  fsPath:string read _fsPath_get_;
+   public
     constructor Create(const Text:string); override;
-  end;
+   end;
 
  _tSrcTree_item_fsNodeFILE_=class(_tStcTree_item_fsNode_)
-  protected
-    //function _get_ItemName_:string; override;
-  protected
-    //function _src_getDirName_:string; override;
-    //function _src_getObjName_:string; override;
-  end;
+   end;
 
  _tSrcTree_item_fsNodeFLDR_=class(_tStcTree_item_fsNode_)
-  protected
-    //function _get_ItemName_:string; override;
-  protected
-    //function _src_getDirName_:string; override;
-    //function _src_getObjName_:string; override;
-  public
-   // constructor Create(const Text:string); override;
-  end;
+   end;
 
  _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_)
    protected
-     function _fsPath_get_:string; override;
+    function _get_ItemName_:string; override;
+    function _fsPath_get_  :string; override;
    end;
 
 
@@ -118,8 +86,14 @@ end;
 
 function _tStcTree_item_fsNode_._get_ItemName_:string;
 begin
-    result:=_item_Text_+' "'+_fsName_get_+'"';
+    result:=_fsName_get_;
 end;
+
+function _tStcTree_item_fsNode_._get_ItemHint_:string;
+begin
+    result:=_fsPath_get_;
+end;
+
 
 //------------------------------------------------------------------------------
 
@@ -253,15 +227,15 @@ end;*)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[_tSrcTree_item_fsBaseDIR_]
 
+function _tSrcTree_item_fsBaseDIR_._get_ItemName_:string;
+begin
+    result:=_fsPath_get_;
+end;
+
 function _tSrcTree_item_fsBaseDIR_._fsPath_get_:string;
 begin
     result:=_item_Text_;
 end;
-
-(*function _tSrcTree_item_fsBaseDIR_._src_getDirName_abs_:string;
-begin
-    result:='';//_item_Text_;
-end;*)
 
 end.
 

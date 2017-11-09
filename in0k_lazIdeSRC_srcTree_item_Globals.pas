@@ -10,7 +10,7 @@ uses
 
 type
 
-  tSrcTree_ROOT=class(tSrcTree_item);
+  tSrcTree_ROOT=class( tSrcTree_item);
   tSrcTree_BASE=class(_tSrcTree_item_fsBaseDIR_);
   tSrcTree_MAIN=class(_tSrcTree_item_fsNodeFILE_);
 
