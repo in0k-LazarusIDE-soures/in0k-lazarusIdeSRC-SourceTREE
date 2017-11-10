@@ -42,6 +42,7 @@ type
     destructor DESTROY; override;
   end;
 
+ _tSrcTree_ROOT_=class(tSrcTree_item);
 
 function  SrcTree_isParent_4_Item(const prnt,item:tSrcTree_item):boolean;
 

@@ -33,6 +33,10 @@ type
    end;
 
  _tSrcTree_item_fsNodeFLDR_=class(_tStcTree_item_fsNode_)
+   protected
+    function _parentFLDR_beforeRoot_PRESENT_:boolean; {$ifOpt D-}inline;{$endIf}
+   protected
+    function _fsPath_get_:string; override;
    end;
 
  _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_)
@@ -186,6 +190,28 @@ begin
 end;*)
 
 //==============================================================================
+
+function _tSrcTree_item_fsNodeFLDR_._parentFLDR_beforeRoot_PRESENT_:boolean;
+var tmp:tSrcTree_item;
+begin
+    tmp:=ItemPRNT;
+    result:=false;
+    while Assigned(tmp) do begin
+        result:=tmp is _tSrcTree_item_fsNodeFLDR_;
+        if result or (tmp is _tSrcTree_ROOT_) then BREAK;
+        //-->
+        tmp:=tmp.ItemPRNT;
+    end;
+end;
+
+function _tSrcTree_item_fsNodeFLDR_._fsPath_get_:string;
+begin
+    if (not Assigned(self.ItemPRNT)) or           //
+       (self.ItemPRNT is _tSrcTree_ROOT_) or      //
+       (not self._parentFLDR_beforeRoot_PRESENT_) // меджу мной и корнем НЕТ "папок"
+    then result:=_item_Text_
+    else result:= inherited;
+end;
 
 (*function _tSrcTree_item_fsNodeFLDR_._src_getDirName_:string;
 begin
