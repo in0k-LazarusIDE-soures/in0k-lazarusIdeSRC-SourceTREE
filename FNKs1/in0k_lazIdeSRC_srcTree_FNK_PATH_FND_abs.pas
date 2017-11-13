@@ -14,8 +14,7 @@ uses
   in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND,
   in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
 
-//function SrcTree_fndPathABS(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
-function SrcTree_fndPathABS(const item: tSrcTree_ROOT;             const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
 
 implementation
 
@@ -24,6 +23,10 @@ implementation
 function _fndPath_inFirstFLDR_(const item:tSrcTree_item; const path:string; const withRel:boolean):tSrcTree_item;
 var tmp:tSrcTree_item;
 begin
+    {$ifOpt D+}
+      Assert(Assigned(item),'item Is NIL');
+      Assert(srcTree_fsFnk_pathIsAbsolute(path),'path Is NOT Absolute.');
+    {$endIf}
     result:=nil;
     tmp   :=item.ItemCHLD;
     while Assigned(tmp) do begin
@@ -36,8 +39,12 @@ begin
                 then begin
                     // это РОДИЕЛЬСКАЯ по отношению к path
                     // будем искать в ней ОТНОСИТЕЛЬНЫЙ путь
-                    result:=SrcTree_fndPathREL(_tSrcTree_item_fsNodeFLDR_(tmp),srcTree_fsFnk_CreateRelativePath(path,_tSrcTree_item_fsNodeFLDR_(tmp).fsPath));
-                end;
+                    if tmp is tSrcTree_BASE
+                    then SrcTree_fndPathREL(tSrcTree_BASE(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_BASE(tmp).fsPath))
+                   else
+                    if tmp is tSrcTree_fsFLDR
+                    then SrcTree_fndPathREL(tSrcTree_fsFLDR(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_fsFLDR(tmp).fsPath));
+                 end;
             end;
         end
         else begin // это НЕ "дериктория" => идем ВГЛУБь
@@ -50,30 +57,14 @@ begin
     end;
 end;
 
-(*function SrcTree_fndPathABS(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_;
-var tmpPTH:string;
-begin // если `path=item+abc`, то ищем ОТНОСИТЕЛЬНЫЙ путь `abc` в item.
-    {$ifOpt D+}Assert(Assigned(item),'`item` IS NIL'); {$endIf}
-    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsAbsolute(path),'`path` NOT absolute'); {$endIf}
-    {$ifOpt D+}Assert(not srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends with `DirectorySeparator`'); {$endIf}
-    result:=nil;
-    tmpPTH:=item.fsPath;
-    if srcTree_fsFnk_CompareFilenames(path,tmpPTH)=0 then begin
-        result:=item; // полное совпадение имен с
-    end
-   else
-    if srcTree_fsFnk_FileIsInPath(path,tmpPTH) then begin
-        tmpPTH:=srcTree_fsFnk_CreateRelativePath(path,tmpPTH);
-        result:=SrcTree_fndPathREL(item,tmpPTH);
-    end;
-end;*)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// ищем ПОЛНОЕ совпаление по имени
 function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
-    {$ifOpt D+}Assert(Assigned(item),'`item` IS NIL'); {$endIf}
-    {$ifOpt D+}Assert(srcTree_fsFnk_FilenameIsAbsolute(path),'`path` NOT absolute'); {$endIf}
-    {$ifOpt D+}Assert(not srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends with `DirectorySeparator`'); {$endIf}
+    {$ifOpt D+}
+      Assert(Assigned(item),'item Is NIL');
+      Assert(srcTree_fsFnk_pathIsAbsolute(path),'path Is NOT Absolute.');
+    {$endIf}
     // в лоб ... по ВСЕМ первым папкам ... на ПОЛНОЕ соответствие
     result:=_tSrcTree_item_fsNodeFLDR_(_fndPath_inFirstFLDR_(item,path,false));
     if not Assigned(result) then begin

@@ -30,7 +30,7 @@ implementation
 // @prm PathKIND тип "пути поиска"
 function srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crtRelPATH_callBACK):tSrcTree_fsFLDR;
 begin {todo: мож проверки добавить}
-    result:=SrcTree_getRelPATH(ROOT,DirNAME,crtFnc);
+    result:=SrcTree_getPathREL(ROOT,DirNAME,crtFnc);
     {$ifDef _debug_}DEBUG('srcTree_builder_add_SearchPATH_DirNAME',Assigned2OK(result)+' PathKIND="'+SrcTree_SrchPathKIND_2_Text(PathKIND)+'"'+' DirNAME="'+DirNAME+'"');{$endIf}
     if Assigned(result) then begin
         //--- добавим найденному ТИП пути

@@ -20,7 +20,10 @@ implementation
 
 function SrcTree_fndPath(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
-    if srcTree_fsFnk_FilenameIsAbsolute(path)
+    {$ifOpt D+}
+      Assert(Assigned(item),'item Is NIL');
+    {$endIf}
+    if srcTree_fsFnk_pathIsAbsolute(path)
     then result:=SrcTree_fndPathABS(item,path)
     else result:=SrcTree_fndPathREL(item,path);
 end;

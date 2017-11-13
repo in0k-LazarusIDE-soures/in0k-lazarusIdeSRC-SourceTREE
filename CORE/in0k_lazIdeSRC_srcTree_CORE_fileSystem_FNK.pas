@@ -9,6 +9,10 @@ uses
   FileUtil,LazFileUtils;
 
 
+function srcTree_fsFnk_pathIsAbsolute(const path:string):boolean; inline;
+function srcTree_fsFnk_pathIsRelative(const path:string):boolean; inline;
+
+
 function srcTree_fsFnk_AppendPathDelim(const Path: string):string; inline;
 function srcTree_fsFnk_ChompPathDelim (const Path: string):string; inline;
 function srcTree_fsFnk_ConcatPaths    (const PathA, PathB: string):string; inline;
@@ -20,8 +24,6 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inlin
 function srcTree_fsFnk_ExtractFilePath(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
-function srcTree_fsFnk_FilenameIsAbsolute (const TheFilename:string):boolean; inline;
-function srcTree_fsFnk_FilenameIsRelative (const TheFilename:string):boolean; inline;
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean; inline;
 
 function srcTree_fsFnk_FileIsText(const AFilename: string): boolean; inline;
@@ -50,6 +52,30 @@ function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean; 
 
 
 implementation
+
+function srcTree_fsFnk_pathIsAbsolute(const path:string):boolean;
+begin
+    {$ifOpt D+}
+        Assert(NOT srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends With `DirectorySeparator`.');
+    {$endIf}
+    result:=FilenameIsAbsolute(path);
+end;
+
+function srcTree_fsFnk_pathIsRelative(const path:string):boolean;
+begin
+    {$ifOpt D+}
+        Assert(NOT srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends With `DirectorySeparator`.');
+    {$endIf}
+    result:=not FilenameIsAbsolute(path);
+    {$ifOpt D+}{$IFDEF Windows}
+        if result then Assert(NOT srcTree_fsFnk_startsWithDirectorySeparator(path),'`path` starts WithOUT `DirectorySeparator`.');
+    {$endIf}{$endIf}
+end;
+
+//------------------------------------------------------------------------------
+
+
+
 
 function srcTree_fsFnk_AppendPathDelim(const Path: string):string; inline;
 begin
@@ -102,18 +128,6 @@ begin
 end;
 
 
-function srcTree_fsFnk_FilenameIsAbsolute(const TheFilename:string):boolean;
-begin
-    result:=FilenameIsAbsolute(TheFilename);
-end;
-
-function srcTree_fsFnk_FilenameIsRelative(const TheFilename:string):boolean;
-begin
-    result:=not FilenameIsAbsolute(TheFilename);
-    {$ifOpt D+}{$IFDEF Windows}
-        Assert(NOT srcTree_fsFnk_startsWithDirectorySeparator(TheFilename),'`TheFilename` starts With `DirectorySeparator`.');
-    {$endIf}{$endIf}
-end;
 
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean;
 begin

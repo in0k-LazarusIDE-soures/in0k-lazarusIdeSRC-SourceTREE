@@ -22,7 +22,7 @@ function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):tSrcTr
 var fldr:_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}Assert(Assigned(item)); {$endIf}
-    if srcTree_fsFnk_FilenameIsAbsolute(fileName)
+    if srcTree_fsFnk_pathIsAbsolute(fileName)
     then result:=SrcTree_fndFileABS(item,fileName)
     else result:=SrcTree_fndFileREL(item,fileName);
 end;

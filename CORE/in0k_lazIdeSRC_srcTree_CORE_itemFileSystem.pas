@@ -134,7 +134,7 @@ end;
 
 function _tStcTree_item_fsNode_.__src_isABSOLUTE__:boolean;
 begin
-    result:=srcTree_fsFnk_FilenameIsAbsolute(__src_getPath__);
+    result:=srcTree_fsFnk_pathIsAbsolute(__src_getPath__);
 end;  *)
 
 //------------------------------------------------------------------------------
