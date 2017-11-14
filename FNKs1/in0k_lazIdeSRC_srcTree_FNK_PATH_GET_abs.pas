@@ -6,11 +6,12 @@ interface
 
 uses
   in0k_lazIdeSRC_srcTree_CORE_item,
-  in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
-  in0k_lazIdeSRC_srcTree_item_Globals,
-  in0k_lazIdeSRC_srcTree_item_fsFolder,
-  //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
+  in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
+  //---
+  in0k_lazIdeSRC_srcTree_item_fsFolder,
+  in0k_lazIdeSRC_srcTree_item_Globals,
+  //---
   in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND,
   in0k_lazIdeSRC_srcTree_FNK_PATH_GET_rel,
   in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs;
