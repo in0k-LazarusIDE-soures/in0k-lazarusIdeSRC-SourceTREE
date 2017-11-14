@@ -40,10 +40,10 @@ begin
                     // это РОДИЕЛЬСКАЯ по отношению к path
                     // будем искать в ней ОТНОСИТЕЛЬНЫЙ путь
                     if tmp is tSrcTree_BASE
-                    then SrcTree_fndPathREL(tSrcTree_BASE(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_BASE(tmp).fsPath))
+                    then result:=SrcTree_fndPathREL(tSrcTree_BASE(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_BASE(tmp).fsPath))
                    else
                     if tmp is tSrcTree_fsFLDR
-                    then SrcTree_fndPathREL(tSrcTree_fsFLDR(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_fsFLDR(tmp).fsPath));
+                    then result:=SrcTree_fndPathREL(tSrcTree_fsFLDR(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_fsFLDR(tmp).fsPath));
                  end;
             end;
         end
