@@ -26,7 +26,6 @@ function SrcTree_setBaseDIR(const item:tSrcTree_ROOT; const baseDir:string; cons
 function SrcTree_setBaseDIR(const item:tSrcTree_ROOT; const baseDir:string; const crtFnc:mSrcTree_getBaseDIR_crtBaseDIR):tSrcTree_BASE;
 {$i in0k_lazIdeSRC_srcTree_FNK_setBaseDIR.inc}
 
-
 procedure SrcTree_setBaseDIR(const item:tSrcTree_ROOT; const baseDir:string; const crtFnc:fSrcTree_getBaseDIR_crtBaseDIR);
 begin
     SrcTree_setBaseDIR(item,baseDir,crtFnc);

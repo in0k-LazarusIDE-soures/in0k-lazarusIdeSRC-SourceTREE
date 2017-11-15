@@ -1,6 +1,6 @@
 //in0k_srcTree_addNodeFILE
 //function SrcTree_addNodeFILE(const item:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType; const crtFnc:fSrcTree_addNodeFILE_crtNodeFILE; const crtRelPATH:fSrcTree_crtRelPATH_callBACK):tSrcTree_fsFILE;
-var tmp:tSrcTree_fsFLDR;
+var tmp:_tSrcTree_item_fsNodeFLDR_;
 begin
     result:=SrcTree_fndFileREL(item, fileName);
     if not Assigned(result) then begin

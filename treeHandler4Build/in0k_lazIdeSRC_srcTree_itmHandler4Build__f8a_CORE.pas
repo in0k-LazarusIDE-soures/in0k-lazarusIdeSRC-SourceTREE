@@ -20,8 +20,17 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
         in0k_lazIdeSRC_DEBUG,
         sysutils,
      {$endIf}
-  Classes,       CodeToolManager,
-       in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
+  Classes,
+
+  in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
+  in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
+
+
+        CodeToolManager,
+
+
+
+
                                   DefineTemplates,
   PackageIntf,       ProjectIntf,
   CodeCache,   LazIDEIntf, // codetool,
@@ -149,7 +158,7 @@ end;
 function tSrcTree_itmHandler4Build__f8a_CORE._prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
 var i:integer;
     j:integer;
-  itm:tSrcTree_fsFILE;
+  itm:_tSrcTree_item_fsNodeFILE_;
    fn:string;
    ft:TPkgFileType;
 

@@ -20,6 +20,9 @@ implementation
 
 // спускаемся ВГЛУБЬ до папки (ниже НЕ идем)
 // ищем полное соответствие "путей"
+// @prm item    начальная
+// @prm path    искомый путь
+// @prm withRel провести ОТНОСИТЕЛЬНЫЙ поиск
 function _fndPath_inFirstFLDR_(const item:tSrcTree_item; const path:string; const withRel:boolean):tSrcTree_item;
 var tmp:tSrcTree_item;
 begin
@@ -31,7 +34,7 @@ begin
     tmp   :=item.ItemCHLD;
     while Assigned(tmp) do begin
         if tmp is _tSrcTree_item_fsNodeFLDR_ then begin // обработка узла "ДИРЕКТОРИЯ"
-            if srcTree_fsFnk_CompareFilenames(path,_tSrcTree_item_fsNodeFLDR_(tmp).fsPath)=0
+            if srcTree_fsFnk_namesIdentical(path,_tSrcTree_item_fsNodeFLDR_(tmp).fsPath)
             then result:=tmp // прямое попадание ... нашли
             else begin
                 if withRel and //< просят искать ОТНОСИТЕЛЬНЫЙ тоже

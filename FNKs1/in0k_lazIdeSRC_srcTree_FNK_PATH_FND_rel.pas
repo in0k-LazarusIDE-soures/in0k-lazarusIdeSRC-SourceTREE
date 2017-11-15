@@ -40,7 +40,7 @@ begin {todo: уйти от РЕКУРСИИ?}
             result:=nil;
             while Assigned(tmp) do begin
                 if (tmp is _tSrcTree_item_fsNodeFLDR_) and
-                   (0=srcTree_fsFnk_CompareFilenames(str,_tSrcTree_item_fsNodeFLDR_(tmp).fsName))
+                   srcTree_fsFnk_namesIdentical(str,_tSrcTree_item_fsNodeFLDR_(tmp).fsName)
                 then begin
                     result:=_tSrcTree_item_fsNodeFLDR_(tmp);
                     BREAK;

@@ -39,6 +39,9 @@ function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string; const CaseS
 function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string): integer; overload; inline;
 
 
+function srcTree_fsFnk_namesIdentical(const name1,name2:string):boolean;
+
+
 function srcTree_fsFnk_CleanAndExpandFilename(const Filename: string): string; inline;// empty string returns current directory
 
 
@@ -147,6 +150,11 @@ end;
 function srcTree_fsFnk_CompareFilenames(const Filename1,Filename2:string):integer;
 begin
     result:=CompareFilenames(Filename1,Filename2);
+end;
+
+function srcTree_fsFnk_namesIdentical(const name1,name2:string):boolean;
+begin
+    result:=0=srcTree_fsFnk_CompareFilenames(name1,name2);
 end;
 
 function srcTree_fsFnk_CompareFileExt(const Filename, Ext: string; const CaseSensitive: boolean): integer;

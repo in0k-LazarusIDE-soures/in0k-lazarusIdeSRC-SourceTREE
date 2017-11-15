@@ -6,6 +6,7 @@ interface
 
 uses
   PackageIntf,
+  in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_CORE_itemFileSystem;
 
 type
@@ -20,6 +21,9 @@ type
     constructor Create(const Text:string); override;
   end;
 
+
+procedure SrcTree_fsFILE__set_FileKIND(const item:tSrcTree_fsFILE; const fileType:TPkgFileType);
+
 implementation
 
 constructor tSrcTree_fsFILE.Create(const Text:string);
@@ -31,6 +35,12 @@ constructor tSrcTree_fsFILE.Create(const Text:string; const FileType:TPkgFileTyp
 begin
     inherited Create(Text);
    _fileType_:=FileType;
+end;
+
+procedure SrcTree_fsFILE__set_FileKIND(const item:tSrcTree_fsFILE; const fileType:TPkgFileType);
+begin
+   {$ifOpt D+}Assert(Assigned(item));{$endIf}
+   item._fileType_:=fileType;
 end;
 
 end.

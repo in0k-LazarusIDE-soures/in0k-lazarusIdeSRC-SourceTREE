@@ -113,7 +113,7 @@ end;
 
 function tSrcTree_Builder_4Package.Add_PATH(const mOBJ:pointer; const ROOT:tSrcTree_ROOT; const Path:eSrcTree_SrchPath; const DirPath:string):tSrcTree_fsFLDR;
 begin
-    result:=srcTree_builder_add_SearchPATH_DirNAME(ROOT,DirPath,Path, @new_FLDR);
+    result:=tSrcTree_fsFLDR(srcTree_builder_add_SearchPATH_DirNAME(ROOT,DirPath,Path, @new_FLDR));
 
 end;
 
@@ -131,7 +131,7 @@ end;
 
 function tSrcTree_Builder_4Package.Add_FILE(const mOBJ:pointer; const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
 begin
-    result:=SrcTree_addNodeFILE(ROOT, fileName,fileKind, @new_FILE,@new_FLDR);
+    result:=tSrcTree_fsFILE(SrcTree_addNodeFILE(ROOT, fileName,fileKind, @new_FILE,@new_FLDR));
 end;
 
 function tSrcTree_Builder_4Package.Set_ITMs(const mOBJ:pointer; const ROOT:tSrcTree_ROOT):string;

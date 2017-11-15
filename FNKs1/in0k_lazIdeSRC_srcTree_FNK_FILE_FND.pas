@@ -14,11 +14,11 @@ uses
   in0k_lazIdeSRC_srcTree_FNK_FILE_FND_abs,
   in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel;
 
-function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):_tSrcTree_item_fsNodeFILE_;
 
 implementation
 
-function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):tSrcTree_fsFILE;
+function SrcTree_fndFile(const item:tSrcTree_ROOT; const fileName:string):_tSrcTree_item_fsNodeFILE_;
 var fldr:_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}Assert(Assigned(item)); {$endIf}

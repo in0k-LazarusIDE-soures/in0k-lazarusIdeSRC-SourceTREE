@@ -129,7 +129,7 @@ end;}
 
 function tSrcTree_Builder_CORE.Crt_fsNodeFLDR(const folderName:string):tSrcTree_fsFLDR;
 begin
-    result:=tSrcTree_fsFLDR.Create(folderName);
+    result:=new_FLDR(folderName);
 end;
 
 {function tSrcTree_Builder_CORE._make_SourceTREE_root_(const MainOBJ:pointer):tSrcTree_ROOT;

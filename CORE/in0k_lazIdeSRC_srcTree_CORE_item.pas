@@ -52,6 +52,7 @@ procedure SrcTree_insert_itemAfte(const item:tSrcTree_item; const insertItem:tSr
 procedure SrcTree_insert_ChldFrst(const item:tSrcTree_item; const insertItem:tSrcTree_item);
 procedure SrcTree_insert_ChldLast(const item:tSrcTree_item; const insertItem:tSrcTree_item);
 procedure SrcTree_cut_From_Parent(const item:tSrcTree_item);
+procedure SrcTree_Copy_items_Text(const source,target:tSrcTree_item);
 
 implementation
 {%region --- возня с ДЕБАГОМ -------------------------------------- /fold}
@@ -222,6 +223,13 @@ begin
     {$IfOpt D+}Assert(Assigned(item));{$endIf}
     {$ifdef _debug_}DEBUG('SrcTree_re_set_itemTEXT','"'+item._item_Text_+'"'+'->'+'"'+newItemTXT+'"');{$endIf}
     item._item_Text_:=newItemTXT;
+end;
+
+procedure SrcTree_Copy_items_Text(const source,target:tSrcTree_item);
+begin
+    {$IfOpt D+}Assert(Assigned(source));{$endIf}
+    {$IfOpt D+}Assert(Assigned(target));{$endIf}
+    target._item_Text_:=source._item_Text_;
 end;
 
 end.

@@ -15,7 +15,7 @@ uses {$ifDef in0k_lazIdeSRC_srcTree___DEBUG}in0k_lazIdeSRC_DEBUG,{$endIf}
 type
 
   // элемент ФАЛОВОЙ системы (файлы, папки)
- _tStcTree_item_fsNode_=class(tSrcTree_item)
+ _tSrcTree_item_fsNode_=class(tSrcTree_item)
    protected
     function _get_ItemName_:string; override;
     function _get_ItemHint_:string; override;
@@ -29,10 +29,10 @@ type
     constructor Create(const Text:string); override;
    end;
 
- _tSrcTree_item_fsNodeFILE_=class(_tStcTree_item_fsNode_)
+ _tSrcTree_item_fsNodeFILE_=class(_tSrcTree_item_fsNode_)
    end;
 
- _tSrcTree_item_fsNodeFLDR_=class(_tStcTree_item_fsNode_)
+ _tSrcTree_item_fsNodeFLDR_=class(_tSrcTree_item_fsNode_)
    protected
     function _parentFLDR_beforeRoot_PRESENT_:boolean; {$ifOpt D-}inline;{$endIf}
    protected
@@ -46,6 +46,10 @@ type
    end;
 
 
+//procedure _tSrcTree_item_fsNodeFILE_COPY_(const source,target:_tSrcTree_item_fsNodeFILE_);
+//procedure _tSrcTree_item_fsNodeFLDR_COPY_(const source,target:_tSrcTree_item_fsNodeFLDR_);
+
+
 implementation
 {%region --- возня с ДЕБАГОМ -------------------------------------- /fold}
 {$if declared(in0k_lazIde_DEBUG)}
@@ -57,19 +61,19 @@ implementation
 {$endIf}
 {%endregion}
 
-constructor _tStcTree_item_fsNode_.Create(const Text:string);
+constructor _tSrcTree_item_fsNode_.Create(const Text:string);
 begin // навеное srcTree_fsFnk_ChompPathDelim это ЗЛО .. но что делать?
     inherited Create(srcTree_fsFnk_ChompPathDelim(Text));
 end;
 
 //------------------------------------------------------------------------------
 
-function _tStcTree_item_fsNode_._fsName_get_:string;
+function _tSrcTree_item_fsNode_._fsName_get_:string;
 begin
     result:=srcTree_fsFnk_ExtractFileName(_item_Text_);
 end;
 
-function _tStcTree_item_fsNode_._fsPath_get_:string;
+function _tSrcTree_item_fsNode_._fsPath_get_:string;
 var tmp:tSrcTree_item;
 begin
     result:='';
@@ -88,12 +92,12 @@ end;
 
 //------------------------------------------------------------------------------
 
-function _tStcTree_item_fsNode_._get_ItemName_:string;
+function _tSrcTree_item_fsNode_._get_ItemName_:string;
 begin
     result:=_fsName_get_;
 end;
 
-function _tStcTree_item_fsNode_._get_ItemHint_:string;
+function _tSrcTree_item_fsNode_._get_ItemHint_:string;
 begin
     result:=_fsPath_get_;
 end;
@@ -101,22 +105,22 @@ end;
 
 //------------------------------------------------------------------------------
 
-(*function _tStcTree_item_fsNode_.__src_getDirName__:string;
+(*function _tSrcTree_item_fsNode_.__src_getDirName__:string;
 begin
     result:=srcTree_fsFnk_ChompPathDelim(_src_getDirName_);
 end;
 
-function _tStcTree_item_fsNode_.__src_getDirName_abs_:string;
+function _tSrcTree_item_fsNode_.__src_getDirName_abs_:string;
 begin
     result:=srcTree_fsFnk_ChompPathDelim(_src_getDirName_abs_);
 end;
 
-function _tStcTree_item_fsNode_.__src_getObjName__:string;
+function _tSrcTree_item_fsNode_.__src_getObjName__:string;
 begin
     result:=srcTree_fsFnk_ChompPathDelim(_src_getObjName_)
 end;
 
-function _tStcTree_item_fsNode_.__src_getPath__:string;
+function _tSrcTree_item_fsNode_.__src_getPath__:string;
 begin
     if (__src_getDirName__<>'') and (__src_getObjName__<>'')
     then result:=DirectorySeparator
@@ -124,7 +128,7 @@ begin
     result:=__src_getDirName__+result+__src_getObjName__;
 end;
 
-function _tStcTree_item_fsNode_.__src_getPath_abs_:string;
+function _tSrcTree_item_fsNode_.__src_getPath_abs_:string;
 begin
     if (__src_getDirName_abs_<>'') and (__src_getObjName__<>'')
     then result:=DirectorySeparator
@@ -132,20 +136,20 @@ begin
     result:=__src_getDirName_abs_+result+__src_getObjName__;
 end;
 
-function _tStcTree_item_fsNode_.__src_isABSOLUTE__:boolean;
+function _tSrcTree_item_fsNode_.__src_isABSOLUTE__:boolean;
 begin
     result:=srcTree_fsFnk_pathIsAbsolute(__src_getPath__);
 end;  *)
 
 //------------------------------------------------------------------------------
 
-(*function _tStcTree_item_fsNode_._src_getDirName_:string;
+(*function _tSrcTree_item_fsNode_._src_getDirName_:string;
 var tmp:tSrcTree_item;
 begin
     result:='';
-    //--- ищем родителя типа _tStcTree_item_fsNode_
+    //--- ищем родителя типа _tSrcTree_item_fsNode_
     tmp:=ItemPRNT;
-    while Assigned(tmp) and not(tmp is _tStcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
+    while Assigned(tmp) and not(tmp is _tSrcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
     //---
     if Assigned(tmp) then begin // ага ... есть таки у кого спросить
         if ItemPRNT is _tSrcTree_item_fsBaseDIR_ then result:=''
@@ -153,18 +157,18 @@ begin
             // тока в случае с fsNodeDIR берем его ПОЛНЫЙ путь
             if ItemPRNT is _tSrcTree_item_fsNodeFLDR_
             then result:=_tSrcTree_item_fsNodeFLDR_(ItemPRNT).src_PATH
-            else result:=_tStcTree_item_fsNode_   (ItemPRNT).src_DirName;
+            else result:=_tSrcTree_item_fsNode_   (ItemPRNT).src_DirName;
         end;
     end;
 end;
 
-function _tStcTree_item_fsNode_._src_getDirName_abs_:string;
+function _tSrcTree_item_fsNode_._src_getDirName_abs_:string;
 var tmp:tSrcTree_item;
 begin
     result:='';
-    //--- ищем родителя типа _tStcTree_item_fsNode_
+    //--- ищем родителя типа _tSrcTree_item_fsNode_
     tmp:=ItemPRNT;
-    while Assigned(tmp) AND not(tmp is _tStcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
+    while Assigned(tmp) AND not(tmp is _tSrcTree_item_fsNode_) do tmp:=tmp.ItemPRNT;
     //---
     if Assigned(tmp) then begin // ага ... есть таки у кого спросить
         if ItemPRNT is _tSrcTree_item_fsBaseDIR_ then result:=_tSrcTree_item_fsBaseDIR_(ItemPRNT).src_abs_PATH
@@ -172,19 +176,19 @@ begin
             // тока в случае с fsNodeDIR берем его ПОЛНЫЙ путь
             if ItemPRNT is _tSrcTree_item_fsNodeFLDR_
             then result:=_tSrcTree_item_fsNodeFLDR_(ItemPRNT).src_abs_PATH
-            else result:=_tStcTree_item_fsNode_    (ItemPRNT).src_abs_DirName;
+            else result:=_tSrcTree_item_fsNode_    (ItemPRNT).src_abs_DirName;
         end;
     end;
 end;
 
-function _tStcTree_item_fsNode_._src_getObjName_:string;
+function _tSrcTree_item_fsNode_._src_getObjName_:string;
 begin
     result:='';
 end;*)
 
 //------------------------------------------------------------------------------
 
-(*function _tStcTree_item_fsNode_._get_ItemHint_:string;
+(*function _tSrcTree_item_fsNode_._get_ItemHint_:string;
 begin
     result:=_fsPath_get_;
 end;*)

@@ -23,7 +23,8 @@ type
     property inSearchPATHs:sSrcTree_SrchPath read _SrchPaths_;
   end;
 
-procedure SrcTree_fsFolder__addSearhPATH(const item:tSrcTree_fsFLDR; SearchPATH:eSrcTree_SrchPath);
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const SearchPATH:eSrcTree_SrchPath);
+procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const SearchPATH:sSrcTree_SrchPath);
 
 implementation
 
@@ -54,20 +55,26 @@ end;
 
 {%endregion}
 
-procedure SrcTree_fsFolder__addSearhPATH(const item:tSrcTree_fsFLDR; SearchPATH:eSrcTree_SrchPath);
-begin
-    {$ifOpt D+}Assert(Assigned(item));{$endIf}
-    item._SrchPaths_:=item._SrchPaths_+[SearchPATH];
-end;
-
-//------------------------------------------------------------------------------
-
 function tSrcTree_fsFLDR._get_ItemHint_:string;
 begin
     result:=inherited _get_ItemHint_;
     if _SrchPaths_<>[] then begin
         result:=result+LineEnding+'SrchPaths:'+_SrchPaths__2__text_(_SrchPaths_);
 		end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const SearchPATH:eSrcTree_SrchPath);
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    item._SrchPaths_:=item._SrchPaths_+[SearchPATH];
+end;
+
+procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const SearchPATH:sSrcTree_SrchPath);
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    item._SrchPaths_:=SearchPATH;
 end;
 
 end.
