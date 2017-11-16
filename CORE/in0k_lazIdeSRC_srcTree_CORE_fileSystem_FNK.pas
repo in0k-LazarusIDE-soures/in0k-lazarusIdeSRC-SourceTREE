@@ -21,7 +21,7 @@ function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; U
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inline;
 
-function srcTree_fsFnk_ExtractFilePath(const FileName:string):string; inline;
+//function srcTree_fsFnk_ExtractFilePath(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean; inline;
@@ -35,6 +35,7 @@ function srcTree_fsFnk_TrimFilename(const AFilename:string):string; inline;
 function srcTree_fsFnk_ChangeFileExt(const aFileName,aExtension:string): string;
 
 function srcTree_fsFnk_CompareFilenames(const Filename1, Filename2: string): integer; inline;
+function srcTree_fsFnk_NamesEqual      (const name1,name2:string):boolean; inline;
 function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string; const CaseSensitive: boolean): integer; overload; inline;
 function srcTree_fsFnk_CompareFileExt  (const Filename, Ext: string): integer; overload; inline;
 
@@ -104,10 +105,10 @@ begin
 end;
 
 
-function srcTree_fsFnk_ExtractFilePath(const FileName:string):string;
+{function srcTree_fsFnk_ExtractFilePath(const FileName:string):string;
 begin
     result:=ExtractFilePath(FileName);
-end;
+end; }
 
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string;
 begin
@@ -150,6 +151,11 @@ end;
 function srcTree_fsFnk_CompareFilenames(const Filename1,Filename2:string):integer;
 begin
     result:=CompareFilenames(Filename1,Filename2);
+end;
+
+function srcTree_fsFnk_NamesEqual(const name1,name2:string):boolean;
+begin
+    result:=0=srcTree_fsFnk_CompareFilenames(name1,name2);
 end;
 
 function srcTree_fsFnk_namesIdentical(const name1,name2:string):boolean;

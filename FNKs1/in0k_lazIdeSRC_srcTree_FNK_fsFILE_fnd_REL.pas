@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel;
+unit in0k_lazIdeSRC_srcTree_FNK_fsFILE_fnd_REL;
 
 {$mode objfpc}{$H+}
 
@@ -12,14 +12,14 @@ uses
   in0k_lazIdeSRC_srcTree_item_Globals,
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
+  in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_REL;
 
 
-function SrcTree_fndFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const filePath:string):_tSrcTree_item_fsNodeFILE_;
 //
-function SrcTree_fndFileREL(const item: tSrcTree_fsFLDR;           const filePath:string):_tSrcTree_item_fsNodeFILE_;
-function SrcTree_fndFileREL(const item: tSrcTree_BASE;             const filePath:string):_tSrcTree_item_fsNodeFILE_;
-function SrcTree_fndFileREL(const item: tSrcTree_ROOT;             const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item: tSrcTree_fsFLDR;           const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item: tSrcTree_BASE;             const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item: tSrcTree_ROOT;             const filePath:string):_tSrcTree_item_fsNodeFILE_;
 
 implementation
 
@@ -40,12 +40,12 @@ end;
 //------------------------------------------------------------------------------
 
 // Поиск файла ОТНОСИТЕЛЬНО директории
-function SrcTree_fndFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item:_tSrcTree_item_fsNodeFLDR_; const filePath:string):_tSrcTree_item_fsNodeFILE_;
 begin
     {$ifOpt D+}Assert(Assigned(item),'item is NULL');{$endIf}
     {$ifOpt D+}Assert(srcTree_fsFnk_pathIsRelative(filePath),'not REL PATH');{$endIf}
     // ищем папку ОТНОСИТЕЛЬНО переданного item
-    result:=_tSrcTree_item_fsNodeFILE_(tSrcTree_item(SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(filePath))));
+    result:=_tSrcTree_item_fsNodeFILE_(tSrcTree_item(SrcTree_fndFsFldrREL(item,srcTree_fsFnk_ExtractFileDir(filePath))));
     // ищем сам файл внутри него
     if Assigned(result) then begin
         result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(tSrcTree_item(result)), srcTree_fsFnk_ExtractFileName(filePath));
@@ -55,31 +55,31 @@ end;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Поиск файла ОТНОСИТЕЛЬНО директории
-function SrcTree_fndFileREL(const item:tSrcTree_fsFLDR; const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item:tSrcTree_fsFLDR; const filePath:string):_tSrcTree_item_fsNodeFILE_;
 begin
     {$ifOpt D+}Assert(Assigned(item),'item is NULL');{$endIf}
     {$ifOpt D+}Assert(srcTree_fsFnk_pathIsRelative(filePath),'not REL PATH');{$endIf}
-    result:=SrcTree_fndFileREL(_tSrcTree_item_fsNodeFLDR_(item), filePath);
+    result:=SrcTree_fndFsFileREL(_tSrcTree_item_fsNodeFLDR_(item), filePath);
 end;
 
 // Поиск файла ОТНОСИТЕЛЬНО директории проэкта
-function SrcTree_fndFileREL(const item:tSrcTree_BASE; const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item:tSrcTree_BASE; const filePath:string):_tSrcTree_item_fsNodeFILE_;
 begin
     {$ifOpt D+}Assert(Assigned(item),'item is NULL');{$endIf}
     {$ifOpt D+}Assert(srcTree_fsFnk_pathIsRelative(filePath),'not REL PATH');{$endIf}
-    result:=SrcTree_fndFileREL(_tSrcTree_item_fsNodeFLDR_(item), filePath);
+    result:=SrcTree_fndFsFileREL(_tSrcTree_item_fsNodeFLDR_(item), filePath);
 end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Поиск файла ОТНОСИТЕЛЬНО "БАЗОВОЙ" директории проэкта
-function SrcTree_fndFileREL(const item:tSrcTree_ROOT; const filePath:string):_tSrcTree_item_fsNodeFILE_;
+function SrcTree_fndFsFileREL(const item:tSrcTree_ROOT; const filePath:string):_tSrcTree_item_fsNodeFILE_;
 begin
     {$ifOpt D+}Assert(Assigned(item),'item is NULL');{$endIf}
     {$ifOpt D+}Assert(srcTree_fsFnk_pathIsRelative(filePath),'not REL PATH');{$endIf}
     // ищем целевую директорию, ОТНОСИТЕЛЬНО базового пути,
     // поиск проводим ОТНОСИТЕЛЬНО её
-    result:=_tSrcTree_item_fsNodeFILE_(tSrcTree_item(SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(filePath))));
+    result:=_tSrcTree_item_fsNodeFILE_(tSrcTree_item(SrcTree_fndFsFldrREL(item,srcTree_fsFnk_ExtractFileDir(filePath))));
     // ищем сам файл внутри него
     if Assigned(result) then begin
         result:=_fndNodeFILE_(_tSrcTree_item_fsNodeFLDR_(tSrcTree_item(result)), srcTree_fsFnk_ExtractFileName(filePath));

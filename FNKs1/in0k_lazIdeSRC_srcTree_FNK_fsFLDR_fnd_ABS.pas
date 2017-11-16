@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs;
+unit in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_ABS;
 
 {$mode objfpc}{$H+}
 
@@ -12,9 +12,9 @@ uses
   in0k_lazIdeSRC_srcTree_item_fsFolder,
   in0k_lazIdeSRC_srcTree_item_Globals,
   //---
-  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
+  in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_REL;
 
-function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndFsFldrABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
 
 implementation
 
@@ -43,10 +43,10 @@ begin
                     // это РОДИЕЛЬСКАЯ по отношению к path
                     // будем искать в ней ОТНОСИТЕЛЬНЫЙ путь
                     if tmp is tSrcTree_BASE
-                    then result:=SrcTree_fndPathREL(tSrcTree_BASE(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_BASE(tmp).fsPath))
+                    then result:=SrcTree_fndFsFldrREL(tSrcTree_BASE(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_BASE(tmp).fsPath))
                    else
                     if tmp is tSrcTree_fsFLDR
-                    then result:=SrcTree_fndPathREL(tSrcTree_fsFLDR(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_fsFLDR(tmp).fsPath));
+                    then result:=SrcTree_fndFsFldrREL(tSrcTree_fsFLDR(tmp),srcTree_fsFnk_CreateRelativePath(path,tSrcTree_fsFLDR(tmp).fsPath));
                  end;
             end;
         end
@@ -62,7 +62,7 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function SrcTree_fndPathABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndFsFldrABS(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}
       Assert(Assigned(item),'item Is NIL');

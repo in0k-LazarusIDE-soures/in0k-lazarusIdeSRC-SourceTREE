@@ -18,8 +18,8 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
-  in0k_lazIdeSRC_srcTree_FNK_PATH_FND_abs,
-  in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel,
+  in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_ABS,
+  //in0k_lazIdeSRC_srcTree_FNK_FILE_FND_rel,
   //---
   srcTree_handler_CORE,
   srcTree_handler_CORE_makeLIST,
@@ -92,7 +92,7 @@ procedure tSrcTree_itmHandler4Build__f8a_usesFile_itemStep._Processing_Unit_(con
 var fldr:_tSrcTree_item_fsNodeFLDR_;
     fTmp: tSrcTree_fsFILE;
 begin
-    fldr:= SrcTree_fndPathABS(_root_,srcTree_fsFnk_ExtractFileDir(fileName));
+    fldr:= SrcTree_fndFsFldrABS(_root_,srcTree_fsFnk_ExtractFileDir(fileName));
     if Assigned(fldr) then begin
         fTmp:=SrcTree_fndFileREL(fldr,fileName);
         if not Assigned(fTmp) then begin

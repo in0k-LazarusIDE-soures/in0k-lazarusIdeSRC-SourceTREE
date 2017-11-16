@@ -35,7 +35,8 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
         in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET,
         in0k_lazIdeSRC_srcTree_FNK_baseDIR_SET,
         in0k_lazIdeSRC_srcTree_FNK_mainFILE_SET,
-        in0k_lazIdeSRC_srcTree_FNK_nodeFILE_ADD,
+        in0k_lazIdeSRC_srcTree_FNK_fsFILE_ADD,
+        in0k_lazIdeSRC_srcTree_FNK_fsFILE_GET,
         in0k_lazIdeSRC_srcTree_FNK_srchPATH_ADD,
         //srcTree_fnd_relPATH,
 
@@ -131,7 +132,8 @@ end;
 
 function tSrcTree_Builder_4Package.Add_FILE(const mOBJ:pointer; const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
 begin
-    result:=tSrcTree_fsFILE(SrcTree_addNodeFILE(ROOT, fileName,fileKind, @new_FILE,@new_FLDR));
+    result:=tSrcTree_fsFILE(SrcTree_getFsFILE(ROOT, fileName,fileKind, @new_FILE,@new_FLDR));
+//    result:=tSrcTree_fsFILE(SrcTree_addNodeFILE(ROOT, fileName,fileKind, @new_FILE,@new_FLDR));
 end;
 
 function tSrcTree_Builder_4Package.Set_ITMs(const mOBJ:pointer; const ROOT:tSrcTree_ROOT):string;
@@ -152,7 +154,7 @@ begin
                 end;
             {$endIf}
             {$ifDef _DEBUG_}
-                DEBUG('Set_ITMs','add File'+'('+srcTree_ftPkg_PkgFileTypeToString(f.fileKIND)+':'+f.ClassName+')'+':'+'"'+f.fsPath+'"');
+                DEBUG('Set_ITMs','add File'+'('+srcTree_ftPkg_PkgFileTypeToString(f.fileKIND)+':'+f.ClassName+')'+':'+'"'+f.fsPath+'"'+' from:"'+fn+'"');
             {$endIf}
 
             {

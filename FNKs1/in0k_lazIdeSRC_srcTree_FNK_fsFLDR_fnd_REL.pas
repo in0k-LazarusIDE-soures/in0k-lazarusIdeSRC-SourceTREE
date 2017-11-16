@@ -1,4 +1,4 @@
-unit in0k_lazIdeSRC_srcTree_FNK_PATH_FND_rel;
+unit in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_REL;
 
 {$mode objfpc}{$H+}
 
@@ -14,14 +14,14 @@ uses
   //---
   in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND;
 
-function SrcTree_fndPathREL(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
-function SrcTree_fndPathREL(const item: tSrcTree_fsFLDR;           const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
-function SrcTree_fndPathREL(const item: tSrcTree_BASE;             const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
-function SrcTree_fndPathREL(const item: tSrcTree_ROOT;             const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndFsFldrREL(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndFsFldrREL(const item: tSrcTree_fsFLDR;           const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndFsFldrREL(const item: tSrcTree_BASE;             const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
+function SrcTree_fndFsFldrREL(const item: tSrcTree_ROOT;             const path:string):_tSrcTree_item_fsNodeFLDR_; overload;
 
 implementation
 
-function SrcTree_fndPathREL(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndFsFldrREL(const item:_tSrcTree_item_fsNodeFLDR_; const path:string):_tSrcTree_item_fsNodeFLDR_;
 var str:string;
     tmp:tSrcTree_item;
 begin {todo: уйти от РЕКУРСИИ?}
@@ -32,7 +32,7 @@ begin {todo: уйти от РЕКУРСИИ?}
     if path='' then result:=item // достигли КОРНЯ
     else begin
         // пытаемся найти родителя
-        result:=SrcTree_fndPathREL(item,srcTree_fsFnk_ExtractFileDir(path));
+        result:=SrcTree_fndFsFldrREL(item,srcTree_fsFnk_ExtractFileDir(path));
         if Assigned(result) then begin
             // ищем СВОЕ имя среди его детей
             str   :=srcTree_fsFnk_ExtractFileName(path); //< имя, которое мы исчем
@@ -53,31 +53,31 @@ end;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-function SrcTree_fndPathREL(const item:tSrcTree_fsFLDR; const path:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndFsFldrREL(const item:tSrcTree_fsFLDR; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}
       Assert(Assigned(item),'item Is NIL');
       Assert(srcTree_fsFnk_pathIsRelative(path),'path Is NOT relative.');
     {$endIf}
-    result:=SrcTree_fndPathREL(_tSrcTree_item_fsNodeFLDR_(item),path);
+    result:=SrcTree_fndFsFldrREL(_tSrcTree_item_fsNodeFLDR_(item),path);
 end;
 
-function SrcTree_fndPathREL(const item:tSrcTree_BASE; const path:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndFsFldrREL(const item:tSrcTree_BASE; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}
       Assert(Assigned(item),'item Is NIL');
       Assert(srcTree_fsFnk_pathIsRelative(path),'path Is NOT relative.');
     {$endIf}
-    result:=SrcTree_fndPathREL(_tSrcTree_item_fsNodeFLDR_(item),path);
+    result:=SrcTree_fndFsFldrREL(_tSrcTree_item_fsNodeFLDR_(item),path);
 end;
 
-function SrcTree_fndPathREL(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
+function SrcTree_fndFsFldrREL(const item:tSrcTree_ROOT; const path:string):_tSrcTree_item_fsNodeFLDR_;
 begin
     {$ifOpt D+}
       Assert(Assigned(item),'item Is NIL');
       Assert(srcTree_fsFnk_pathIsRelative(path),'path Is NOT relative.');
     {$endIf}
-    result:=SrcTree_fndPathREL(SrcTree_fndBaseDIR(item),path);
+    result:=SrcTree_fndFsFldrREL(SrcTree_fndBaseDIR(item),path);
 end;
 
 end.

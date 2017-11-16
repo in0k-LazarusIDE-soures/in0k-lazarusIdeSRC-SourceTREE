@@ -40,7 +40,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
   in0k_lazIdeSRC_srcTree_item_fsFile,
 
   in0k_lazIdeSRC_srcTree_CORE_filePkgType_FNK,
-  in0k_lazIdeSRC_srcTree_FNK_FILE_FND,
+  in0k_lazIdeSRC_srcTree_FNK_fsFILE_FND,
   //in0k_lazIdeSRC_srcTree_FNK_PATH_FND,
   in0k_lazIdeSRC_srcTree_FNK_rootFILE_FND,
 
@@ -82,7 +82,7 @@ type
     function _prc__make_InitFileList_:boolean;
     function _prc__execute_4FileItem_(const srcItem:tSrcTree_fsFILE):boolean;
     //function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
-    function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
+    //function _prc__fileName_Need_ADD_(const srcName:string):boolean; virtual;
   public
     function  Processing:boolean; override; // ВЫПОЛНИТЬ обработку
   public
@@ -173,14 +173,14 @@ begin
                 fn :=_rDATA_.FileNames.Strings[j];
                 if _file_4Use_(fn) then begin
                     {done: проверка что его НЕТ в ДЕРЕВЕ, ачтоно так?}
-                    itm:=SrcTree_fndFile(SrcTree_fndRootFILE(prcssdITEM), fn);
+                    itm:=SrcTree_fndFsFile(SrcTree_fndRootFILE(prcssdITEM), fn);
                     {$ifDef _localDBG__prc__execute_4FileItem_}
                         if not Assigned(itm) then
                         DEBUG('{'+self.ClassName+'}'+ ' NOT found File "'+fn+'"');
                     {$endIf}
-                    {if not Assigned(itm) then begin //< такого у нас еще НЕТ
+                    if not Assigned(itm) then begin //< такого у нас еще НЕТ
                         // если его НЕТ в ДЕРЕВЕ => его нет и в списке
-                        if true or _prc__fileName_Need_ADD_(fn) then begin
+                        if true {or _prc__fileName_Need_ADD_(fn)} then begin
                             // и его просят добавить
                             {done: ДОБАВЛЕНИЕ в ДереВО}
                             ft :=srcTree_ftPkg_FileNameToPkgFileType(fn);
@@ -189,17 +189,17 @@ begin
                             writeLOG('need ADD "'+_rDATA_.FileNames.Strings[j]+'"');
                            _ITEMs_.Add(itm);
                         end;
-                    end;}
+                    end;
                 end;
             end;
         end;
     end;
 end;
 
-function tSrcTree_itmHandler4Build__f8a_CORE._prc__fileName_Need_ADD_(const srcName:string):boolean;
+{function tSrcTree_itmHandler4Build__f8a_CORE._prc__fileName_Need_ADD_(const srcName:string):boolean;
 begin
     result:=false;
-end;
+end;}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
