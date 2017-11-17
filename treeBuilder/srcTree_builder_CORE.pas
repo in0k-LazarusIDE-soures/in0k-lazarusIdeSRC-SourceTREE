@@ -171,7 +171,7 @@ begin
     singlDir:=GetNextDirectoryInSearchPath(DirLIST,StartPos);
         while singlDir<>'' do begin
             tmpFLDR:=Add_PATH(mOBJ,ROOT,Path,singlDir);
-            {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH'+'('+tmpFLDR.ClassName+')'+':'+'"'+tmpFLDR.fsPath+'"');{$endIf}
+            {$ifDef _DEBUG_}DEBUG('MAKE_SourceTREE','add SrchPATH'+'('+tmpFLDR.ClassName+')'+':'+'"'+tmpFLDR.fsPath+'"'+' type['+SrcTree_fsFolder__SrchPTHs2TEXT(tmpFLDR)+']');{$endIf}
             //-->
             singlDir:=GetNextDirectoryInSearchPath(DirLIST,StartPos);
         end;

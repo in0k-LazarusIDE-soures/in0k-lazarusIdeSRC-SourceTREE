@@ -26,6 +26,9 @@ type
 procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const SearchPATH:eSrcTree_SrchPath);
 procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const SearchPATH:sSrcTree_SrchPath);
 
+function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
+
+
 implementation
 
 {%region --- inline functions ------------------------------------- /fold}
@@ -75,6 +78,13 @@ procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const Sear
 begin
     {$ifOpt D+}Assert(Assigned(item));{$endIf}
     item._SrchPaths_:=SearchPATH;
+end;
+
+//------------------------------------------------------------------------------
+
+function SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
+begin
+    result:=_SrchPaths__2__text_(item.inSearchPATHs);
 end;
 
 end.

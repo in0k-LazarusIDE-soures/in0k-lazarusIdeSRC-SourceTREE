@@ -23,7 +23,10 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
   in0k_lazIdeSRC_srcTree_FNK_fsFLDR_ADD,
   in0k_lazIdeSRC_srcTree_FNK_fsFLDR_get_REL;
 
-function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crt_FsFLDR_callBACK):_tSrcTree_item_fsNodeFLDR_;
+function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:fSrcTree_crt_FsFLDR_callBACK):_tSrcTree_item_fsNodeFLDR_;  overload;
+function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crt_FsFLDR_callBACK):_tSrcTree_item_fsNodeFLDR_;  overload;
+function  srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath):_tSrcTree_item_fsNodeFLDR_;                                             overload;
+
 procedure srcTree_builder_add_SearchPATH_DirLIST(const ROOT:tSrcTree_ROOT; const DirLIST:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crt_FsFLDR_callBACK);
 
 implementation
@@ -33,6 +36,20 @@ implementation
 // @prm DirNAME  название директории (путь в файловой системе)
 // @prm PathKIND тип "пути поиска"
 function srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:mSrcTree_crt_FsFLDR_callBACK):_tSrcTree_item_fsNodeFLDR_;
+begin {todo: мож проверки добавить}
+    result:=SrcTree_getFsFldrREL(ROOT,DirNAME,crtFnc);
+    {$ifDef _debug_}DEBUG('srcTree_builder_add_SearchPATH_DirNAME',Assigned2OK(result)+' PathKIND="'+SrcTree_SrchPathKIND_2_Text(PathKIND)+'"'+' DirNAME="'+DirNAME+'"');{$endIf}
+    if Assigned(result) then begin
+        //--- добавим найденному ТИП пути
+        SrcTree_fsFolder__addSearchPATH(tSrcTree_fsFLDR(result),PathKIND);
+    end;
+end;
+
+// добавить ПУТь поиска
+// @prm ROOT     куда именно добавляем
+// @prm DirNAME  название директории (путь в файловой системе)
+// @prm PathKIND тип "пути поиска"
+function srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath; const crtFnc:fSrcTree_crt_FsFLDR_callBACK):_tSrcTree_item_fsNodeFLDR_;
 begin {todo: мож проверки добавить}
     result:=SrcTree_getFsFldrREL(ROOT,DirNAME,crtFnc);
     {$ifDef _debug_}DEBUG('srcTree_builder_add_SearchPATH_DirNAME',Assigned2OK(result)+' PathKIND="'+SrcTree_SrchPathKIND_2_Text(PathKIND)+'"'+' DirNAME="'+DirNAME+'"');{$endIf}
@@ -58,6 +75,18 @@ begin
         //-->
         singlDir:=GetNextDirectoryInSearchPath(DirLIST,StartPos);
     end;
+end;
+
+//------------------------------------------------------------------------------
+
+function _crtFLDR_(const FolderPATH:string):tSrcTree_fsFLDR;
+begin
+    result:=tSrcTree_fsFLDR.Create(FolderPATH);
+end;
+
+function srcTree_builder_add_SearchPATH_DirNAME(const ROOT:tSrcTree_ROOT; const DirNAME:string; const PathKIND:eSrcTree_SrchPath):_tSrcTree_item_fsNodeFLDR_;
+begin
+    result:=srcTree_builder_add_SearchPATH_DirNAME(ROOT, DirNAME,PathKIND,@_crtFLDR_);
 end;
 
 end.
