@@ -33,7 +33,7 @@ type
 
   {УЗЕЛ по ОБРАБОТКе}
  tSrcTree_itmHandler=class(tSrcTree_Processing)
-  private // структурные моменты
+  protected // структурные моменты
    _OWNER_:tSrcTree_prcHandler; // САМЫЙ главный
    _PARNT_:tSrcTree_itmHandler; // родитель
     //function _get_toolHigher_:tSrcTree_itmHandler;
@@ -43,9 +43,9 @@ type
    _eDATA_:pointer;             // некие данные по обработке
 
   protected
-    function  Root   :tSrcTree_item;
-    function  Builder:tSrcTree_Builder_CORE;
-    function  LazOBJ :pointer;
+    function Root:tSrcTree_item;
+    //function  Builder:tSrcTree_Builder_CORE;
+    //function  LazOBJ :pointer;
   protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
@@ -94,8 +94,8 @@ type
      //procedure _doEvent_on_ERROR_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
    private
     _nodeRoot_:tSrcTree_item;
-    _builder_ :tSrcTree_Builder_CORE;
-    _laz_OBJ_ :pointer;
+    //_builder_ :tSrcTree_Builder_CORE;
+    //_laz_OBJ_ :pointer;
    private
      function  _EXECUTE_wasER_:boolean;
      function  _EXECUTE__NODE_(const Handler:tSrcTree_itmHandler; const eData:pointer; const eItem:tSrcTree_item):boolean;
@@ -111,7 +111,7 @@ type
      procedure _EXECUTE_; virtual;
    public
      constructor Create;
-     procedure  EXECUTE(const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
+     procedure  EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE;} const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 
 
@@ -159,20 +159,20 @@ end;}
 
 //------------------------------------------------------------------------------
 
-function tSrcTree_itmHandler.Builder:tSrcTree_Builder_CORE;
+{function tSrcTree_itmHandler.Builder:tSrcTree_Builder_CORE;
 begin
     result:=tSrcTree_prcHandler(_OWNER_)._builder_;
-end;
+end;}
 
 function tSrcTree_itmHandler.Root:tSrcTree_item;
 begin
    result:=tSrcTree_prcHandler(_OWNER_)._nodeRoot_;
 end;
 
-function tSrcTree_itmHandler.LazOBJ:pointer;
+{function tSrcTree_itmHandler.LazOBJ:pointer;
 begin
    result:=tSrcTree_prcHandler(_OWNER_)._laz_OBJ_;
-end;
+end;}
 
 //------------------------------------------------------------------------------
 
@@ -248,11 +248,11 @@ begin
 
 end;
 
-procedure tSrcTree_prcHandler.EXECUTE(const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE; const nodeRoot:tSrcTree_item);
+procedure tSrcTree_prcHandler.EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE;} const nodeRoot:tSrcTree_item);
 begin
-   _laz_OBJ_ :=LazOBJ;
+//   _laz_OBJ_ :=LazOBJ;
    _nodeRoot_:=nodeRoot;
-   _builder_ :=Builder;
+//   _builder_ :=Builder;
     //----
     writeLOG_BEGIN;
     writeLOG('nodeRoot('+nodeRoot.ClassName+')');

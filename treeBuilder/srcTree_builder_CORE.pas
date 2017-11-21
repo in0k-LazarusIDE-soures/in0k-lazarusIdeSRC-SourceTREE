@@ -22,18 +22,28 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
     //
     in0k_lazIdeSRC_srcTree_CORE_fromIDEProcs_FNK,
     in0k_lazIdeSRC_srcTree_FNK_baseDIR_FND,
-    in0k_lazIdeSRC_srcTree_FNK_mainFILE_FND;
+    in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET,
+    in0k_lazIdeSRC_srcTree_FNK_mainFILE_FND,
+    in0k_lazIdeSRC_srcTree_FNK_mainFILE_GET;
 
 
 type
 
- tSrcTree_Builder_CORE=class
+ tSrcTree_Builder_CORE_1=class
   protected
-    function new_ROOT(const name:string):tSrcTree_ROOT; virtual;
-    function new_Base(const name:string):tSrcTree_BASE; virtual;
-    function new_Main(const name:string):tSrcTree_MAIN; virtual;
-    function new_FLDR(const name:string):tSrcTree_fsFLDR; virtual;
-    function new_FILE(const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE; virtual;
+    function new_ROOT(const name:string):tSrcTree_ROOT;   virtual;
+    function new_Base(const path:string):tSrcTree_BASE;   virtual;
+    function new_Main(const name:string):tSrcTree_MAIN;   virtual;
+    function new_FLDR(const path:string; const kind:sSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
+    function new_FILE(const path:string; const kind:sSrcTree_FileType):tSrcTree_fsFILE; virtual;
+  public
+    function set_ROOT(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_ROOT;
+    function set_BASE(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_BASE;
+    function set_MAIN(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_MAIN;
+  end;
+
+
+ tSrcTree_Builder_CORE=class(tSrcTree_Builder_CORE_1)
   protected
     function Set_ROOT(const mOBJ:pointer                          ):tSrcTree_ROOT; virtual;
     function Set_Base(const mOBJ:pointer; const ROOT:tSrcTree_ROOT):tSrcTree_BASE; virtual;
@@ -51,7 +61,11 @@ type
   public
     function MAKE_SourceTREE(const MainOBJ:pointer):tSrcTree_ROOT;
   public
-    function Add_FILE(const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
+    //function Add_ROOT(const ROOT:tSrcTree_ROOT; const Name:string):tSrcTree_ROOT;
+    function Add_BASE(const ROOT:tSrcTree_ROOT; const Path:string):tSrcTree_BASE;
+    function Add_MAIN(const ROOT:tSrcTree_ROOT; const Name:string):tSrcTree_MAIN;
+    function Add_FILE(const ROOT:tSrcTree_ROOT; const Path:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
+    function Add_FLDR(const ROOT:tSrcTree_ROOT; const Path:string; const pathKing:eSrcTree_SrchPath):tSrcTree_fsFLDR;
   end;
 
 //type
@@ -96,30 +110,54 @@ begin
   // _mainOBJ_:=MainOBJ;
 end;}
 
-function tSrcTree_Builder_CORE.new_ROOT(const name:string):tSrcTree_ROOT;
+function tSrcTree_Builder_CORE_1.new_ROOT(const name:string):tSrcTree_ROOT;
 begin // чисто для примера! переОПРЕдЕЛИТЬ в наследниках!
-    result:=tSrcTree_ROOT(name);//NIL;//tSrcTree_ROOT.Create(rootName);
+    result:=tSrcTree_ROOT.Create(name);//NIL;//tSrcTree_ROOT.Create(rootName);
 end;
 
-function tSrcTree_Builder_CORE.new_Base(const name:string):tSrcTree_BASE;
+function tSrcTree_Builder_CORE_1.new_Base(const path:string):tSrcTree_BASE;
 begin // чисто для примера! переОПРЕдЕЛИТЬ в наследниках!
-    result:=tSrcTree_BASE(name);//nil;
+    result:=tSrcTree_BASE.Create(path);//nil;
 end;
 
-function tSrcTree_Builder_CORE.new_Main(const name:string):tSrcTree_MAIN;
+function tSrcTree_Builder_CORE_1.new_Main(const name:string):tSrcTree_MAIN;
 begin // чисто для примера! переОПРЕдЕЛИТЬ в наследниках!
-    result:=tSrcTree_MAIN(name);//nil;
+    result:=tSrcTree_MAIN.Create(name);//nil;
 end;
 
-function tSrcTree_Builder_CORE.new_FLDR(const name:string):tSrcTree_fsFLDR;
+function tSrcTree_Builder_CORE_1.new_FLDR(const path:string; const kind:sSrcTree_SrchPath):tSrcTree_fsFLDR;
 begin // чисто для примера! переОПРЕдЕЛИТЬ в наследниках!
-    result:=tSrcTree_fsFLDR.Create(name);//nil;
+    result:=tSrcTree_fsFLDR.Create(path,kind);
 end;
 
-function tSrcTree_Builder_CORE.new_FILE(const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
+function tSrcTree_Builder_CORE_1.new_FILE(const path:string; const kind:TPkgFileType):tSrcTree_fsFILE;
 begin
-    result:=tSrcTree_fsFILE.Create(fileName,fileKind);
+    result:=tSrcTree_fsFILE.Create(path,kind);
 end;
+
+//------------------------------------------------------------------------------
+
+function tSrcTree_Builder_CORE_1.set_ROOT(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_ROOT;
+begin
+    if Assigned(ROOT) then begin
+        result:=ROOT;
+        SrcTree_re_set_itemTEXT(result,name);
+    end
+    else begin
+        result:=new_ROOT(name);
+    end;
+end;
+
+function tSrcTree_Builder_CORE_1.set_BASE(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_BASE;
+begin
+    result:=SrcTree_fndBaseDIR(ROOT);
+    if not Assigned(result) then result:=
+end;
+
+function tSrcTree_Builder_CORE_1.set_MAIN(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_MAIN;
+
+
+
 
 
 {function tSrcTree_Builder_CORE.new_Base(const BaseDIR_PATH:string):tSrcTree_BASE;
@@ -242,9 +280,32 @@ end;
 
 //==============================================================================
 
+function tSrcTree_Builder_CORE.Add_ROOT(const ROOT:tSrcTree_ROOT; const Name:string):tSrcTree_ROOT;
+begin
+    result:=ROOT;
+    SrcTree_re_set_itemTEXT(result,Name);
+end;
+
+function tSrcTree_Builder_CORE.Add_BASE(const ROOT:tSrcTree_ROOT; const Path:string):tSrcTree_BASE;
+begin
+    result:=SrcTree_getBaseDIR(ROOT);
+    SrcTree_re_set_itemTEXT(result,Path);
+end;
+
+function tSrcTree_Builder_CORE.Add_MAIN(const ROOT:tSrcTree_ROOT; const Name:string):tSrcTree_MAIN;
+begin
+    result:=SrcTree_getMainFILE(ROOT,@new_Main,@new_Base);
+    SrcTree_re_set_itemTEXT(result,Path);
+end;
+
 function tSrcTree_Builder_CORE.Add_FILE(const ROOT:tSrcTree_ROOT; const fileName:string; const fileKind:TPkgFileType):tSrcTree_fsFILE;
 begin
     Add_FILE(nil, ROOT,fileName,fileKind);
+end;
+
+function tSrcTree_Builder_CORE.Add_FLDR(const ROOT:tSrcTree_ROOT; const folderPathName:string; const Path:eSrcTree_SrchPath):tSrcTree_fsFLDR;
+begin
+    Add_PATH(nil,ROOT,Path,folderPathName);
 end;
 
 

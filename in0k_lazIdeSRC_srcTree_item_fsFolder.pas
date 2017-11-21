@@ -18,13 +18,16 @@ type
   protected
     function _get_ItemHint_:string; override;
   protected
-   _SrchPaths_:sSrcTree_SrchPath;
+   _SrchPths_:sSrcTree_SrchPath;
   public
-    property inSearchPATHs:sSrcTree_SrchPath read _SrchPaths_;
+    property inSearchPATHs:sSrcTree_SrchPath read _SrchPths_;
+  public
+    constructor Create(const Text:string; const KIND:sSrcTree_SrchPath);
+    constructor Create(const Text:string); override;
   end;
 
-procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const SearchPATH:eSrcTree_SrchPath);
-procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const SearchPATH:sSrcTree_SrchPath);
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:eSrcTree_SrchPath);
+procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath);
 
 function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
 
@@ -58,26 +61,39 @@ end;
 
 {%endregion}
 
-function tSrcTree_fsFLDR._get_ItemHint_:string;
+constructor tSrcTree_fsFLDR.Create(const Text:string; const KIND:sSrcTree_SrchPath);
 begin
-    result:=inherited _get_ItemHint_;
-    if _SrchPaths_<>[] then begin
-        result:=result+LineEnding+'SrchPaths:'+_SrchPaths__2__text_(_SrchPaths_);
-		end;
+    inherited Create(Text);
+   _SrchPths_:=KIND;
+end;
+
+constructor tSrcTree_fsFLDR.Create(const Text:string);
+begin
+    Create(Text,[]);
 end;
 
 //------------------------------------------------------------------------------
 
-procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const SearchPATH:eSrcTree_SrchPath);
+function tSrcTree_fsFLDR._get_ItemHint_:string;
 begin
-    {$ifOpt D+}Assert(Assigned(item));{$endIf}
-    item._SrchPaths_:=item._SrchPaths_+[SearchPATH];
+    result:=inherited _get_ItemHint_;
+    if _SrchPths_<>[] then begin
+        result:=result+LineEnding+'SrchPaths:'+_SrchPaths__2__text_(_SrchPths_);
+		end;
 end;
 
-procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const SearchPATH:sSrcTree_SrchPath);
+//==============================================================================
+
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:eSrcTree_SrchPath);
 begin
     {$ifOpt D+}Assert(Assigned(item));{$endIf}
-    item._SrchPaths_:=SearchPATH;
+    item._SrchPths_:=item._SrchPths_+[value];
+end;
+
+procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath);
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    item._SrchPths_:=value;
 end;
 
 //------------------------------------------------------------------------------

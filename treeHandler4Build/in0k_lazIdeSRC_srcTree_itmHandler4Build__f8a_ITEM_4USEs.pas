@@ -15,6 +15,7 @@ uses
 
 
   in0k_lazIdeSRC_srcTree_textFunction__usesSection,
+  //in0k_lazIde_ Function__usesSection,
 
   in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_item_fsFile,
@@ -55,7 +56,8 @@ var untName:string;
 begin
     if srcTree_txtFnk__unitName_hazInToken(itemName, untName) then begin
         // лазарус САМ ищет этот файл ... гм ..
-        result:=LazarusIDE.FindUnitFile(untName,TObject(self.LazOBJ),[]);
+        {todo: ВЕРНУТЬ ОБРАТНО}
+        //result:= false ;//LazarusIDE.FindUnitFile(untName,TObject(self.LazOBJ),[]);
     end
     else result:=itemName;
 end;

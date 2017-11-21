@@ -28,7 +28,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
 
         CodeToolManager,
 
-
+  srcTree_handler4build_CORE,
 
 
                                   DefineTemplates,
@@ -69,7 +69,7 @@ type
   end;
 
   // ОБЩИЙ обработчик
- tSrcTree_itmHandler4Build__f8a_CORE=class(tSrcTree_itmHandler)
+ tSrcTree_itmHandler4Build__f8a_CORE=class(tSrcTree_itmHandler4Build)
   protected
    _ITEMs_:tList; // список файлов которые ЕЩЁ надо обработать
    _HNDLs_:tList; // список ОБРАБОТЧИКоВ
@@ -258,10 +258,10 @@ begin
                 DEBUG('{'+self.ClassName+'} '+ TLazProject(o).ProjectInfoFile +' have "'+fileName+'"');
             end;
             {$endIf}
-            if Assigned(o) and (o=tObject(self.LazOBJ)) then begin
+            {if Assigned(o) and (o=tObject(self.LazOBJ)) then begin
                 result:=false;
                 BREAK
-            end;
+            end; }
         end;
         Owners.Free;
     end;
