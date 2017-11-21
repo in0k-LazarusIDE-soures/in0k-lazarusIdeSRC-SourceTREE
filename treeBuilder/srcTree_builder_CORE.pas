@@ -37,6 +37,10 @@ type
     function new_FLDR(const path:string; const kind:sSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
     function new_FILE(const path:string; const kind:sSrcTree_FileType):tSrcTree_fsFILE; virtual;
   public
+    //function get_ROOT(const ROOT:tSrcTree_ROOT):tSrcTree_ROOT;
+    //function get_BASE(const ROOT:tSrcTree_ROOT):tSrcTree_BASE;
+    //function get_MAIN(const ROOT:tSrcTree_ROOT):tSrcTree_MAIN;
+  public
     function set_ROOT(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_ROOT;
     function set_BASE(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_BASE;
     function set_MAIN(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_MAIN;
@@ -137,6 +141,20 @@ end;
 
 //------------------------------------------------------------------------------
 
+{function tSrcTree_Builder_CORE_1.get_ROOT(const ROOT:tSrcTree_ROOT):tSrcTree_ROOT;
+begin
+    result:=ROOT;
+end;}
+
+{function tSrcTree_Builder_CORE_1.get_BASE(const ROOT:tSrcTree_ROOT):tSrcTree_BASE;
+begin
+    result:=SrcTree_fndBaseDIR(ROOT);
+end;}
+
+{function tSrcTree_Builder_CORE_1.get_MAIN(const ROOT:tSrcTree_ROOT):tSrcTree_MAIN;
+}
+
+
 function tSrcTree_Builder_CORE_1.set_ROOT(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_ROOT;
 begin
     if Assigned(ROOT) then begin
@@ -150,7 +168,9 @@ end;
 
 function tSrcTree_Builder_CORE_1.set_BASE(const ROOT:tSrcTree_ROOT; const name:string):tSrcTree_BASE;
 begin
-    result:=SrcTree_fndBaseDIR(ROOT);
+    result:=SrcTree_getBaseDIR//(ROOT,);
+
+
     if not Assigned(result) then result:=
 end;
 
