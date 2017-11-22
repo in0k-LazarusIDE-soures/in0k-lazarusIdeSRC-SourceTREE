@@ -8,7 +8,7 @@ begin
     {$endIf}
     result:=SrcTree_fndFsFileABS(item,Path);
     if not Assigned(result) then begin
-        result:=SrcTree_addFsFILE(SrcTree_getFsFldrABS(item,srcTree_fsFnk_ExtractFileDir(path),crtFLDR), Path,fileKind,crtFILE);
+        result:=SrcTree_addFsFILE(SrcTree_getFsFldrABS(item,srcTree_fsFnk_ExtractFileDir(path),crtFLDR), Path{,fileKind},crtFILE);
     end;
 end;
 

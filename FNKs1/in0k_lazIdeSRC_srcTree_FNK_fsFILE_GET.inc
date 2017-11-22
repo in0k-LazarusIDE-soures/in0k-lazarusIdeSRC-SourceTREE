@@ -4,7 +4,7 @@ begin
       Assert(Assigned(item),'item Is NIL');
     {$endIf}
     if srcTree_fsFnk_pathIsAbsolute(path)
-    then result:=SrcTree_getFsFileABS(item, path,fileKind, crtFILE,crtFLDR)
-    else result:=SrcTree_getFsFileREL(item, path,fileKind, crtFILE,crtFLDR);
+    then result:=SrcTree_getFsFileABS(item, path,{fileKind,} crtFILE,crtFLDR)
+    else result:=SrcTree_getFsFileREL(item, path,{fileKind,} crtFILE,crtFLDR);
 end;
 

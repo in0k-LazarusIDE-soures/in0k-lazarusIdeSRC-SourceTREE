@@ -26,7 +26,8 @@ type
     constructor Create(const Text:string); override;
   end;
 
-procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:eSrcTree_SrchPath);
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:eSrcTree_SrchPath); overload;
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath); overload;
 procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath);
 
 function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
@@ -88,6 +89,12 @@ procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const valu
 begin
     {$ifOpt D+}Assert(Assigned(item));{$endIf}
     item._SrchPths_:=item._SrchPths_+[value];
+end;
+
+procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath);
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    item._SrchPths_:=item._SrchPths_+value;
 end;
 
 procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const value:sSrcTree_SrchPath);

@@ -1,4 +1,4 @@
-unit srcTree_builder_4Package;
+unit in0k_lazIdeSRC_srcTree_4Package;
 
 {$mode objfpc}{$H+}
 
@@ -46,11 +46,32 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
 
 type
 
+ tSrcTree_Root4Package=class(tSrcTree_ROOT);
+ tSrcTree_Main4Package=class(tSrcTree_MAIN);
+
+
+
+
+
  tSrcTree_Builder_4Package=class(tSrcTree_Builder_CORE)
   protected
-    function new_ROOT(const name:string):tSrcTree_ROOT; override;
-    function new_Base(const name:string):tSrcTree_BASE; override;
-    function new_Main(const name:string):tSrcTree_MAIN; override;
+    function new_ROOT(const name:string):tSrcTree_ROOT;   override;
+    function new_Main(const name:string):tSrcTree_MAIN;   override;
+  end;
+
+ tSrcTree_Creater_4Package=class(tSrcTree_Creater)
+  protected
+    function  get_ROOT_name(const MainOBJ:pointer):string; override;
+    function  get_BASE_path(const MainOBJ:pointer):string; override;
+    function  get_MAIN_name(const MainOBJ:pointer):string; override;
+  protected
+    function  get_SrchPTHs (const MainOBJ:pointer; const kind:eSrcTree_SrchPath):string; override;
+    procedure set_FileITMs (const MainOBJ:pointer);override;
+
+  end;
+
+
+ (*
   protected
     //function Crt_BaseDIR (const MainOBJ:pointer; const ROOT:tSrcTree_ROOT):tSrcTree_BASE; override;
   protected
@@ -66,7 +87,7 @@ type
 
 
     //function _make_SourceTREE_root_(const MainOBJ:pointer):tSrcTree_ROOT; override;
-  end;
+  end; *)
 
 
 
@@ -83,11 +104,6 @@ begin
     result:=tSrcTree_Root4Package.Create(name);
 end;
 
-function tSrcTree_Builder_4Package.new_Base(const name:string):tSrcTree_BASE;
-begin
-    result:=tSrcTree_BASE.Create(name);
-end;
-
 function tSrcTree_Builder_4Package.new_Main(const name:string):tSrcTree_MAIN;
 begin
     result:=tSrcTree_Main4Package.Create(name);
@@ -95,6 +111,80 @@ end;
 
 //------------------------------------------------------------------------------
 
+function tSrcTree_Creater_4Package.get_ROOT_name(const MainOBJ:pointer):string;
+begin
+    result:=TIDEPackage(MainOBJ).Name;
+end;
+
+function tSrcTree_Creater_4Package.get_BASE_path(const MainOBJ:pointer):string;
+begin
+    result:=TIDEPackage(MainOBJ).DirectoryExpanded;
+end;
+
+function tSrcTree_Creater_4Package.get_MAIN_name(const MainOBJ:pointer):string;
+begin
+    result:=TIDEPackage(MainOBJ).Filename;
+end;
+
+//------------------------------------------------------------------------------
+
+function tSrcTree_Creater_4Package.get_SrchPTHs(const MainOBJ:pointer; const kind:eSrcTree_SrchPath):string;
+begin
+    case kind of
+        SrcTree_SrchPath__Fu: result:=TIDEPackage(MainOBJ).LazCompilerOptions.OtherUnitFiles;
+        SrcTree_SrchPath__Fi: result:=TIDEPackage(MainOBJ).LazCompilerOptions.IncludePath;
+        SrcTree_SrchPath__Fl: result:=TIDEPackage(MainOBJ).LazCompilerOptions.Libraries;
+        else result:='';
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_Creater_4Package.set_FileITMs(const MainOBJ:pointer);
+var i:integer;
+   fn:string;
+   ft:eSrcTree_FileType;
+begin
+    for i:=0 to TIDEPackage(MainOBJ).FileCount-1 do begin
+        with TIDEPackage(MainOBJ).Files[i] do begin
+            fn:=TIDEPackage(MainOBJ).Files[i].GetShortFilename(false);
+            ft:=srcTree_ftPkg_FileNameToPkgFileType(fn);
+            add_FileITEM(fn,ft)
+
+(*
+            f :=setAdd_FILE(mOBJ,ROOT, fn,ft);
+
+            {$ifDef _DEBUG_}
+                if ft<>TIDEPackage(mOBJ).Files[i].FileType then begin
+                    DEBUG('Set_ITMs','WRONG fileTypeINC [my].'+srcTree_ftPkg_PkgFileTypeToString(ft)+' vs '+srcTree_ftPkg_PkgFileTypeToString(TIDEPackage(mOBJ).Files[i].FileType)+ ' for '+'"'+fn+'"');
+                end;
+            {$endIf}
+            {$ifDef _DEBUG_}
+                DEBUG('Set_ITMs','add File'+'('+srcTree_ftPkg_PkgFileTypeToString(f.fileKIND)+':'+f.ClassName+')'+':'+'"'+f.fsPath+'"'+' from:"'+fn+'"');
+            {$endIf}
+
+            {todo: function TPackageEditorForm.OnTreeViewGetImageIndex(Str: String; Data: TObject; var AIsEnabled: Boolean): Integer; }
+
+            {
+                fldr:=tSrcTree_fsFLDR(SrcTreeROOT_fnd_relPATH(result,ExtractFileDir(S)));
+                DEBUG('addFile',Filename);
+                if Assigned(fldr) then begin
+                    flNd:=tSrcTree_fsFILE.Create(s,Package.Files[i].FileType);
+                    srcTree_builder_add_FileNode(result,fldr,flNd);
+    						end
+                else DEBUG('addFile','not found '+'"'+ExtractFileDir(S)+'"');
+    				end;
+    		end;    f   }*)
+
+        end;
+
+    end;
+end;
+
+
+
+//------------------------------------------------------------------------------
+(*
 function tSrcTree_Builder_4Package.Set_ROOT(const mOBJ:pointer):tSrcTree_ROOT;
 begin
     result:=new_ROOT(TIDEPackage(mOBJ).Name);
@@ -114,7 +204,7 @@ end;
 
 function tSrcTree_Builder_4Package.Add_PATH(const mOBJ:pointer; const ROOT:tSrcTree_ROOT; const Path:eSrcTree_SrchPath; const DirPath:string):tSrcTree_fsFLDR;
 begin
-    result:=tSrcTree_fsFLDR(srcTree_builder_add_SearchPATH_DirNAME(ROOT,DirPath,Path, @new_FLDR));
+    result:=tSrcTree_fsFLDR(srcTree_builder_add_SrchPATH(ROOT,DirPath,Path, @new_FLDR));
 
 end;
 
@@ -225,7 +315,7 @@ begin
     //--------------
     {$ifDef _DEBUG_}DEBUG('srcTree_builder_4Package_MAKE','END at '+DateTimeToStr(NOW));{$endIf}
     //--------------   *)
-end;}
+end;}   *)
 
 end.
 

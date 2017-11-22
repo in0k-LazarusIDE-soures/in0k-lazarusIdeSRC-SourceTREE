@@ -44,7 +44,7 @@ type
 
   protected
     function Root:tSrcTree_item;
-    //function  Builder:tSrcTree_Builder_CORE;
+    //function  Builder:tSrcTree_Builder4LazOBJ;
     //function  LazOBJ :pointer;
   protected
     procedure doEvent_onNoNeed(const message:string);
@@ -94,7 +94,7 @@ type
      //procedure _doEvent_on_ERROR_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
    private
     _nodeRoot_:tSrcTree_item;
-    //_builder_ :tSrcTree_Builder_CORE;
+    //_builder_ :tSrcTree_Builder4LazOBJ;
     //_laz_OBJ_ :pointer;
    private
      function  _EXECUTE_wasER_:boolean;
@@ -104,6 +104,7 @@ type
      function  _EXECUTE_4TREE_(const eParent:tSrcTree_itmHandler; const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer):boolean;
    protected
      procedure _EXECUTE_4ROOT_(const Handler:tSrcTree_itmHandler_TYPE);
+     procedure  EXECUTE_4TREE (const Handler:tSrcTree_itmHandler_TYPE);
    protected
      procedure _make_log_Start_;
      procedure _make_log_onEND_;
@@ -111,7 +112,7 @@ type
      procedure _EXECUTE_; virtual;
    public
      constructor Create;
-     procedure  EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE;} const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
+     procedure  EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder4LazOBJ;} const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 
 
@@ -159,7 +160,7 @@ end;}
 
 //------------------------------------------------------------------------------
 
-{function tSrcTree_itmHandler.Builder:tSrcTree_Builder_CORE;
+{function tSrcTree_itmHandler.Builder:tSrcTree_Builder4LazOBJ;
 begin
     result:=tSrcTree_prcHandler(_OWNER_)._builder_;
 end;}
@@ -248,7 +249,7 @@ begin
 
 end;
 
-procedure tSrcTree_prcHandler.EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder_CORE;} const nodeRoot:tSrcTree_item);
+procedure tSrcTree_prcHandler.EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder4LazOBJ;} const nodeRoot:tSrcTree_item);
 begin
 //   _laz_OBJ_ :=LazOBJ;
    _nodeRoot_:=nodeRoot;
@@ -384,6 +385,13 @@ var tmp:pointer;
 begin
     tmp:=nil;
    _EXECUTE_4NODE_(nil,Handler,tmp,_nodeRoot_);
+end;
+
+procedure tSrcTree_prcHandler.EXECUTE_4TREE(const Handler:tSrcTree_itmHandler_TYPE);
+var tmp:pointer;
+begin
+    tmp:=nil;
+   _EXECUTE_4TREE_(nil,Handler,tmp);
 end;
 
 //------------------------------------------------------------------------------

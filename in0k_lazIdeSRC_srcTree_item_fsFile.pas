@@ -11,7 +11,7 @@ uses
 
 type
 
- sSrcTree_FileType=TPkgFileType;
+ eSrcTree_FileType=TPkgFileType;
 
  tSrcTree_fsFILE=class(_tSrcTree_item_fsNodeFILE_)
   protected
@@ -19,7 +19,7 @@ type
   public
     property fileKIND:TPkgFileType read _fileType_;
   public
-    constructor Create(const Text:string; const KIND:sSrcTree_FileType); virtual;
+    constructor Create(const Text:string; const KIND:eSrcTree_FileType); virtual;
     constructor Create(const Text:string); override;
   end;
 
@@ -28,7 +28,7 @@ procedure SrcTree_fsFILE__set_FileKIND(const item:tSrcTree_fsFILE; const value:T
 
 implementation
 
-constructor tSrcTree_fsFILE.Create(const Text:string; const KIND:sSrcTree_FileType);
+constructor tSrcTree_fsFILE.Create(const Text:string; const KIND:eSrcTree_FileType);
 begin
     inherited Create(Text);
    _fileType_:=KIND;

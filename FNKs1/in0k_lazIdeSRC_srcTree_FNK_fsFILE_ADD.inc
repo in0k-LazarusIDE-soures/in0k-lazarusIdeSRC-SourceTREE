@@ -5,7 +5,7 @@ begin
       Assert(Path<>'','Path Is EMPTY.');
       Assert(Assigned(crtFILE),'crtFnc Is NIL.');
     {$endIf}
-    result:=crtFILE(path,fileKind);
+    result:=crtFILE(path{,fileKind});
     SrcTree_insert_ChldLast(item,result);
 end;
 
