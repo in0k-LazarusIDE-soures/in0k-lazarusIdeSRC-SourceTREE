@@ -223,7 +223,7 @@ function tSrcTree_Builder_CORE.add_FLDR(const ROOT:tSrcTree_ROOT; const path:str
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
     result:=tSrcTree_fsFLDR(SrcTree_getFsFLDR(ROOT,path,@new_FLDR));
-    if not (tObject(result) is tSrcTree_fsFILE) {todo: ПРОВЕИТЬ, сомнительно все это}
+    if not (tObject(result) is tSrcTree_fsFLDR) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL
     else begin
         SrcTree_fsFolder__addSearchPATH(result,kind);

@@ -5,6 +5,7 @@ unit in0k_lazIdeSRC_srcTree_item_fsFolder;
 interface
 
 uses
+  in0k_lazIdeSRC_srcTree_CORE_item,
   in0k_lazIdeSRC_srcTree_CORE_itemFileSystem;
 
 type
@@ -32,6 +33,7 @@ procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const valu
 
 function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
 
+function  SrcTree_fsFolder__fnd_PARENT(const item:tSrcTree_item):tSrcTree_fsFLDR;
 
 implementation
 
@@ -108,6 +110,18 @@ end;
 function SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
 begin
     result:=_SrchPaths__2__text_(item.inSearchPATHs);
+end;
+
+//------------------------------------------------------------------------------
+
+function SrcTree_fsFolder__fnd_PARENT(const item:tSrcTree_item):tSrcTree_fsFLDR;
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    result:=tSrcTree_fsFLDR(item.ItemPRNT);
+    while Assigned(result) do begin
+        if tSrcTree_item(result) is tSrcTree_fsFLDR then BREAK;
+        result:=tSrcTree_fsFLDR(result.ItemPRNT);
+    end;
 end;
 
 end.

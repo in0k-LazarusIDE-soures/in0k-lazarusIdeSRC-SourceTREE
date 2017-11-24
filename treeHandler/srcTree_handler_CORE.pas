@@ -111,7 +111,7 @@ type
    protected
      procedure _EXECUTE_; virtual;
    public
-     constructor Create;
+     constructor Create; virtual;
      procedure  EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder4LazOBJ;} const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 

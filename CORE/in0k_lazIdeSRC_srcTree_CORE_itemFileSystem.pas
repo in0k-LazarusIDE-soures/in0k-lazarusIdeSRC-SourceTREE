@@ -22,9 +22,11 @@ type
    protected
     function _fsName_get_:string; virtual;
     function _fsPath_get_:string; virtual;
+    function _fsBASE_get_:string; virtual;
    public
     property  fsName:string read _fsName_get_;
     property  fsPath:string read _fsPath_get_;
+    property  fsBase:string read _fsBASE_get_;
    public
     constructor Create(const Text:string); override;
    end;
@@ -37,12 +39,14 @@ type
     function _parentFLDR_beforeRoot_PRESENT_:boolean; {$ifOpt D-}inline;{$endIf}
    protected
     function _fsPath_get_:string; override;
+    function _fsBASE_get_:string; override;
    end;
 
  _tSrcTree_item_fsBaseDIR_=class(_tSrcTree_item_fsNodeFLDR_)
    protected
     function _get_ItemName_:string; override;
     function _fsPath_get_  :string; override;
+    function _fsBASE_get_  :string; override;
    end;
 
 
@@ -82,6 +86,23 @@ begin
     while Assigned(tmp) do begin
         if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
             result:=_tSrcTree_item_fsNodeFLDR_(tmp).fsPath; //< путь РОДИТелЯ
+            result:= srcTree_fsFnk_ConcatPaths(result, _fsName_get_);
+            //---
+            BREAK;
+        end;
+        tmp:=tmp.ItemPRNT;
+    end;
+end;
+
+function _tSrcTree_item_fsNode_._fsBASE_get_:string;
+var tmp:tSrcTree_item;
+begin
+    result:='';
+    //--- ищем родителя типа _tSrcTree_item_fsNodeFLDR_
+    tmp:=ItemPRNT;
+    while Assigned(tmp) do begin
+        if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
+            result:=_tSrcTree_item_fsNodeFLDR_(tmp).fsBase; //< путь РОДИТелЯ
             result:= srcTree_fsFnk_ConcatPaths(result, _fsName_get_);
             //---
             BREAK;
@@ -217,6 +238,31 @@ begin
     else result:= inherited;
 end;
 
+function _tSrcTree_item_fsNodeFLDR_._fsBASE_get_:string;
+var tmp:tSrcTree_item;
+begin
+    result:='';
+    tmp:=ItemPRNT;
+    while Assigned(tmp) do begin
+        if tmp is _tSrcTree_ROOT_ then begin
+            result:=self.fsPath;
+            BREAK
+        end
+       else
+        if tmp is _tSrcTree_item_fsBaseDIR_ then begin
+            result:=self.fsName;
+            BREAK
+        end
+       else
+        if tmp is _tSrcTree_item_fsNodeFLDR_ then begin
+            result:= srcTree_fsFnk_ConcatPaths(_tSrcTree_item_fsNodeFLDR_(tmp).fsBase,self.fsName);
+            BREAK
+        end;
+        //-->
+        tmp:=tmp.ItemPRNT;
+    end;
+end;
+
 (*function _tSrcTree_item_fsNodeFLDR_._src_getDirName_:string;
 begin
     result:=inherited;
@@ -265,6 +311,11 @@ end;
 function _tSrcTree_item_fsBaseDIR_._fsPath_get_:string;
 begin
     result:=_item_Text_;
+end;
+
+function _tSrcTree_item_fsBaseDIR_._fsBASE_get_:string;
+begin
+    result:='';
 end;
 
 end.
