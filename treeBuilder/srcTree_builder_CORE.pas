@@ -52,14 +52,16 @@ type
     function fnd_FLDR(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFLDR;
     function fnd_FILE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFILE;
   public
-    function set_BASE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_BASE;
-    function set_MAIN(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_MAIN;
+    function set_BASE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_BASE;                                 virtual;
+    function set_MAIN(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_MAIN;                                 virtual;
   public
-    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR;
-    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const KNDs:sSrcTree_SrchPath):tSrcTree_fsFLDR;
-    function add_FILE(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE;
+    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
+    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const KNDs:sSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
+    function add_FILE(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE; virtual;
   public
-    function crt_ROOT(const Name:string):tSrcTree_ROOT;
+    function crt_ROOT(const Name:string):tSrcTree_ROOT;                                                           virtual;
+  public
+    constructor Create;
   end;
 
  tSrcTree_Creater=class
@@ -149,6 +151,14 @@ implementation
 begin
   // _mainOBJ_:=MainOBJ;
 end;}
+
+
+constructor tSrcTree_Builder_CORE.Create;
+begin
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
 
 function tSrcTree_Builder_CORE.new_ROOT(const name:string):tSrcTree_ROOT;
 begin // чисто для примера! переОПРЕдЕЛИТЬ в наследниках!

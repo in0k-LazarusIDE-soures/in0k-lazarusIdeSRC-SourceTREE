@@ -30,7 +30,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
    in0k_lazIdeSRC_srcTree_item_fsFolder,
    in0k_lazIdeSRC_srcTree_item_fsFile,
 
-        srcTree_FNC,
+        //srcTree_FNC,
 
         in0k_lazIdeSRC_srcTree_FNK_baseDIR_GET,
         in0k_lazIdeSRC_srcTree_FNK_baseDIR_SET,
