@@ -92,7 +92,7 @@ type
      //procedure _doEvent_onNoNeed_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
      //procedure _doEvent_onPASSED_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
      //procedure _doEvent_on_ERROR_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
-   private
+   protected
     _nodeRoot_:tSrcTree_item;
     //_builder_ :tSrcTree_Builder4LazOBJ;
     //_laz_OBJ_ :pointer;
