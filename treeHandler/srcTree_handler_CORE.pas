@@ -43,14 +43,11 @@ type
    _eDATA_:pointer;             // некие данные по обработке
 
   protected
-    function Root:tSrcTree_item;
-    //function  Builder:tSrcTree_Builder4LazOBJ;
-    //function  LazOBJ :pointer;
-  protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
     procedure doEvent_on_ERROR(const message:string);
   protected
+    function executed_Root:tSrcTree_item; {$ifOpt D-}inline;{$endIf}
     function EXECUTE_4TREE(const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer):boolean;
     function EXECUTE_4NODE(const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer; eItem:tSrcTree_item):boolean;
     function EXECUTE_4NODE(const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer):boolean;
@@ -93,9 +90,7 @@ type
      //procedure _doEvent_onPASSED_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
      //procedure _doEvent_on_ERROR_(const Oprt:tSrcTree_itmHandler; const node:tCopyRAST_node; const MSG:string);
    protected
-    _nodeRoot_:tSrcTree_item;
-    //_builder_ :tSrcTree_Builder4LazOBJ;
-    //_laz_OBJ_ :pointer;
+    _execRoot_:tSrcTree_item;
    private
      function  _EXECUTE_wasER_:boolean;
      function  _EXECUTE__NODE_(const Handler:tSrcTree_itmHandler; const eData:pointer; const eItem:tSrcTree_item):boolean;
@@ -108,11 +103,12 @@ type
    protected
      procedure _make_log_Start_;
      procedure _make_log_onEND_;
+   public
+     constructor Create; virtual;
    protected
      procedure _EXECUTE_; virtual;
    public
-     constructor Create; virtual;
-     procedure  EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder4LazOBJ;} const nodeRoot:tSrcTree_item);// virtual;//(const eItem:tOperationNode_TYPE):boolean;
+     function   EXECUTE(const nodeRoot:tSrcTree_item):boolean; virtual;//(const eItem:tOperationNode_TYPE):boolean;
    end;
 
 
@@ -165,9 +161,9 @@ begin
     result:=tSrcTree_prcHandler(_OWNER_)._builder_;
 end;}
 
-function tSrcTree_itmHandler.Root:tSrcTree_item;
+function tSrcTree_itmHandler.executed_Root:tSrcTree_item;
 begin
-   result:=tSrcTree_prcHandler(_OWNER_)._nodeRoot_;
+   result:=tSrcTree_prcHandler(_OWNER_)._execRoot_;
 end;
 
 {function tSrcTree_itmHandler.LazOBJ:pointer;
@@ -238,7 +234,7 @@ constructor tSrcTree_prcHandler.Create;
 begin
    _doLog_onMISSED_:=false;
    _doLog_onNoNeed_:=false;
-   _nodeRoot_:=nil;
+   _execRoot_:=nil;
    _CNTs_CLN_;
 end;
 
@@ -246,18 +242,15 @@ end;
 
 procedure tSrcTree_prcHandler._EXECUTE_;
 begin
-
+    //result:=FALSE;
 end;
 
-procedure tSrcTree_prcHandler.EXECUTE({const LazOBJ:pointer; const Builder:tSrcTree_Builder4LazOBJ;} const nodeRoot:tSrcTree_item);
+function tSrcTree_prcHandler.EXECUTE(const nodeRoot:tSrcTree_item):boolean;
 begin
-//   _laz_OBJ_ :=LazOBJ;
-   _nodeRoot_:=nodeRoot;
-//   _builder_ :=Builder;
+   _execRoot_:=nodeRoot;
     //----
     writeLOG_BEGIN;
     writeLOG('nodeRoot('+nodeRoot.ClassName+')');
-    // _doLog_onMISSED_:=;
    _EXECUTE_;
     writeLOG_isEND;
 end;
@@ -268,8 +261,6 @@ function tSrcTree_prcHandler._create_OprNode_(const nodeType:tSrcTree_itmHandler
 begin
     result:=nodeType.Create(self,Parent);
     result.M4LOG:=Self.M4LOG;
-    //---
-    //result.
 end;
 
 
@@ -374,7 +365,7 @@ function tSrcTree_prcHandler._EXECUTE_4TREE_(const eParent:tSrcTree_itmHandler; 
 var Handler:tSrcTree_itmHandler;
 begin
     Handler:=tHandler.Create(self,eParent);
-    result :=_EXECUTE__TREE_(Handler,eData,_nodeRoot_);
+    result :=_EXECUTE__TREE_(Handler,eData,_execRoot_);
     Handler.FREE;
 end;
 
@@ -384,7 +375,7 @@ procedure tSrcTree_prcHandler._EXECUTE_4ROOT_(const Handler:tSrcTree_itmHandler_
 var tmp:pointer;
 begin
     tmp:=nil;
-   _EXECUTE_4NODE_(nil,Handler,tmp,_nodeRoot_);
+   _EXECUTE_4NODE_(nil,Handler,tmp,_execRoot_);
 end;
 
 procedure tSrcTree_prcHandler.EXECUTE_4TREE(const Handler:tSrcTree_itmHandler_TYPE);

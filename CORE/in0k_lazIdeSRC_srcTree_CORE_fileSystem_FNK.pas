@@ -21,6 +21,11 @@ function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; U
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inline;
 
+
+
+
+
+
 //function srcTree_fsFnk_ExtractFilePath(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
@@ -119,7 +124,6 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string;
 begin
     result:=ExtractFileNameOnly(AFilename);
 end;
-
 
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string;
 begin
