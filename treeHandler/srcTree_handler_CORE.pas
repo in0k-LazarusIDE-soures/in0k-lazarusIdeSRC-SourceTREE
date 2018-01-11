@@ -163,7 +163,10 @@ end;}
 
 function tSrcTree_itmHandler.executed_Root:tSrcTree_item;
 begin
-   result:=tSrcTree_prcHandler(_OWNER_)._execRoot_;
+    {$ifOpt D+}
+        Assert( Assigned(_OWNER_), ClassName+'._OWNER_===NIL' );
+    {$endIf}
+    result:=tSrcTree_prcHandler(_OWNER_)._execRoot_;
 end;
 
 {function tSrcTree_itmHandler.LazOBJ:pointer;

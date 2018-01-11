@@ -46,13 +46,6 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
 
 type
 
- tSrcTree_Root4Package=class(tSrcTree_ROOT);
- tSrcTree_Main4Package=class(tSrcTree_MAIN);
-
-
-
-
-
  tSrcTree_Builder_4Package=class(tSrcTree_Builder_CORE)
   protected
     function new_ROOT(const name:string):tSrcTree_ROOT;   override;

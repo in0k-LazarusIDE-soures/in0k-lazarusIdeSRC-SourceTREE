@@ -33,7 +33,7 @@ procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const valu
 
 function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
 
-function  SrcTree_fsFolder__fnd_PARENT(const item:tSrcTree_item):tSrcTree_fsFLDR;
+function  SrcTree_fsFolder__fnd_PARENT   (const item:tSrcTree_item):tSrcTree_fsFLDR;
 
 implementation
 
