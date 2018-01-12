@@ -60,7 +60,6 @@ type
   protected
     function  get_SrchPTHs (const MainOBJ:pointer; const kind:eSrcTree_SrchPath):string; override;
     procedure set_FileITMs (const MainOBJ:pointer);override;
-
   end;
 
 

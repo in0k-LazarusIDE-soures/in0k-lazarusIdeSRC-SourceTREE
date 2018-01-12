@@ -305,7 +305,7 @@ end;
 function tSrcTree_Creater.add_SrchPATH(const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR;
 begin
     result:=_builder_.add_FLDR(_rootOBJ_,path,kind);
-    {$ifDef _DEBUG_}DEBUG('add_SrchPATH','('+result.ClassName+')'+':'+'"'+result.fsPath+'"'+' type['+SrcTree_fsFolder__SrchPTHs2TEXT(tmpFLDR)+']'+' from:"'+path+'"');{$endIf}
+    {$ifDef _DEBUG_}DEBUG('add_SrchPATH','('+result.ClassName+')'+':'+'"'+result.fsPath+'"'+' type['+SrcTree_fsFolder__SrchPTHs2TEXT(result)+']'+' from:"'+path+'"');{$endIf}
 end;
 
 function tSrcTree_Creater.add_FileITEM(const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE;
@@ -319,7 +319,7 @@ begin
         end;
     {$endIf}
     {$ifDef _DEBUG_}
-        DEBUG('add_FileITEM','('+result.ClassName+')'+':'+'"'+result.fsPath+'"'+' type['+srcTree_ftPkg_PkgFileTypeToString(f.fileKIND)+']'+' from:"'+path+'"');
+        DEBUG('add_FileITEM','('+result.ClassName+')'+':'+'"'+result.fsPath+'"'+' type['+srcTree_ftPkg_PkgFileTypeToString(result.fileKIND)+']'+' from:"'+path+'"');
     {$endIf}
 
 end;
