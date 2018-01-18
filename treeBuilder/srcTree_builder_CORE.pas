@@ -63,6 +63,7 @@ type
   public
     constructor Create;
   end;
+ tSrcTree_Builder_TYPE=class Of tSrcTree_Builder_CORE;
 
  tSrcTree_Creater=class
   private
@@ -83,6 +84,8 @@ type
   public
     function MAKE_SourceTREE(const Builder:tSrcTree_Builder_CORE; const MainOBJ:pointer):tSrcTree_ROOT;
   end;
+
+ tSrcTree_Creater_TYPE=class Of tSrcTree_Creater;
 
  {tSrcTree_Builder4LazOBJ=class(tSrcTree_Builder_CORE)
   protected
