@@ -19,6 +19,8 @@ type
   public
     property fileKIND:TPkgFileType read _fileType_;
   public
+    procedure CopyData(const source:tSrcTree_item); override;
+  public
     constructor Create(const Text:string; const KIND:eSrcTree_FileType); virtual;
     constructor Create(const Text:string); override;
   end;
@@ -37,6 +39,15 @@ end;
 constructor tSrcTree_fsFILE.Create(const Text:string);
 begin
     Create(Text,pftBinary);
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_fsFILE.CopyData(const source:tSrcTree_item);
+begin
+    {$ifOpt D+}Assert(source is tSrcTree_fsFILE);{$endIf}
+    inherited;
+    self._fileType_:=tSrcTree_fsFILE(source)._fileType_;
 end;
 
 //==============================================================================

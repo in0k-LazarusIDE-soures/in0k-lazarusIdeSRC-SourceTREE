@@ -38,6 +38,9 @@ type
     property ItemNAME:string read _get_ItemName_; // название
     property ItemHINT:string read _get_ItemHint_; // описание
   public
+    procedure CopyData(const source:tSrcTree_item); virtual;
+  public
+    constructor Create;                    virtual;
     constructor Create(const Text:string); virtual;
     destructor DESTROY; override;
   end;
@@ -65,12 +68,18 @@ implementation
 {$endIf}
 {%endregion}
 
+constructor tSrcTree_item.Create;
+begin
+   _item_Text_:='';
+   _prnt_:=nil;
+   _next_:=nil;
+   _chld_:=nil;
+end;
+
 constructor tSrcTree_item.Create(const Text:string);
 begin
+    Create;
    _item_Text_:=Text;
-   _prnt_    :=nil;
-   _next_    :=nil;
-   _chld_    :=nil;
 end;
 
 destructor tSrcTree_item.DESTROY;
@@ -89,6 +98,13 @@ begin
    _prnt_    :=nil;
    _next_    :=nil;
    _chld_    :=nil;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_item.CopyData(const source:tSrcTree_item);
+begin
+    self._item_Text_:=source._item_Text_;
 end;
 
 //------------------------------------------------------------------------------
@@ -225,7 +241,7 @@ begin
     item._item_Text_:=newItemTXT;
 end;
 
-procedure SrcTree_Copy_items_Text(const source,target:tSrcTree_item);
+procedure SrcTree_Copy_items_Text(const source,target:tSrcTree_item); deprecated 'use target.CopyData(source)';
 begin
     {$IfOpt D+}Assert(Assigned(source));{$endIf}
     {$IfOpt D+}Assert(Assigned(target));{$endIf}

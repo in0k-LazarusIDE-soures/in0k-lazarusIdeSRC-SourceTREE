@@ -30,7 +30,6 @@ type
     constructor Create;
   end;
 
-
 implementation
 
 {%region --- возня с ДЕБАГОМ -------------------------------------- /fold}

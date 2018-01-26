@@ -25,6 +25,8 @@ type
   public
     constructor Create(const Text:string; const KIND:sSrcTree_SrchPath);
     constructor Create(const Text:string); override;
+  public
+    procedure CopyData(const source:tSrcTree_item); override;
   end;
 
 procedure SrcTree_fsFolder__addSearchPATH(const item:tSrcTree_fsFLDR; const value:eSrcTree_SrchPath); overload;
@@ -83,6 +85,15 @@ begin
     if _SrchPths_<>[] then begin
         result:=result+LineEnding+'SrchPaths:'+_SrchPaths__2__text_(_SrchPths_);
 		end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_fsFLDR.CopyData(const source:tSrcTree_item);
+begin
+    {$ifOpt D+}Assert(source is tSrcTree_fsFLDR);{$endIf}
+    inherited;
+    self._SrchPths_:=tSrcTree_fsFLDR(source)._SrchPths_;
 end;
 
 //==============================================================================
