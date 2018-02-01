@@ -19,6 +19,7 @@ function srcTree_fsFnk_ConcatPaths    (const PathA, PathB: string):string; inlin
 
 function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; UsePointDirectory:boolean=false; AlwaysRequireSharedBaseFolder:Boolean=True):string; inline;
 function srcTree_fsFnk_ExtractFirstDIR(const FileName:string):string; inline;
+function srcTree_fsFnk_ExtractFileDrive(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inline;
 
@@ -163,6 +164,12 @@ begin
     //
    _test_(aDRV, FileName,result);
 end;
+
+function srcTree_fsFnk_ExtractFileDrive(const FileName:string):string;
+begin
+    result:=ExtractFileDrive(FileName);
+end;
+
 
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string;
 begin

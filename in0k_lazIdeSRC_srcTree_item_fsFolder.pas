@@ -36,6 +36,7 @@ procedure SrcTree_fsFolder__set_SrchPATHs(const item:tSrcTree_fsFLDR; const valu
 function  SrcTree_fsFolder__SrchPTHs2TEXT(const item:tSrcTree_fsFLDR):string;
 
 function  SrcTree_fsFolder__fnd_PARENT   (const item:tSrcTree_item):tSrcTree_fsFLDR;
+function  SrcTree_fsFolder__fnd_TOP      (const item:_tSrcTree_item_fsNodeFLDR_):_tSrcTree_item_fsNodeFLDR_;
 
 implementation
 
@@ -133,6 +134,18 @@ begin
         if tSrcTree_item(result) is tSrcTree_fsFLDR then BREAK;
         result:=tSrcTree_fsFLDR(result.ItemPRNT);
     end;
+end;
+
+function SrcTree_fsFolder__fnd_TOP(const item:_tSrcTree_item_fsNodeFLDR_):_tSrcTree_item_fsNodeFLDR_;
+begin
+    {$ifOpt D+}Assert(Assigned(item));{$endIf}
+    result:=item;//tSrcTree_fsFLDR(item.ItemPRNT);
+    while Assigned(result) do begin
+        if not ( tSrcTree_item(result.ItemPRNT) is tSrcTree_fsFLDR )
+        then BREAK;
+        result:=tSrcTree_fsFLDR(result.ItemPRNT);
+    end;
+
 end;
 
 end.

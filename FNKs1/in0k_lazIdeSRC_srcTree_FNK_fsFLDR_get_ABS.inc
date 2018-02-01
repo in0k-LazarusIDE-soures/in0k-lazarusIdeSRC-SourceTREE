@@ -17,7 +17,7 @@ begin
         if not Assigned(result) then begin
             // таки НАДО создавать ... и вставлять ПРЯМО в КОРЕНЬ !!!
             result:=tSrcTree_fsFLDR(SrcTree_fndFsFldrABS(item,srcTree_fsFnk_ExtractFirstDIR(path)));
-            if NOT Assigned(result) then SrcTree_add_FsFLDR(item,srcTree_fsFnk_ExtractFirstDIR(path),crtFLDR);
+            if NOT Assigned(result) then result:=SrcTree_add_FsFLDR(item,srcTree_fsFnk_ExtractFirstDIR(path),crtFLDR);
             //
             result:=tSrcTree_fsFLDR(SrcTree_getFsFldrREL(result, srcTree_fsFnk_CreateRelativePath(Path,result.fsPath),crtFLDR));
         end;
