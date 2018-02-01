@@ -12,10 +12,14 @@ begin
         if Assigned(Result) and (srcTree_fsFnk_FileIsInPath(Path,tSrcTree_BASE(_tSrcTree_item_fsNodeFLDR_(result)).fsPath))
         then begin // ну точно ... в ней надо
             result:=tSrcTree_fsFLDR(SrcTree_getFsFldrREL(tSrcTree_BASE(_tSrcTree_item_fsNodeFLDR_(result)), srcTree_fsFnk_CreateRelativePath(Path,tSrcTree_BASE(_tSrcTree_item_fsNodeFLDR_(result)).fsPath),crtFLDR));
-        end;
+        end
+        else result:=NIL; //< типа НЕ нашли
         if not Assigned(result) then begin
             // таки НАДО создавать ... и вставлять ПРЯМО в КОРЕНЬ !!!
-            result:=SrcTree_add_FsFLDR(item,path,crtFLDR);
+            result:=tSrcTree_fsFLDR(SrcTree_fndFsFldrABS(item,srcTree_fsFnk_ExtractFirstDIR(path)));
+            if NOT Assigned(result) then SrcTree_add_FsFLDR(item,srcTree_fsFnk_ExtractFirstDIR(path),crtFLDR);
+            //
+            result:=tSrcTree_fsFLDR(SrcTree_getFsFldrREL(result, srcTree_fsFnk_CreateRelativePath(Path,result.fsPath),crtFLDR));
         end;
      end;
 end;

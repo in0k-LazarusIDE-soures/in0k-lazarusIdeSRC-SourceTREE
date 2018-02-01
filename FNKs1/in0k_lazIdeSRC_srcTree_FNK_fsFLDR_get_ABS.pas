@@ -5,6 +5,8 @@ unit in0k_lazIdeSRC_srcTree_FNK_fsFLDR_get_ABS;
 interface
 
 uses
+  Dialogs,
+
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
   //---

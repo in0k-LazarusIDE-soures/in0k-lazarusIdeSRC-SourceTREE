@@ -6,7 +6,7 @@ interface
 
 uses
   Classes,
-
+  sysutils,
   PackageIntf,
   CodeToolManager,
   CodeCache,
@@ -24,7 +24,7 @@ uses
 
 type
 
- tSrcTree_itmHandler4Build__f8a_Item_4USEs=class(tSrcTree_itmHandler4Build__f8a_Item)
+ tSrcTree_itmHandler4Build__f8a_Item_4USEs=class(tSrcTree_itmHandler__f8a_Item)
   protected
    // function
   protected
@@ -65,6 +65,7 @@ end;
 procedure tSrcTree_itmHandler4Build__f8a_Item_4USEs._nameListT0FileList_(const nameList:tStrings);
 var i:integer;
 begin
+    writeLOG(inttostr(nameList.Count));
     for i:=0 to nameList.Count-1 do begin
         // тупо заменяем
         nameList.Strings[i]:=_nameItemT0FileName_(nameList.Strings[i]);
@@ -98,12 +99,14 @@ var MainSection,ImplSection:TStrings;
 begin {todo: проверки в дебуг режиме???}
     result:=_prc_4AllSection_(CodeBuffer, MainSection,ImplSection);
     if result then begin //< копируем имена (пути)
+        writeLOG('ssssssssssssssssssssssssssssssssssssssss');
         if Assigned(MainSection) then Names.AddStrings(MainSection);
         if Assigned(ImplSection) then Names.AddStrings(ImplSection);
     end;
     MainSection.FREE;
     ImplSection.FREE;
     //---
+    writeLOG('Names.Count='+inttostr(Names.Count));
    _nameListT0FileList_(Names);
 end;
 

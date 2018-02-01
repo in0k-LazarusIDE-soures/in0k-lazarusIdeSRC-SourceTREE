@@ -98,8 +98,10 @@ type
      function  _EXECUTE__TREE_(const Handler:tSrcTree_itmHandler; const eData:pointer; const eItem:tSrcTree_item):boolean;
      function  _EXECUTE_4TREE_(const eParent:tSrcTree_itmHandler; const tHandler:tSrcTree_itmHandler_TYPE; const eData:pointer):boolean;
    protected
-     procedure _EXECUTE_4ROOT_(const Handler:tSrcTree_itmHandler_TYPE);
-     procedure  EXECUTE_4TREE (const Handler:tSrcTree_itmHandler_TYPE);
+     procedure  EXECUTE_4ROOT (const Handler:tSrcTree_itmHandler);      overload;
+     procedure  EXECUTE_4ROOT (const Handler:tSrcTree_itmHandler_TYPE); overload;
+     procedure  EXECUTE_4TREE (const Handler:tSrcTree_itmHandler);      overload;
+     procedure  EXECUTE_4TREE (const Handler:tSrcTree_itmHandler_TYPE); overload;
    protected
      procedure _make_log_Start_;
      procedure _make_log_onEND_;
@@ -374,11 +376,25 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure tSrcTree_prcHandler._EXECUTE_4ROOT_(const Handler:tSrcTree_itmHandler_TYPE);
+procedure tSrcTree_prcHandler.EXECUTE_4ROOT(const Handler:tSrcTree_itmHandler);
+var tmp:pointer;
+begin
+    tmp:=nil;
+   _EXECUTE__NODE_(Handler,tmp,_execRoot_);
+end;
+
+procedure tSrcTree_prcHandler.EXECUTE_4ROOT(const Handler:tSrcTree_itmHandler_TYPE);
 var tmp:pointer;
 begin
     tmp:=nil;
    _EXECUTE_4NODE_(nil,Handler,tmp,_execRoot_);
+end;
+
+procedure tSrcTree_prcHandler.EXECUTE_4TREE(const Handler:tSrcTree_itmHandler);
+var tmp:pointer;
+begin
+    tmp:=nil;
+   _EXECUTE__TREE_(Handler,tmp,_execRoot_);
 end;
 
 procedure tSrcTree_prcHandler.EXECUTE_4TREE(const Handler:tSrcTree_itmHandler_TYPE);

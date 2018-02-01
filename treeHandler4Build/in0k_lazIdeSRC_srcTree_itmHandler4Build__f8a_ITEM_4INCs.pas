@@ -9,7 +9,7 @@ uses
 
 type
 
- tSrcTree_itmHandler4Build__f8a_Item_4INCs=class(tSrcTree_itmHandler4Build__f8a_Item)
+ tSrcTree_itmHandler4Build__f8a_Item_4INCs=class(tSrcTree_itmHandler__f8a_Item)
 
   end;
 

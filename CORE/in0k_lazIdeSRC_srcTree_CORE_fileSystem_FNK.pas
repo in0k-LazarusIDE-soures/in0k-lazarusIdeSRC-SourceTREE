@@ -18,9 +18,9 @@ function srcTree_fsFnk_ChompPathDelim (const Path: string):string; inline;
 function srcTree_fsFnk_ConcatPaths    (const PathA, PathB: string):string; inline;
 
 function srcTree_fsFnk_CreateRelativePath(const Filename,BaseDirectory:string; UsePointDirectory:boolean=false; AlwaysRequireSharedBaseFolder:Boolean=True):string; inline;
+function srcTree_fsFnk_ExtractFirstDIR(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileName(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inline;
-
 
 
 
@@ -29,6 +29,14 @@ function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string; inlin
 //function srcTree_fsFnk_ExtractFilePath(const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string; inline;
 function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
+
+
+
+
+
+
+
+
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean; inline;
 
 function srcTree_fsFnk_FileIsText(const AFilename: string): boolean; inline;
@@ -63,7 +71,7 @@ function srcTree_fsFnk_startsWithDirectorySeparator(const Path:string):boolean; 
 implementation
 
 function srcTree_fsFnk_pathIsAbsolute(const path:string):boolean;
-begin
+begin  //ForceDirectoriesUTF8();
     {$ifOpt D+}
         Assert(NOT srcTree_fsFnk_endsWithDirectorySeparator(path),'`path` ends With `DirectorySeparator`.');
     {$endIf}
@@ -123,6 +131,37 @@ end;
 function srcTree_fsFnk_ExtractFileNameOnly(const AFilename:string):string;
 begin
     result:=ExtractFileNameOnly(AFilename);
+end;
+
+function srcTree_fsFnk_ExtractFirstDIR(const FileName:string):string;
+
+    function _test_(const aDRV:string; Const Dir: string; out resDIR:string): Boolean;
+    var ADir : String;
+        APath: String;
+    begin
+        result:=FALSE;
+        resDIR:='';
+        //
+        ADir:=ExcludeTrailingPathDelimiter(Dir);
+        if (ADir='') then Exit;
+        //
+        APath:=ExtractFilePath(ADir);
+        if (APath=aDRV) then result:=TRUE
+        else begin
+            if _test_(aDRV,APath,resDIR) then begin
+                resDIR:=ADir;
+            end;
+        end;
+    end;
+
+var ADrv:string;
+begin
+    result:='';
+    //
+    ADrv := ExtractFileDrive(FileName);
+    if (ADrv='') then EXIT;
+    //
+   _test_(aDRV, FileName,result);
 end;
 
 function srcTree_fsFnk_ExtractFileDir (const FileName:string):string;
