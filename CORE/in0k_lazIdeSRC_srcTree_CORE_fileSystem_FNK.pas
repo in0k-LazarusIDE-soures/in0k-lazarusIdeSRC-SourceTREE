@@ -5,7 +5,7 @@ unit in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK;
 interface
 
 uses
-  SysUtils,
+  SysUtils, //Dialogs,
   FileUtil,LazFileUtils;
 
 

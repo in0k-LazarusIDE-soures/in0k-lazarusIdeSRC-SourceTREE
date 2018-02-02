@@ -5,7 +5,7 @@ unit srcTree_handler_CORE_fsFile2CodeBUF;
 interface
 
 uses
-  LazIDEIntf,
+  LazIDEIntf, Dialogs,
   //---
   CodeCache,
   CodeToolManager,
@@ -37,6 +37,9 @@ begin
     //--- из какого-то ХАУ ТУ с сайта
     // make sure the filename is trimmed and contains a full path
     tmpFileName:=srcTree_fsFnk_CleanAndExpandFilename(srcItem.fsPath);
+
+    ShowMessage(tmpFileName);
+
     // save changes in source editor to codetools
     LazarusIDE.SaveSourceEditorChangesToCodeCache(nil);
     // load the file

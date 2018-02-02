@@ -20,7 +20,7 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
         in0k_lazIdeSRC_DEBUG,
         sysutils,
      {$endIf}
-  Classes,
+  Classes,// Dialogs,
 
   in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
   in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
@@ -264,9 +264,13 @@ function tSrcTree_itmHandler__f8a.Processing:boolean;
 var srcItem:tSrcTree_fsFILE;
 begin
     // состявляем список ОБРАБАТЫВАЕМЫХ объектов
+    //ShowMessage('ttttttttttttttttttttttttttttttttttttttttttttttttttttttt');
     result:=_prc__make_InitFileList_;
     // Пока этот список НЕ ПУСТ, изымаем ПЕРВЫЙ и его обрабатываем
     // (во время обработки список может ПОПОЛНЯТЬСЯ)
+
+    //ShowMessage('ssssssssssssssssssssssssssssssssssssssssssssssssssssss');
+
     while result and (_ITEMs_.Count>0) do begin
         // изымаем первый узел
         srcItem:=tSrcTree_fsFILE(_ITEMs_.Items[0]);

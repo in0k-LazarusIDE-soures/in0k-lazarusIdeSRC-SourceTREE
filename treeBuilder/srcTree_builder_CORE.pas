@@ -12,7 +12,11 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
         in0k_lazIdeSRC_DEBUG,
         sysutils,
      {$endIf}
+    Classes,
     PackageIntf,
+    //
+    in0k_lazarusIdeSRC_ideMacrosCODE,
+    in0k_lazIdeSRC_srcTree_CORE_fileSystem_FNK,
     //
     in0k_lazIdeSRC_srcTree_CORE_item,
     in0k_lazIdeSRC_srcTree_CORE_itemFileSystem,
@@ -31,15 +35,27 @@ uses {$ifDef in0k_lazExt_CopyRAST_wndCORE___DebugLOG}
     in0k_lazIdeSRC_srcTree_FNK_mainFILE_SET,
 
     in0k_lazIdeSRC_srcTree_FNK_fsFLDR_FND,
+    in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_ABS,
+    in0k_lazIdeSRC_srcTree_FNK_fsFLDR_fnd_REL,
     in0k_lazIdeSRC_srcTree_FNK_fsFLDR_GET,
+    in0k_lazIdeSRC_srcTree_FNK_fsFLDR_get_ABS,
+    in0k_lazIdeSRC_srcTree_FNK_fsFLDR_get_REL,
     in0k_lazIdeSRC_srcTree_FNK_fsFILE_FND,
-    in0k_lazIdeSRC_srcTree_FNK_fsFILE_GET;
+    in0k_lazIdeSRC_srcTree_FNK_fsFILE_fnd_ABS,
+    in0k_lazIdeSRC_srcTree_FNK_fsFILE_fnd_REL,
+    in0k_lazIdeSRC_srcTree_FNK_fsFILE_GET,
+    in0k_lazIdeSRC_srcTree_FNK_fsFILE_get_ABS,
+    in0k_lazIdeSRC_srcTree_FNK_fsFILE_get_REL;
 
 
 type
           //Make
           //Creater
  tSrcTree_Builder_CORE=class
+  protected
+   _macrosNames_:tStrings;
+    procedure _macrosNames_ADD_(const value:string);
+    procedure _macrosNames_CLR_;
   protected
     function new_ROOT(const name:string):tSrcTree_ROOT;   virtual;
     function new_Base(const path:string):tSrcTree_BASE;   virtual;
@@ -52,16 +68,17 @@ type
     function fnd_FLDR(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFLDR;
     function fnd_FILE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFILE;
   public
-    function set_BASE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_BASE;                                 virtual;
-    function set_MAIN(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_MAIN;                                 virtual;
+    function set_BASE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_BASE;                                 //virtual;
+    function set_MAIN(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_MAIN;                                 //virtual;
   public
-    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
-    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const KNDs:sSrcTree_SrchPath):tSrcTree_fsFLDR; virtual;
-    function add_FILE(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE; virtual;
+    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR; //virtual;
+    function add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const KNDs:sSrcTree_SrchPath):tSrcTree_fsFLDR; //virtual;
+    function add_FILE(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE; //virtual;
   public
-    function crt_ROOT(const Name:string):tSrcTree_ROOT;                                                           virtual;
+    function crt_ROOT(const Name:string):tSrcTree_ROOT;                                                           // virtual;
   public
-    constructor Create;
+    constructor Create; virtual;
+    destructor DESTROY; override;
   end;
  tSrcTree_Builder_TYPE=class Of tSrcTree_Builder_CORE;
 
@@ -159,6 +176,29 @@ end;}
 constructor tSrcTree_Builder_CORE.Create;
 begin
     inherited;
+   _macrosNames_:=nil;
+end;
+
+destructor tSrcTree_Builder_CORE.DESTROY;
+begin
+   _macrosNames_CLR_;
+    inherited;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure tSrcTree_Builder_CORE._macrosNames_ADD_(const value:string);
+begin
+    if not Assigned(_macrosNames_) then begin
+       _macrosNames_:=TStringList.Create;
+    end;
+   _macrosNames_.Add(value);
+end;
+
+procedure tSrcTree_Builder_CORE._macrosNames_CLR_;
+begin
+   _macrosNames_.FREE;
+   _macrosNames_:=NIL;
 end;
 
 //------------------------------------------------------------------------------
@@ -202,18 +242,38 @@ begin
     result:=SrcTree_fndMainFILE(ROOT);
 end;
 
+//------------------------------------------------------------------------------
+
 function tSrcTree_Builder_CORE.fnd_FLDR(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFLDR;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=tSrcTree_fsFLDR(SrcTree_fndFsFLDR(ROOT,path));
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    if srcTree_fsFnk_pathIsAbsolute(ideMacros_deCODE(tmp))
+    then result:=tSrcTree_fsFLDR(SrcTree_fndFsFldrABS(ROOT,tmp))
+    else result:=tSrcTree_fsFLDR(SrcTree_fndFsFldrREL(ROOT,tmp));
+    //
+    //result:=tSrcTree_fsFLDR(SrcTree_fndFsFLDR(ROOT,tmp));
     if not (tObject(result) is tSrcTree_fsFLDR) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL;
 end;
 
 function tSrcTree_Builder_CORE.fnd_FILE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_fsFILE;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=tSrcTree_fsFILE(SrcTree_fndFsFile(ROOT,path));
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    if srcTree_fsFnk_pathIsAbsolute(ideMacros_deCODE(tmp))
+    then result:=tSrcTree_fsFILE(SrcTree_fndFsFileABS(ROOT,tmp))
+    else result:=tSrcTree_fsFILE(SrcTree_fndFsFileREL(ROOT,tmp));
+    //
+    //result:=tSrcTree_fsFILE(SrcTree_fndFsFile(ROOT,tmp));
     if not (tObject(result) is tSrcTree_fsFILE) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL;
 end;
@@ -221,21 +281,42 @@ end;
 //------------------------------------------------------------------------------
 
 function tSrcTree_Builder_CORE.set_BASE(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_BASE;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=SrcTree_setBaseDIR(ROOT,path,@new_Base);
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    result:=SrcTree_setBaseDIR(ROOT,tmp,@new_Base);
 end;
 
 function tSrcTree_Builder_CORE.set_MAIN(const ROOT:tSrcTree_ROOT; const path:string):tSrcTree_MAIN;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=SrcTree_setMainFILE(ROOT,path,@new_Main,@new_Base);
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    result:=SrcTree_setMainFILE(ROOT,tmp,@new_Main,@new_Base);
 end;
 
+//------------------------------------------------------------------------------
+
 function tSrcTree_Builder_CORE.add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_SrchPath):tSrcTree_fsFLDR;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=tSrcTree_fsFLDR(SrcTree_getFsFLDR(ROOT,path,@new_FLDR));
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    if srcTree_fsFnk_pathIsAbsolute(ideMacros_deCODE(tmp))
+    then result:=tSrcTree_fsFLDR(SrcTree_getFsFldrABS(ROOT,tmp,@new_FLDR))
+    else result:=tSrcTree_fsFLDR(SrcTree_getFsFldrREL(ROOT,tmp,@new_FLDR));
+    //
+    //result:=tSrcTree_fsFLDR(SrcTree_getFsFLDR(ROOT,tmp,@new_FLDR));
     if not (tObject(result) is tSrcTree_fsFLDR) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL
     else begin
@@ -244,9 +325,18 @@ begin
 end;
 
 function tSrcTree_Builder_CORE.add_FLDR(const ROOT:tSrcTree_ROOT; const path:string; const KNDs:sSrcTree_SrchPath):tSrcTree_fsFLDR;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=tSrcTree_fsFLDR(SrcTree_getFsFLDR(ROOT,path,@new_FLDR));
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    if srcTree_fsFnk_pathIsAbsolute(ideMacros_deCODE(tmp))
+    then result:=tSrcTree_fsFLDR(SrcTree_getFsFldrABS(ROOT,tmp,@new_FLDR))
+    else result:=tSrcTree_fsFLDR(SrcTree_getFsFldrREL(ROOT,tmp,@new_FLDR));
+    //
+    //result:=tSrcTree_fsFLDR(SrcTree_getFsFLDR(ROOT,tmp,@new_FLDR));
     if not (tObject(result) is tSrcTree_fsFLDR) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL
     else begin
@@ -255,9 +345,18 @@ begin
 end;
 
 function tSrcTree_Builder_CORE.add_FILE(const ROOT:tSrcTree_ROOT; const path:string; const kind:eSrcTree_FileType):tSrcTree_fsFILE;
+var tmp:string;
 begin
     {$ifDef _DEBUG_}Assert(Assigned(Root));{$endIf}
-    result:=tSrcTree_fsFILE(SrcTree_getFsFILE(ROOT,path,@new_FILE,@new_FLDR));
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(path,_macrosNames_)
+    else tmp:=path;
+    //
+    if srcTree_fsFnk_pathIsAbsolute(ideMacros_deCODE(tmp))
+    then result:=tSrcTree_fsFILE(SrcTree_getFsFileABS(ROOT,tmp,@new_FILE,@new_FLDR))
+    else result:=tSrcTree_fsFILE(SrcTree_getFsFileREL(ROOT,tmp,@new_FILE,@new_FLDR));
+    //
+    //result:=tSrcTree_fsFILE(SrcTree_getFsFILE(ROOT,tmp,@new_FILE,@new_FLDR));
     if not (tObject(result) is tSrcTree_fsFILE) {todo: ПРОВЕИТЬ, сомнительно все это}
     then result:=NIL
     else begin
@@ -268,8 +367,13 @@ end;
 //------------------------------------------------------------------------------
 
 function tSrcTree_Builder_CORE.crt_ROOT(const Name:string):tSrcTree_ROOT;
+var tmp:string;
 begin
-    result:=new_ROOT(Name);
+    if Assigned(_macrosNames_)
+    then tmp:=ideMacros_enCODE(Name,_macrosNames_)
+    else tmp:=Name;
+    //
+    result:=new_ROOT(tmp);
 end;
 
 
