@@ -147,10 +147,13 @@ function srcTree_fsFnk_ExtractFirstDIR(const FileName:string):string;
         if (ADir='') then Exit;
         //
         APath:=ExtractFilePath(ADir);
-        if (APath=aDRV) then result:=TRUE
+        if (APath=aDRV)or(APath='') then begin
+            result:=TRUE;
+            resDIR:=ADir;
+        end
         else begin
             if _test_(aDRV,APath,resDIR) then begin
-                resDIR:=ADir;
+                resDIR:=resDIR;
             end;
         end;
     end;
@@ -160,7 +163,7 @@ begin
     result:='';
     //
     ADrv := ExtractFileDrive(FileName);
-    if (ADrv='') then EXIT;
+    //if (ADrv='') then EXIT;
     //
    _test_(aDRV, FileName,result);
 end;
