@@ -159,13 +159,16 @@ function srcTree_fsFnk_ExtractFirstDIR(const FileName:string):string;
     end;
 
 var ADrv:string;
-begin
+begin {$IFDEF UNIX} {$ERROR need reWrite for you system} {$endif}
     result:='';
-    //
-    ADrv := ExtractFileDrive(FileName);
-    //if (ADrv='') then EXIT;
-    //
-   _test_(aDRV, FileName,result);
+    if FileName<>'' then begin
+        ADrv := ExtractFileDrive(FileName);
+        if ADrv<>'' then result:=ADrv
+        else
+        //if (ADrv='') then EXIT;
+        //
+        _test_(aDRV, FileName,result);
+    end;
 end;
 
 function srcTree_fsFnk_ExtractFileDrive(const FileName:string):string;
