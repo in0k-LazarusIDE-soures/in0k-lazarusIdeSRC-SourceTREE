@@ -38,7 +38,7 @@ begin
     // make sure the filename is trimmed and contains a full path
     tmpFileName:=srcTree_fsFnk_CleanAndExpandFilename(srcItem.fsPath);
 
-    ShowMessage(tmpFileName);
+    //ShowMessage(tmpFileName);
 
     // save changes in source editor to codetools
     LazarusIDE.SaveSourceEditorChangesToCodeCache(nil);
