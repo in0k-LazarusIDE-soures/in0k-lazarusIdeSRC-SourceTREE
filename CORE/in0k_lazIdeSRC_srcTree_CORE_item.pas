@@ -18,6 +18,9 @@ type
    _next_:tSrcTree_item;
    _chld_:tSrcTree_item;
   protected
+    function  _clc_countSONs_  :integer;
+    function  _clc_conntCHILDs_:integer;
+  protected
     function  _get_chldFrst_:tSrcTree_item;
     function  _get_chldLast_:tSrcTree_item;
   protected
@@ -37,6 +40,9 @@ type
     property ItemTEXT:string read _get_itemText_; // что вложили при создании
     property ItemNAME:string read _get_ItemName_; // название
     property ItemHINT:string read _get_ItemHint_; // описание
+  public
+    property CountSONs  :integer read _clc_countSONs_;
+    property CountCHILDs:integer read _clc_conntCHILDs_;
   public
     procedure CopyData(const source:tSrcTree_item); virtual;
   public
@@ -120,6 +126,34 @@ begin
     while Assigned(result) do begin
         if not Assigned(result._next_) then break;
         result:=result._next_;
+    end;
+end;
+
+//------------------------------------------------------------------------------
+
+// сичтаем ПРЯМЫХ сыновей
+function tSrcTree_item._clc_countSONs_:integer;
+var tmp:tSrcTree_item;
+begin
+    result:=0;
+    tmp:=self._chld_;
+    while Assigned(tmp) do begin
+        result:=result+1;
+        //-->
+        tmp:=tmp._next_;
+    end;
+end;
+
+// сичтаем ВСЕХ потомков
+function tSrcTree_item._clc_conntCHILDs_:integer;
+var tmp:tSrcTree_item;
+begin {todo: уйти от рекурсии}
+    result:=0;
+    tmp:=self._chld_;
+    while Assigned(tmp) do begin
+        result:=result+1+tmp._clc_conntCHILDs_;
+        //-->
+        tmp:=tmp._next_;
     end;
 end;
 

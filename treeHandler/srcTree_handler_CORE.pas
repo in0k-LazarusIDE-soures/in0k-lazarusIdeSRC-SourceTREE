@@ -41,7 +41,6 @@ type
   private // текущая работа
    _eITEM_:tSrcTree_item;       // ТЕКУЩИЙ узел для обработки
    _eDATA_:pointer;             // некие данные по обработке
-
   protected
     procedure doEvent_onNoNeed(const message:string);
     procedure doEvent_onPASSED(const message:string);
@@ -255,7 +254,7 @@ begin
    _execRoot_:=nodeRoot;
     //----
     writeLOG_BEGIN;
-    writeLOG('nodeRoot('+nodeRoot.ClassName+')');
+    //writeLOG('nodeRoot('+nodeRoot.ClassName+')');
    _EXECUTE_;
     writeLOG_isEND;
 end;
