@@ -39,6 +39,7 @@ function srcTree_fsFnk_ExtractFileExt (const FileName:string):string; inline;
 
 
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean; inline;
+function srcTree_fsFnk_FilenameIsPascalInc (const TheFilename:string):boolean; inline;
 
 function srcTree_fsFnk_FileIsText(const AFilename: string): boolean; inline;
 
@@ -187,11 +188,15 @@ begin
     result:=ExtractFileExt(FileName);
 end;
 
-
-
+// имя файла - ПАСКАЛЕВСКИЙ модуль
 function srcTree_fsFnk_FilenameIsPascalUnit(const TheFilename:string):boolean;
 begin
     result:=FilenameIsPascalUnit(TheFilename);
+end;
+
+function srcTree_fsFnk_FilenameIsPascalInc(const TheFilename:string):boolean;
+begin
+
 end;
 
 function srcTree_fsFnk_FileIsText(const AFilename: string): boolean;

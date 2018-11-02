@@ -6,6 +6,8 @@ interface
 
 uses
   LazIDEIntf, Dialogs,
+  Laz2_XMLCfg,
+  Classes,
   //---
   CodeCache,
   CodeToolManager,
@@ -31,6 +33,15 @@ type
     function Processing:boolean; override; // ВЫПОЛНИТЬ обработку
   end;
 
+ //tSrcTree_itmHandler_fsFile_CodeTool=class(tSrcTree_itmHandler_fsFile2CodeBUF);
+
+ tSrcTree_itmHandler_fsFile_XMLConfig=class(tSrcTree_itmHandler_fsFile2CodeBUF)
+  protected
+    function _codeBUF_4EDIT_XML_(const CodeBuff:TCodeBuffer; out   XMLConfig:TXMLConfig):boolean;
+    function _codeBUF_WRITE_XML_(const CodeBuff:TCodeBuffer; const XMLConfig:TXMLConfig):boolean;
+  end;
+
+
 implementation
 
 function tSrcTree_itmHandler_fsFile2CodeBUF._SrcTree_fsFILE__2__codeBUF_(const srcItem:tSrcTree_fsFILE):TCodeBuffer;
@@ -51,24 +62,32 @@ begin
     {$endIf}
 end;
 
+function tSrcTree_itmHandler_fsFile2CodeBUF._CleanPos_in_CodeBuff_(const CodeBuffer:TCodeBuffer; const CleanPos:integer):boolean;
+begin
+    with CodeBuffer do result:=(1<=CleanPos)and(CleanPos<=SourceLength) ;
+end;
+
 //------------------------------------------------------------------------------
 
 function tSrcTree_itmHandler_fsFile2CodeBUF._codeBUF_4EDIT_(const CodeBuff:TCodeBuffer; out CodeTool:TCodeTool):boolean;
 begin
+    result:=false;
+    //
     CodeToolBoss.Explore(CodeBuff,CodeTool,false);
     if NOT Assigned(CodeTool) then begin
-        //doEvent_on_ERROR('CodeTool NOT received:"'+Node.Get_Target_fullName+'"');
+        doEvent_on_ERROR('CodeTool NOT received:"'+CodeBuff.Filename+'"');
+    end
+    else begin
+        // Step 2: connect the SourceChangeCache
+        CodeToolBoss.SourceChangeCache.MainScanner:=CodeTool.Scanner;
+        CodeToolBoss.SourceChangeCache.BeginUpdate;
+        //
+        result:=TRUE;
     end;
-    // Step 2: connect the SourceChangeCache
-    CodeToolBoss.SourceChangeCache.MainScanner:=CodeTool.Scanner;
-    CodeToolBoss.SourceChangeCache.BeginUpdate;
-    //
-
 end;
 
 function tSrcTree_itmHandler_fsFile2CodeBUF._codeBUF_WRITE_(const CodeBuff:TCodeBuffer):boolean;
 begin
-
     // Step 4: Apply the changes
     if not CodeToolBoss.SourceChangeCache.EndUpdate then begin
         //doEvent_on_ERROR('CodeToolBoss.SourceChangeCache.EndUpdate ERROR:"'+Node.Get_Target_fullName+'"');
@@ -77,8 +96,7 @@ begin
     if NOT CodeBuff.Save then begin
          //doEvent_on_ERROR('CodeBuff.Save ERROR:"'+Node.Get_Target_fullName+'" ER');
     end;
-
-
+    result:=TRUE;
 end;
 
 //------------------------------------------------------------------------------
@@ -94,9 +112,31 @@ end;
 
 //------------------------------------------------------------------------------
 
-function tSrcTree_itmHandler_fsFile2CodeBUF._CleanPos_in_CodeBuff_(const CodeBuffer:TCodeBuffer; const CleanPos:integer):boolean;
+function tSrcTree_itmHandler_fsFile_XMLConfig._codeBUF_4EDIT_XML_(const CodeBuff:TCodeBuffer; out XMLConfig:TXMLConfig):boolean;
+var ms:TMemoryStream;
 begin
-    with CodeBuffer do result:=(1<=CleanPos)and(CleanPos<=SourceLength) ;
+    XMLConfig:=TXMLConfig.Create(nil);
+    ms:=TMemoryStream.Create;
+    CodeBuff.SaveToStream(ms);
+    ms.Position:=0;
+    XMLConfig.ReadFromStream(ms);
+    ms.Free;
+    result:=true;
+end;
+
+function tSrcTree_itmHandler_fsFile_XMLConfig._codeBUF_WRITE_XML_(const CodeBuff:TCodeBuffer; const XMLConfig:TXMLConfig):boolean;
+var ms:TMemoryStream;
+begin
+    ms:=TMemoryStream.Create;
+    XMLConfig.WriteToStream(ms);
+    ms.Position:=0;
+    CodeBuff.LoadFromStream(ms);
+    ms.FREE;
+    // Step 5: SAVE the changes
+    if NOT CodeBuff.Save then begin
+         doEvent_on_ERROR('CodeBuff.Save ERROR:"'+CodeBuff.Filename+'" ER');
+    end;
+    result:=true;
 end;
 
 end.
